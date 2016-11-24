@@ -1,0 +1,77 @@
+
+
+File:
+    linear stream of record...
+
+    2 Bytes|      2 Bytes                                   |     lenghtOfRecord - 4 Bytes |
+    opCode | length of record (including the first 4 bytes) | record                       |
+
+Nodes:
+    Header:
+    Group:
+    Object:
+    Face:
+    Mesh:
+    Light point
+    Light point system
+    Subface:
+    Light source
+    Sound:
+    Text:
+    Vertex:
+    Morph vertex:
+    Clip region
+    Degree of freedom
+    Level of detail
+    Switch
+    External reference
+
+record type: 
+max lenght of record is 65535. It can be extended with a continuation record.
+The maximum number of children nodes under any primary node is 65534
+
+    control records
+        level changes
+             generic
+             subface
+             extension
+             attribute.
+        instance definition
+        instance reference.
+
+    node primary records
+    ancillary records
+        Comment Record
+        Long ID Record
+        Indexed String Record
+        Multitexture Record
+        UV List Record
+        Replicate Record
+        Transformation Records
+            Matrix Record 
+            Rotate About Edge Record
+            Translate Record 
+            Scale Record 
+            Rotate About Point Record 
+            Rotate and/or Scale to Point Record 
+            Put Record 
+            General Matrix Record 
+        vector
+        bounding volume
+            Bounding Box Record 
+            Bounding Sphere Record 
+            Bounding Cylinder Record 
+            Bounding Convex Hull Record 
+            Bounding Histogram Record 
+            Bounding Volume Center Record 
+            Bounding Volume Orientation Record 
+        CAT Data Record
+        
+    continuation records
+    The continuation record appears in
+    the stream immediately following the record that it “continues”. The data contained in the continuation
+    record is defined by the original record and is assumed to be directly appended onto
+    the content of the original record. Multiple continuation records may follow a record, in which case
+    all continuation records would be appended (in sequence) to the original record
+
+        a

@@ -1,0 +1,52 @@
+className: HeaderNode
+
+std::string mAsciiId;
+int mFormatRevision;
+int mEditRevision;
+std::string mDataAntTimeOfLastRevision;
+uint16_t mNextGroupNodeId;
+uint16_t mNextLodNodeId;
+uint16_t mNextObjectNodeId;
+uint16_t mNextFaceNodeId;
+uint16_t mUnitMultiplier; //always 1
+vertexCoordinateUnits mVertexCoordinateUnits;
+bool mShouldSetWhiteTextureOnNewFace;
+int mFlags;
+projectionType mProjection;
+int16_t mNextDofNodeId;
+uint16_t mVertexStorageType; //should always be 1 - Double precision float
+databaseOrigin mDatabaseOrigin;
+double mSouthWestDbCoordinateX;
+double mSouthWestDbCoordinateY;
+double mDeltaX;
+double mDeltaY;
+uint16_t mNextSoundNodeId;
+uint16_t mNextPathNodeId;
+uint16_t mNextClipNodeId;
+uint16_t mNextTextNodeId;
+uint16_t mNextBspNodeId;
+uint16_t mNextSwitchNodeId;
+double mSouthWestCornerLatitude;
+double mSouthWestCornerLongitude;
+double mNorthEastCornerLatitude;
+double mNorthEastCornerLongitude;
+double mOriginLatitude;
+double mOriginLongitude;
+double mLambertUpperLatitude;
+double mLambertLowerLatitude;
+uint16_t mNextLightSourceNodeId;
+uint16_t mNextLightPointNodeId;
+uint16_t mNextRoadNodeId;
+uint16_t mNextCatNodeId;
+EarthEllipsoidModel mEarthEllipsoidModel;
+uint16_t mNextAdaptiveNodeId;
+uint16_t mNextCurveNodeId;
+int16_t mUtmZone;
+//reserved
+double mDeltaZ;
+double mRadius;
+uint16_t mNextMeshNodeId;
+uint16_t mNextLightPointSystemId;
+//reserved
+double mEarthMajorAxis; //in meters
+double mEarthMinorAxis; //in meters
