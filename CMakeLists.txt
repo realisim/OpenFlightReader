@@ -18,4 +18,4 @@ ADD_EXECUTABLE( ${PROJECT_NAME}  ${SOURCES} ${OPENFLIGHT} )
 #install to bin and move assets
 SET ( destinationPath ${OpenFlightReader_SOURCE_DIR}/bin/${PROJECT_NAME} )
 INSTALL(TARGETS ${PROJECT_NAME} DESTINATION ${destinationPath} )
-#INSTALL(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/assets/ DESTINATION ${destinationPath}/assets )
+INSTALL(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/assets/ DESTINATION ${destinationPath}/assets )

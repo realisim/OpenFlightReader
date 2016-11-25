@@ -24,12 +24,14 @@ namespace OpenFlight
 
     protected:
         void addError(const std::string&) const;
+        //addWarning(const std::string&) const;
         void parseHeaderRecord(int iRecordSize, char* iRawRecord);
         void parseRawRecord(uint16_t iOpCode, int iRecordSize, char* iRawRecord);
         void readRecord(std::ifstream& iFileStream);
         std::string rawRecordToString(int iRecordSize, char* iRawRecord) const;
 
         mutable std::string mErrors;
+        //mutable std::string mWarnings;
         bool mHasDebugEnabled;
 
         INode* mpRootNode; //Should be the Document.

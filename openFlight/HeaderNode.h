@@ -3,6 +3,7 @@
 
 #include "INode.h"
 #include <vector>
+#include <string>
 
 namespace OpenFlight
 {

@@ -6,7 +6,7 @@ using namespace std;
 
 namespace OpenFlight
 {
-    const bool BIG_ENDIAN = false; //Windows machine are little endian...
+    const bool __BIGENDIAN = false; //Windows machine are little endian...
 
     //-------------------------------------------------------------------------
     bool readChar(std::istream& iStream, int iNumberOfCharToRead, std::string& oV)
@@ -27,7 +27,7 @@ namespace OpenFlight
     {
         iStream.read( (char*)&oV, sizeof(int16_t) );
 
-        if(!BIG_ENDIAN){ swapBytes(oV); }
+        if(!__BIGENDIAN){ swapBytes(oV); }
 
         return iStream.good();
     }
@@ -37,7 +37,7 @@ namespace OpenFlight
     {
         iStream.read( (char*)&oV, sizeof(int32_t) );
 
-        if(!BIG_ENDIAN){ swapBytes(oV); }
+        if(!__BIGENDIAN){ swapBytes(oV); }
 
         return iStream.good();
     }
@@ -54,7 +54,7 @@ namespace OpenFlight
     {
         iStream.read( (char*)&oV, sizeof(uint16_t) );
 
-        if(!BIG_ENDIAN){ swapBytes(oV); }
+        if(!__BIGENDIAN){ swapBytes(oV); }
 
         return iStream.good();
     }
@@ -64,7 +64,7 @@ namespace OpenFlight
     {
         iStream.read( (char*)&oV, sizeof(double) );
 
-        //if(!BIG_ENDIAN){ swapBytes8((char*)&oV); }
+        //if(!__BIGENDIAN){ swapBytes8((char*)&oV); }
 
         return iStream.good();
     }
@@ -96,6 +96,6 @@ namespace OpenFlight
     //-------------------------------------------------------------------------
     void swapBytes(double& iV)
     { 
-        iV = iV;
+        iV = 0.0;
     }
 }
