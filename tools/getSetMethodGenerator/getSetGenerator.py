@@ -58,7 +58,7 @@ def generateGettersInstantiation( className, members ):
     for m in members:
         instantionation = '//------------------------------------------------------------------------------\n'
         instantionation += '%s %s::get%s() const\n' % ( m[0], className, m[1] )
-        instantionation += '{ return m%s;}\n' % m[1]
+        instantionation += '{ return m%s; }\n' % m[1]
         results.append( instantionation )
 
     return results

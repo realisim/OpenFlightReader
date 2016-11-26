@@ -6,25 +6,6 @@ File:
     2 Bytes|      2 Bytes                                   |     lenghtOfRecord - 4 Bytes |
     opCode | length of record (including the first 4 bytes) | record                       |
 
-Nodes:
-    Header:
-    Group:
-    Object:
-    Face:
-    Mesh:
-    Light point
-    Light point system
-    Subface:
-    Light source
-    Sound:
-    Text:
-    Vertex:
-    Morph vertex:
-    Clip region
-    Degree of freedom
-    Level of detail
-    Switch
-    External reference
 
 record type: 
 max lenght of record is 65535. It can be extended with a continuation record.
@@ -39,8 +20,27 @@ The maximum number of children nodes under any primary node is 65534
         instance definition
         instance reference.
 
-    node primary records
-    ancillary records
+    nodes (primary records (can have childs))
+        Header:
+        Group:
+        Object:
+        Face:
+        Mesh:
+        Light point
+        Light point system
+        Subface:
+        Light source
+        Sound:
+        Text:
+        Vertex:
+        Morph vertex:
+        Clip region
+        Degree of freedom
+        Level of detail
+        Switch
+        External reference
+
+    ancillary records (have only one parent which is a node primary record)
         Comment Record
         Long ID Record
         Indexed String Record

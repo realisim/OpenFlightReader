@@ -1,24 +1,31 @@
 
 #pragma once
 
-#include "INode.h"
+#include "PrimaryRecord.h"
 #include <vector>
 #include <string>
 
 namespace OpenFlight
 {
+    class ColorPaletteRecord;
+    class LightSourcePaletteRecord;
+    class MaterialPaletteRecord;
+    class VertexPaletteRecord;
+    class TexturePaletteRecord;
+    
     //-------------------------------------------------------------------------
     // 
     // Current implementation supports the following version:
-    //      16.5
+    //      15.7 to 16.5
     //
-    class HeaderNode : public INode
+    class HeaderRecord : public PrimaryRecord
     {
     public:
-        HeaderNode();
-        HeaderNode(const HeaderNode&) = delete;
-        HeaderNode& operator=(const HeaderNode&) = delete;
-        virtual ~HeaderNode();
+        HeaderRecord() = delete;
+        explicit HeaderRecord(PrimaryRecord* ipParent);
+        HeaderRecord(const HeaderRecord&) = delete;
+        HeaderRecord& operator=(const HeaderRecord&) = delete;
+        virtual ~HeaderRecord();
 
         enum vertexCoordinateUnits { vcuMeters = 0, vcuKilometers = 1, 
             vcuFeet = 4, vcuInches = 5, vcuNauticalMiles = 8 };
@@ -32,7 +39,7 @@ namespace OpenFlight
 
         enum earthEllipsoidModel{ eemWgs1984 = 0, eemWgs1972 = 1, eemBessel = 2,
             eemClarke1866 = 3, eemNad1927 = 4, eemUserDefined = -1 };
-
+        
         std::string getAsciiId() const;
         std::string getDateAntTimeOfLastRevision() const;
         databaseOrigin getDatabaseOrigin() const;
@@ -80,8 +87,8 @@ namespace OpenFlight
         uint16_t getUnitMultiplier() const;
         int16_t getUtmZone() const;
         vertexCoordinateUnits getVertexCoordinateUnits() const;
+        VertexPaletteRecord* getVertexPalette();
         uint16_t getVertexStorageType() const;
-        virtual void parseRecord(int iRecordSize, char* iRawRecord) override;
 
         //setters
         /*void setAsciiId(std::string);
@@ -134,6 +141,9 @@ namespace OpenFlight
         void setVertexStorageType(uint16_t);*/
 
     protected:
+        virtual void handleAddedAncillaryRecord(Record*) override;
+        virtual bool parseRecord(const std::string& iRawRecord, int iVersion) override;
+        
         std::string mAsciiId;
         int mFormatRevision;
         int mEditRevision;
@@ -182,6 +192,13 @@ namespace OpenFlight
         uint16_t mNextLightPointSystemId;
         double mEarthMajorAxis; //in meters
         double mEarthMinorAxis; //in meters
+        
+        //Ancillary Records
+        ColorPaletteRecord *mpColorPalette;
+        LightSourcePaletteRecord *mpLightSourcePalette;
+        std::vector<MaterialPaletteRecord*> mMaterialPalettes;
+        VertexPaletteRecord *mpVertexPalette; //owned in PrimaryRecords::mAncillaryRecord ;
+        TexturePaletteRecord *mpTexturePalette;
     };
 
 }
