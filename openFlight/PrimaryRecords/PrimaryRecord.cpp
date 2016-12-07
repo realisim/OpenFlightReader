@@ -1,4 +1,5 @@
 
+#include "AncillaryRecords/AncillaryRecord.h"
 #include "PrimaryRecord.h"
 #include <sstream>
 #include "StreamUtilities.h"
@@ -9,7 +10,8 @@ using namespace std;
 //-------------------------------------------------------------------------
 //--- PrimaryRecord
 //-------------------------------------------------------------------------
-PrimaryRecord::PrimaryRecord(PrimaryRecord* ipParent) : Record(ipParent)
+PrimaryRecord::PrimaryRecord(PrimaryRecord* ipParent) : Record(),
+mpParent(ipParent)
 {}
 
 //-------------------------------------------------------------------------
@@ -29,7 +31,7 @@ PrimaryRecord::~PrimaryRecord()
 }
 
 //-------------------------------------------------------------------------
-void PrimaryRecord::addAncillaryRecord(Record* ipAncillary)
+void PrimaryRecord::addAncillaryRecord(AncillaryRecord* ipAncillary)
 {
     mAncillaryRecords.push_back(ipAncillary);
     
@@ -44,7 +46,7 @@ void PrimaryRecord::addChild(PrimaryRecord* iChild)
 }
 
 //-------------------------------------------------------------------------
-Record* PrimaryRecord::getAncillaryRecord(int iIndex) const
+AncillaryRecord* PrimaryRecord::getAncillaryRecord(int iIndex) const
 { return mAncillaryRecords.at(iIndex); }
 
 //-------------------------------------------------------------------------
@@ -58,6 +60,10 @@ int PrimaryRecord::getNumberOfAncillaryRecords() const
 //-------------------------------------------------------------------------
 int PrimaryRecord::getNumberOfChilds() const
 { return (int)mChilds.size(); }
+
+//-------------------------------------------------------------------------
+PrimaryRecord* PrimaryRecord::getParent() const
+{ return mpParent; }
 
 //-------------------------------------------------------------------------
 void PrimaryRecord::handleAddedAncillaryRecord(Record* ipAncillary)

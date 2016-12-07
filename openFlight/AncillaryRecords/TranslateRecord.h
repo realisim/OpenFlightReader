@@ -1,17 +1,17 @@
 #pragma once
 
-#include "Record.h"
+#include "AncillaryRecord.h"
 #include <string>
 #include "Types.h"
 
 namespace OpenFlight
 {
     //-------------------------------------------------------------------------
-    class TranslateRecord : public Record
+    class TranslateRecord : public AncillaryRecord
     {
     public:
         TranslateRecord() = delete;
-        explicit TranslateRecord(Record* ipParent);
+        explicit TranslateRecord(PrimaryRecord* ipParent);
         TranslateRecord(const TranslateRecord&) = delete;
         TranslateRecord& operator=(const TranslateRecord&) = delete;
         virtual ~TranslateRecord() {}

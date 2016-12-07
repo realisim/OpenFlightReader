@@ -2,10 +2,20 @@
 #include <queue>
 #include "Records.h"
 #include <sstream>
-#include "Utilities.h"
+#include "DotExporter.h"
 
 using namespace OpenFlight;
 using namespace std;
+
+
+std::string bakeName(const Record* ipNode)
+{
+    char m[200];
+    sprintf(m, "\"%s 0x%08llx\"",
+            toString(ipNode->getOpCode()).c_str(), (uint64_t)ipNode);
+    
+    return m;
+}
 
 //-----------------------------------------------------------------------------
 // This method will return DOT representation of the current document.
@@ -43,13 +53,8 @@ std::string OpenFlight::toDotFormat(const HeaderRecord* ipRoot)
         
         if(n->getParent())
         {
-            char m[200];
-            sprintf(m, "\"%s 0x%08llx\" -- \"%s 0x%08llx\";\n",
-                    toString(n->getParent()->getOpCode()).c_str(), (uint64_t)n->getParent(),
-                    toString(n->getOpCode()).c_str(), (uint64_t)n );
-                    
-            
-            oss << m;
+            oss << bakeName(n->getParent()) << "--" <<
+                bakeName(n) << ";\n";
         }
         
         if(showAncillaryRecords)
@@ -57,15 +62,10 @@ std::string OpenFlight::toDotFormat(const HeaderRecord* ipRoot)
             //first define the node with color
             for(int i = 0; i < n->getNumberOfAncillaryRecords(); ++i )
             {
-                Record* a = n->getAncillaryRecord(i);
+                AncillaryRecord* a = n->getAncillaryRecord(i);
                 
                 if( !isPaletteRecord(a->getOpCode()) || !excludePaletteRecord )
-                {
-                    char m[200];
-                    sprintf(m, "\"%s 0x%08llx\" [fillcolor=grey];\n",
-                            toString(a->getOpCode()).c_str(), (uint64_t)a );
-                    oss << m;
-                }
+                { oss << bakeName(a) << " [fillcolor=grey];\n"; }
             }
 
             
@@ -76,11 +76,7 @@ std::string OpenFlight::toDotFormat(const HeaderRecord* ipRoot)
 
                 if( !isPaletteRecord(a->getOpCode()) || !excludePaletteRecord )
                 {
-                    char m[200];
-                    sprintf(m, "\"%s 0x%08llx\" -- \"%s 0x%08llx\" [color=grey];\n",
-                            toString(n->getOpCode()).c_str(), (uint64_t)n,
-                            toString(a->getOpCode()).c_str(), (uint64_t)a );
-                    oss << m;
+                    oss << bakeName(n) << "--" << bakeName(a) << ";\n";
                 }
             }
         }

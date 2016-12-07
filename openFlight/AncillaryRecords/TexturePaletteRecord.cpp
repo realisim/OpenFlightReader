@@ -7,7 +7,8 @@ using namespace std;
 using namespace OpenFlight;
 
 //-------------------------------------------------------------------------
-TexturePaletteRecord::TexturePaletteRecord(Record* ipParent) : Record(ipParent)
+TexturePaletteRecord::TexturePaletteRecord(PrimaryRecord* ipParent) :
+AncillaryRecord(ipParent)
 {}
 
 //-------------------------------------------------------------------------

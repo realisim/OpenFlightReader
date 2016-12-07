@@ -7,7 +7,8 @@ using namespace std;
 using namespace OpenFlight;
 
 //-------------------------------------------------------------------------
-TranslateRecord::TranslateRecord(Record* ipParent) : Record(ipParent)
+TranslateRecord::TranslateRecord(PrimaryRecord* ipParent) :
+AncillaryRecord(ipParent)
 {}
 
 //-------------------------------------------------------------------------

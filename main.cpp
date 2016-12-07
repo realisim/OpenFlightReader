@@ -1,11 +1,22 @@
 
-#include "OpenFlight/Document.h"
+#include "OpenFlight/DotExporter.h"
 #include "OpenFlight/OpenFlightReader.h"
-#include "OpenFlight/Utilities.h"
 #include <iostream>
 #include <string>
 
 using namespace std;
+
+//class MyDocument
+//{
+//public:
+//    MyDocument(const Document&) = delete;
+//    MyDocument& operator=(const Document&) = delete;
+//    virtual ~MyDocument() {;}
+//    
+//protected:
+//    
+//};
+
 
 int main(int argc, char** argv)
 {
@@ -18,18 +29,18 @@ int main(int argc, char** argv)
     
     //string filenamePath = "G:\CYYZ-Toronto/main_CYYZ.flt";
 
-    OpenFlight::Document *pDoc = ofr.open( filenamePath );
+    OpenFlight::HeaderRecord *pDoc = ofr.open( filenamePath );
     if ( !ofr.hasErrors() )
     {
         if(ofr.hasWarnings())
         { cout << "Warnings: " << ofr.getAndClearLastWarnings() << endl; }
         
-        cout << OpenFlight::toDotFormat( pDoc->getRoot() );
+        cout << OpenFlight::toDotFormat( pDoc );
     }
     else
-    {
-        cout << "Errors while reading flt file: " << filenamePath << "\n" <<  ofr.getAndClearLastErrors();
-    }
+    { cout << "Errors while reading flt file: " << filenamePath << "\n" <<  ofr.getAndClearLastErrors(); }
+    
+    delete pDoc;
 
     return 0;
 }

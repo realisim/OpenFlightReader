@@ -1,9 +1,9 @@
 
 #pragma once
 
-#include "Record.h"
-#include "PrimaryRecords/PrimaryRecord.h"
-#include "PrimaryRecords/HeaderRecord.h"
+//Records is here so clients only have to include
+//OpenflightReader.h
+#include "Records.h"
 #include <string>
 #include <stack>
 
@@ -29,7 +29,7 @@ namespace OpenFlight
         bool hasDebugEnabled() const;
         bool hasErrors() const;
         bool hasWarnings() const;
-        Document* open(const std::string& iFileNamePath); //Should return a clas Document.
+        HeaderRecord* open(const std::string& iFileNamePath); //Should return a clas Document.
 
     protected:
         // The ReadState holds information relative to the current

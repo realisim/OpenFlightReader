@@ -1,17 +1,17 @@
 #pragma once
 
-#include "Record.h"
+#include "AncillaryRecord.h"
 #include <string>
 #include "Types.h"
 
 namespace OpenFlight
 {
     //-------------------------------------------------------------------------
-    class TexturePaletteRecord : public Record
+    class TexturePaletteRecord : public AncillaryRecord
     {
     public:
         TexturePaletteRecord() = delete;
-        explicit TexturePaletteRecord(Record* ipParent);
+        explicit TexturePaletteRecord(PrimaryRecord* ipParent);
         TexturePaletteRecord(const TexturePaletteRecord&) = delete;
         TexturePaletteRecord& operator=(const TexturePaletteRecord&) = delete;
         virtual ~TexturePaletteRecord() {}

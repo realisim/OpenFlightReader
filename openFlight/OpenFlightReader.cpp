@@ -1,10 +1,8 @@
 
-#include "Document.h"
 #include <fstream>
 #include <iostream>
 #include "OpCode.h"
 #include "OpenFlightReader.h"
-#include "Records.h"
 #include <regex>
 #include <sstream>
 #include "StreamUtilities.h"
@@ -165,12 +163,10 @@ bool OpenFlightReader::hasWarnings() const
 { return !mWarnings.empty(); }
 
 //-----------------------------------------------------------------------------
-Document* OpenFlightReader::open(const std::string& iFileNamePath)
+HeaderRecord* OpenFlightReader::open(const std::string& iFileNamePath)
 {
     open(iFileNamePath, false);
-    Document *r = new Document();
-    r->setRootNode(mpRootNode);
-    return r;
+    return mpRootNode;
 }
 
 //-----------------------------------------------------------------------------
@@ -208,6 +204,8 @@ void OpenFlightReader::open(const std::string& iFileNamePath,
         oss << "OpenFlightReader::open - Could not open file " << iFileNamePath;
         addError( oss.str() );
     }
+    
+    ifs.close();
 }
 
 //-----------------------------------------------------------------------------
@@ -303,7 +301,7 @@ void OpenFlightReader::parseHeaderRecord(const string& iRawRecord)
 //-----------------------------------------------------------------------------
 void OpenFlightReader::parseMissingRecord(const string& iRawRecord)
 {
-    Record r(nullptr);
+    Record r;
     r.parseRecord(iRawRecord, 0);
     
     ostringstream oss;

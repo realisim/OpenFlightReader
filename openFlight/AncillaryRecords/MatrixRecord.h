@@ -1,17 +1,17 @@
 #pragma once
 
-#include "Record.h"
+#include "AncillaryRecord.h"
 #include <string>
 #include "Types.h"
 
 namespace OpenFlight
 {
     //-------------------------------------------------------------------------
-    class MatrixRecord : public Record
+    class MatrixRecord : public AncillaryRecord
     {
     public:
         MatrixRecord() = delete;
-        explicit MatrixRecord(Record* ipParent);
+        explicit MatrixRecord(PrimaryRecord* ipParent);
         MatrixRecord(const MatrixRecord&) = delete;
         MatrixRecord& operator=(const MatrixRecord&) = delete;
         virtual ~MatrixRecord() {}

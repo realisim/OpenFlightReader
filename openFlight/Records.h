@@ -1,3 +1,4 @@
+#include "AncillaryRecords/AncillaryRecord.h"
 #include "AncillaryRecords/MatrixRecord.h"
 #include "AncillaryRecords/PaletteRecords.h"
 #include "AncillaryRecords/TexturePaletteRecord.h"

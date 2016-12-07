@@ -7,7 +7,7 @@ using namespace std;
 using namespace OpenFlight;
 
 //-------------------------------------------------------------------------
-MatrixRecord::MatrixRecord(Record* ipParent) : Record(ipParent)
+MatrixRecord::MatrixRecord(PrimaryRecord* ipParent) : AncillaryRecord(ipParent)
 {}
 
 //-------------------------------------------------------------------------

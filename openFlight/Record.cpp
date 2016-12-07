@@ -8,7 +8,9 @@ using namespace OpenFlight;
 //-----------------------------------------------------------------------------
 //--- Record
 //-----------------------------------------------------------------------------
-Record::Record(Record* ipParent) : mpParent(ipParent)
+Record::Record() :
+mOpCode(ocUnknown),
+mRecordLenght(0)
 {}
 
 //-----------------------------------------------------------------------------
@@ -29,7 +31,3 @@ bool Record::parseRecord(const std::string& iRawRecord, int iVersion)
     
     return ok;
 }
-
-//-----------------------------------------------------------------------------
-void Record::setParent(Record* ipParent)
-{ mpParent = ipParent; }

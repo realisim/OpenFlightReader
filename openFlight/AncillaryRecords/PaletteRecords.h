@@ -1,18 +1,18 @@
 #pragma once
 
 #include <map>
-#include "Record.h"
+#include "AncillaryRecord.h"
 #include "Types.h"
 #include <vector>
 
 namespace OpenFlight
 {
     //-------------------------------------------------------------------------
-    class ColorPaletteRecord : public Record
+    class ColorPaletteRecord : public AncillaryRecord
     {
     public:
         ColorPaletteRecord() = delete;
-        explicit ColorPaletteRecord(Record* ipParent);
+        explicit ColorPaletteRecord(PrimaryRecord* ipParent);
         ColorPaletteRecord(const ColorPaletteRecord&) = delete;
         ColorPaletteRecord& operator=(const ColorPaletteRecord&) = delete;
         virtual ~ColorPaletteRecord() {}
@@ -25,11 +25,11 @@ namespace OpenFlight
     };
     
     //-------------------------------------------------------------------------
-    class LightSourcePaletteRecord : public Record
+    class LightSourcePaletteRecord : public AncillaryRecord
     {
     public:
         LightSourcePaletteRecord() = delete;
-        explicit LightSourcePaletteRecord(Record* ipParent);
+        explicit LightSourcePaletteRecord(PrimaryRecord* ipParent);
         LightSourcePaletteRecord(const LightSourcePaletteRecord&) = delete;
         LightSourcePaletteRecord& operator=(const LightSourcePaletteRecord&) = delete;
         virtual ~LightSourcePaletteRecord() {}
@@ -87,11 +87,11 @@ namespace OpenFlight
     };
     
     //-------------------------------------------------------------------------
-    class MaterialPaletteRecord : public Record
+    class MaterialPaletteRecord : public AncillaryRecord
     {
     public:
         MaterialPaletteRecord() = delete;
-        explicit MaterialPaletteRecord(Record* ipParent);
+        explicit MaterialPaletteRecord(PrimaryRecord* ipParent);
         MaterialPaletteRecord(const MaterialPaletteRecord&) = delete;
         MaterialPaletteRecord& operator=(const MaterialPaletteRecord&) = delete;
         virtual ~MaterialPaletteRecord() {}
@@ -131,11 +131,11 @@ namespace OpenFlight
     };
     
     //-------------------------------------------------------------------------
-    class VertexPaletteRecord : public Record
+    class VertexPaletteRecord : public AncillaryRecord
     {
     public:
         VertexPaletteRecord() = delete;
-        explicit VertexPaletteRecord(Record* ipParent);
+        explicit VertexPaletteRecord(PrimaryRecord* ipParent);
         VertexPaletteRecord(const VertexPaletteRecord&) = delete;
         VertexPaletteRecord& operator=(const VertexPaletteRecord&) = delete;
         virtual ~VertexPaletteRecord() {}

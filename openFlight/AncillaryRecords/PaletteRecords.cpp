@@ -15,7 +15,8 @@ namespace
 //-------------------------------------------------------------------------
 //--- ColorPalette
 //-------------------------------------------------------------------------
-ColorPaletteRecord::ColorPaletteRecord(Record* ipParent) : Record(ipParent)
+ColorPaletteRecord::ColorPaletteRecord(PrimaryRecord* ipParent) :
+AncillaryRecord(ipParent)
 {
     //there are 1024 entries in the palette
     mColors.resize(kNumberOfColorEntries);
@@ -52,7 +53,8 @@ bool ColorPaletteRecord::parseRecord(const std::string& iRawRecord, int iVersion
 //-------------------------------------------------------------------------
 //--- LightSourcePaletteRecord
 //-------------------------------------------------------------------------
-LightSourcePaletteRecord::LightSourcePaletteRecord(Record* ipParent) : Record(ipParent)
+LightSourcePaletteRecord::LightSourcePaletteRecord(PrimaryRecord* ipParent) :
+AncillaryRecord(ipParent)
 {}
 
 //------------------------------------------------------------------------------
@@ -153,7 +155,8 @@ bool LightSourcePaletteRecord::parseRecord(const std::string& iRawRecord, int iV
 //-------------------------------------------------------------------------
 //--- MaterialPaletteRecord
 //-------------------------------------------------------------------------
-MaterialPaletteRecord::MaterialPaletteRecord(Record* ipParent) : Record(ipParent)
+MaterialPaletteRecord::MaterialPaletteRecord(PrimaryRecord* ipParent) :
+AncillaryRecord(ipParent)
 {}
 
 //------------------------------------------------------------------------------
@@ -220,7 +223,8 @@ bool MaterialPaletteRecord::parseRecord(const std::string& iRawRecord, int iVers
 //-------------------------------------------------------------------------
 //--- VertexPaletteRecord
 //-------------------------------------------------------------------------
-VertexPaletteRecord::VertexPaletteRecord(Record* ipParent) : Record(ipParent),
+VertexPaletteRecord::VertexPaletteRecord(PrimaryRecord* ipParent) :
+AncillaryRecord(ipParent),
 mOffset(8)
 {
     //As stated by the specification, the first vertex will be found
