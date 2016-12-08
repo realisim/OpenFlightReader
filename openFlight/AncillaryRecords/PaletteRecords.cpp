@@ -305,7 +305,7 @@ int VertexPaletteRecord::getIndexFromByteOffset(int iOffset) const
 }
 
 //-------------------------------------------------------------------------
-int VertexPaletteRecord::getNumberOfVertex() const
+int VertexPaletteRecord::getNumberOfVertices() const
 { return (int)mVertices.size(); }
 
 //-------------------------------------------------------------------------

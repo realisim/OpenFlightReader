@@ -142,7 +142,7 @@ namespace OpenFlight
         
         bool addVertexRawRecord(const std::string&);
         int getIndexFromByteOffset(int iOffset) const;
-        int getNumberOfVertex() const;
+        int getNumberOfVertices() const;
         const Vertex& getVertex(int iIndex) const;
         const std::vector<Vertex>& getVertices() const;
         
