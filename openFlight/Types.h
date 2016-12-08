@@ -37,6 +37,7 @@ namespace OpenFlight
         unsigned  char mAlpha;
     };
     
+    //------------------------------------------------------------------------------
     struct Matrix4f
     {
         Matrix4f(); //identity matrix
