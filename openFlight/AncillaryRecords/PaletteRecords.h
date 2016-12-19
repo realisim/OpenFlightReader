@@ -140,7 +140,7 @@ namespace OpenFlight
         VertexPaletteRecord& operator=(const VertexPaletteRecord&) = delete;
         virtual ~VertexPaletteRecord() {}
         
-        bool addVertexRawRecord(const std::string&);
+        bool addVertexRawRecord(const std::string&); //protected...
         int getIndexFromByteOffset(int iOffset) const;
         int getNumberOfVertices() const;
         const Vertex& getVertex(int iIndex) const;

@@ -50,6 +50,9 @@ namespace OpenFlight
         double getEarthMajorAxis() const;
         double getEarthMinorAxis() const;
         int getEditRevision() const;
+        std::string getFilePath() const;
+        std::string getFilename() const;
+        std::string getFilenamePath() const;
         int getFlags() const;
         int getFormatRevision() const;
         double getLambertLowerLatitude() const;
@@ -89,6 +92,7 @@ namespace OpenFlight
         vertexCoordinateUnits getVertexCoordinateUnits() const;
         VertexPaletteRecord* getVertexPalette();
         uint16_t getVertexStorageType() const;
+        
 
         //setters
         /*void setAsciiId(std::string);
@@ -141,8 +145,11 @@ namespace OpenFlight
         void setVertexStorageType(uint16_t);*/
 
     protected:
+        friend class OpenFlightReader;
+        
         virtual void handleAddedAncillaryRecord(Record*) override;
         virtual bool parseRecord(const std::string& iRawRecord, int iVersion) override;
+        void setFileInfo(const std::string& iFilenamePath, const std::string& iFilePath, const std::string& iFilename);
         
         std::string mAsciiId;
         int mFormatRevision;
@@ -193,12 +200,17 @@ namespace OpenFlight
         double mEarthMajorAxis; //in meters
         double mEarthMinorAxis; //in meters
         
-        //Ancillary Records
+        // Ancillary Records
         ColorPaletteRecord *mpColorPalette;
         LightSourcePaletteRecord *mpLightSourcePalette;
         std::vector<MaterialPaletteRecord*> mMaterialPalettes;
         VertexPaletteRecord *mpVertexPalette; //owned in PrimaryRecords::mAncillaryRecord ;
-        TexturePaletteRecord *mpTexturePalette;
+        std::vector<TexturePaletteRecord*> mTexturePalettes;
+        
+        // additionnal data, not part of the binary flt file
+        std::string mFilenamePath;
+        std::string mFilePath;
+        std::string mFilename;
     };
 
 }

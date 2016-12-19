@@ -21,8 +21,7 @@ Matrix4f::Matrix4f()
 //-------------------------------------------------------------------------
 bool Vertex::hasFlag(Vertex::flag iFlag) const
 {
-    //not implemented
-    return false;
+    return mFlags & iFlag;
 }
 
 

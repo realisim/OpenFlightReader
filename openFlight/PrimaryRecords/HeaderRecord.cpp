@@ -65,7 +65,7 @@ mpColorPalette(nullptr),
 mpLightSourcePalette(nullptr),
 mMaterialPalettes(),
 mpVertexPalette(nullptr),
-mpTexturePalette(nullptr)
+mTexturePalettes()
 {}
 
 //-------------------------------------------------------------------------
@@ -116,6 +116,18 @@ double HeaderRecord::getEarthMinorAxis() const
 //------------------------------------------------------------------------------
 int HeaderRecord::getEditRevision() const
 { return mEditRevision;}
+
+//------------------------------------------------------------------------------
+std::string HeaderRecord::getFilePath() const
+{ return mFilePath; }
+
+//------------------------------------------------------------------------------
+std::string HeaderRecord::getFilename() const
+{ return mFilename; }
+
+//------------------------------------------------------------------------------
+std::string HeaderRecord::getFilenamePath() const
+{ return mFilenamePath; }
 
 //------------------------------------------------------------------------------
 int HeaderRecord::getFlags() const
@@ -283,7 +295,7 @@ void HeaderRecord::handleAddedAncillaryRecord(Record* ipAncillary)
         case ocLightSourcePalette: mpLightSourcePalette = (LightSourcePaletteRecord*)ipAncillary; break;
         case ocMaterialPalette: mMaterialPalettes.push_back( (MaterialPaletteRecord*)ipAncillary ); break;
         case ocVertexPalette: mpVertexPalette = (VertexPaletteRecord*)ipAncillary; break;
-        case ocTexturePalette: mpTexturePalette = (TexturePaletteRecord*)ipAncillary; break;
+        case ocTexturePalette: mTexturePalettes.push_back((TexturePaletteRecord*)ipAncillary); break;
         default: break;
     }
 }
@@ -381,4 +393,14 @@ bool HeaderRecord::parseRecord(const std::string& iRawRecord, int iVersion)
     }
     
     return ok;
+}
+
+//-------------------------------------------------------------------------
+void HeaderRecord::setFileInfo(const std::string& iFilenamePath,
+                 const std::string& iFilePath,
+                 const std::string& iFilename)
+{
+    mFilenamePath = iFilenamePath;
+    mFilePath = iFilePath;
+    mFilename = iFilename;
 }

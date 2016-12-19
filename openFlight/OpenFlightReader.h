@@ -47,16 +47,17 @@ namespace OpenFlight
         //
         struct ReadState
         {
-            ReadState() : mpCurrentHeaderNode(nullptr),
-                mpCurrentPrimaryNode(nullptr),
-                mIsPushLevelActivated(false) {}
+            ReadState() :
+                mpCurrentHeaderNode(nullptr),
+                mpCurrentParentNode(nullptr),
+                mpLastPrimaryNodeAdded(nullptr) {}
             ReadState& operator=(const ReadState&) = default;
             HeaderRecord* mpCurrentHeaderNode;
-            PrimaryRecord* mpCurrentPrimaryNode;
+            PrimaryRecord* mpCurrentParentNode;
+            PrimaryRecord* mpLastPrimaryNodeAdded;
             std::string mFilenamePath;
             std::string mFilename;
             std::string mFilePath;
-            bool mIsPushLevelActivated;
         };
         
         void addError(const std::string&) const;
@@ -64,7 +65,8 @@ namespace OpenFlight
         void addWarning(const std::string&) const;
         void clear();
         HeaderRecord* getCurrentHeaderNode();
-        PrimaryRecord* getCurrentPrimaryNode();
+        PrimaryRecord* getLastPrimaryNodeAdded();
+        PrimaryRecord* getCurrentParentNode();
         void open(const std::string& iFileNamePath, bool iIsExternalReference);
         template<typename T> void parseAncillaryRecord(const std::string& iRawRecord);
         template<typename T> void parsePrimaryRecord(const std::string& iRawRecord);
@@ -81,6 +83,7 @@ namespace OpenFlight
         std::string rawRecordToString(const std::string& iRawRecord) const;
         void setCurrentHeaderNode(HeaderRecord*);
         void setCurrentPrimaryNode(PrimaryRecord*);
+        void setLastPrimaryNodeAdded(PrimaryRecord*);
 
         mutable std::string mErrors;
         mutable std::string mWarnings;
@@ -92,21 +95,25 @@ namespace OpenFlight
     };
     
     //-----------------------------------------------------------------------------
+    // Ancillary records always follow the primary node they affect and allways
+    // precede a control command.
+    // So we add the ancillary to the lastly added primary node.
+    //
     template<class T>
     void OpenFlightReader::parseAncillaryRecord(const std::string& iRawRecord)
     {
-        T *r = new T(getCurrentPrimaryNode());
+        T *r = new T(getCurrentParentNode());
         ((Record*)r)->parseRecord(iRawRecord, getCurrentHeaderNode()->getFormatRevision());
         
-        getCurrentPrimaryNode()->addAncillaryRecord(r);
+        getLastPrimaryNodeAdded()->addAncillaryRecord(r);
     }
     
     //-----------------------------------------------------------------------------
     template<class T>
     void OpenFlightReader::parsePrimaryRecord(const std::string& iRawRecord)
     {
-        T *r = new T(getCurrentPrimaryNode());
-        ((Record*)r)->parseRecord(iRawRecord, mReadState.mpCurrentHeaderNode->getFormatRevision());
+        T *r = new T(getCurrentParentNode());
+        ((Record*)r)->parseRecord(iRawRecord, getCurrentHeaderNode()->getFormatRevision());
         
         //Goup is a primary node, so we add it to the currentPrimaryNode
         addPrimaryRecord(r);

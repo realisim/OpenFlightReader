@@ -256,43 +256,38 @@ bool VertexPaletteRecord::addVertexRawRecord(const std::string& iRawRecord)
         {
             case ocVertexWithColor:
             {
-                ok &= readInt32(iss, dummyInt32);
-                v.mPackedColor = Color4ub(dummyInt32);
-                
-                ok &= readUint32(iss, v.mColorIndex);
             }break;
             case ocVertexWithColorAndNormal:
             {
                 ok &= readVector3f(iss, v.mNormal);
-                ok &= readInt32(iss, dummyInt32);
-                v.mPackedColor = Color4ub(dummyInt32);
-                
-                ok &= readUint32(iss, v.mColorIndex);
             }break;
             case ocVertexWithColorNormalAndUv:
             {
                 ok &= readVector3f(iss, v.mNormal);
                 ok &= readVector2f(iss, v.mTextureCoordinate);
-                ok &= readInt32(iss, dummyInt32);
-                v.mPackedColor = Color4ub(dummyInt32);
-                
-                ok &= readUint32(iss, v.mColorIndex);
             }break;
             case ocVertexWithColorAndUv:
             {
                 ok &= readVector2f(iss, v.mTextureCoordinate);
-                ok &= readInt32(iss, dummyInt32);
-                v.mPackedColor = Color4ub(dummyInt32);
-                
-                ok &= readUint32(iss, v.mColorIndex);
             }break;
                 
             default: break;
         }
         
+        // do not read color if the flags is set, since they are
+        // undefined...
+        if( !v.hasFlag(Vertex::fNoColor) )
+        {
+            //packed color is in a,b,g,r and we want r,g,b,a
+            ok &= readInt32(iss, dummyInt32);
+            swapBytes4((void*) &dummyInt32);
+            v.mPackedColor = Color4ub(dummyInt32);
+            ok &= readUint32(iss, v.mColorIndex);
+        }
+        
         mOffsetToVertexIndex.insert( make_pair(mOffset, mVertices.size() ) );
         mOffset += iRawRecord.size();
-        mVertices.push_back( v );              
+        mVertices.push_back( v );
     }
     return ok;
 }

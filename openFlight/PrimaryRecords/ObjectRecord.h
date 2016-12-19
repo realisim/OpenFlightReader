@@ -20,10 +20,10 @@ namespace OpenFlight
         ObjectRecord& operator=(const ObjectRecord&) = delete;
         virtual ~ObjectRecord();
 
-        enum flag{fDontDisplayInDaylight = 1 << 0, fDontDisplayAtDusk = 1 << 1,
-            fDontDisplayAtNight = 1 << 2, fDontIlluminate = 1 << 3, 
-            fFlatShaded = 1 << 4, fGroupsShadowObject = 1 << 5, 
-            fPreserveAtRuntime = 1 << 6 };
+        enum flag{fDontDisplayInDaylight = 1 << 31, fDontDisplayAtDusk = 1 << 30,
+            fDontDisplayAtNight = 1 << 29, fDontIlluminate = 1 << 28,
+            fFlatShaded = 1 << 27, fGroupsShadowObject = 1 << 26,
+            fPreserveAtRuntime = 1 << 25 };
 
         const std::string& getAsciiId() const;
         int32_t getFlags() const;

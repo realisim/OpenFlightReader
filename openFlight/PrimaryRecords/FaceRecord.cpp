@@ -33,7 +33,7 @@ mAlternatePackedColor(0),
 mTextureMappingIndex(0),
 mColorIndex(0),
 mAlternateColorIndex(0),
-mShaderIndex(0)
+mShaderIndex(-1)
 {}
 
 //------------------------------------------------------------------------------
@@ -191,8 +191,10 @@ bool FaceRecord::parseRecord(const std::string& iRawRecord, int iVersion)
     ok &= readUint8(iss, mLightMode);
     
     iss.seekg(56);
-    ok &= readUint32(iss, mPackedColor);
+    ok &= readUint32(iss, mPackedColor); //a,b,g,r
+    swapBytes4((void*)&mPackedColor);
     ok &= readUint32(iss, mAlternatePackedColor);
+    swapBytes4((void*)&mAlternatePackedColor);
     ok &= readInt16(iss, mTextureMappingIndex);
 
     iss.seekg(68);

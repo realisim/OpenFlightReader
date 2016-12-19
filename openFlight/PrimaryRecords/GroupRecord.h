@@ -19,9 +19,9 @@ namespace OpenFlight
         GroupRecord& operator=(const GroupRecord&) = delete;
         virtual ~GroupRecord();
 
-        enum flags{ fReserved = 1 << 31, fForwardAnimation = 1 << 30, fSwingAnimation = 1 << 30, 
-            fBoundingBoxFollows = 1 << 29, fFreezeBoundingBox = 1 << 28, fDefaultParent = 1 << 27,
-            fBackwardAnimation = 1 << 26, fPreserveAtRuntime = 1 << 25 };
+        enum flags{ fReserved = 1 << 0, fForwardAnimation = 1 << 1, fSwingAnimation = 1 << 2,
+            fBoundingBoxFollows = 1 << 3, fFreezeBoundingBox = 1 << 4, fDefaultParent = 1 << 5,
+            fBackwardAnimation = 1 << 6, fPreserveAtRuntime = 1 << 7 };
 
         std::string getAsciiId() const;
         int32_t getFlags() const;

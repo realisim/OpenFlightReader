@@ -24,6 +24,7 @@ namespace OpenFlight
         int getNumberOfAncillaryRecords() const;
         int getNumberOfChilds() const;
         PrimaryRecord* getParent() const;
+        bool isExternalReference() const;
         
     protected:
         virtual bool parseRecord(const std::string& iRawRecord, int iVersion) = 0;

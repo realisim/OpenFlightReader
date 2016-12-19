@@ -212,7 +212,8 @@ namespace OpenFlight
         memcpy(in, iV, 2);
         out[0]  = in[1];
         out[1]  = in[0];
-        memcpy(iV, out, 2);    }
+        memcpy(iV, out, 2);
+    }
 
     //-------------------------------------------------------------------------
     void swapBytes4(void* iV)

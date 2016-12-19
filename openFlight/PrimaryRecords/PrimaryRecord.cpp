@@ -74,3 +74,10 @@ void PrimaryRecord::handleAddedAncillaryRecord(Record* ipAncillary)
         default: break;
     }
 }
+
+//-------------------------------------------------------------------------
+bool PrimaryRecord::isExternalReference() const
+{
+    return getParent() != nullptr && getParent()->getOpCode() == ocExternalReference;
+}
+

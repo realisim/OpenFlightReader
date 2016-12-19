@@ -40,9 +40,9 @@ std::string ExternalReferenceRecord::getNodeName() const
 }
 
 //------------------------------------------------------------------------------
-bool ExternalReferenceRecord::hasFlag(flag) const
+bool ExternalReferenceRecord::hasFlag(flag iFlag) const
 {
-    return false;
+    return mFlags & iFlag;
 }
 
 //------------------------------------------------------------------------------
