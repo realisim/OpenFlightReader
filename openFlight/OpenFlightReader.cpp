@@ -323,9 +323,9 @@ void OpenFlightReader::parseHeaderRecord(const string& iRawRecord)
 }
 
 //-----------------------------------------------------------------------------
-void OpenFlightReader::parseMissingRecord(const string& iRawRecord)
+void OpenFlightReader::parseUnsupportedRecord(const string& iRawRecord)
 {
-    MissingRecord* r = new MissingRecord( getCurrentParentNode() );
+    UnsupportedRecord* r = new UnsupportedRecord( getCurrentParentNode() );
     ((Record*)r)->parseRecord(iRawRecord, 0);
     
     if( isPrimaryRecord( r->getOriginalOpCode() ) )
@@ -369,7 +369,7 @@ void OpenFlightReader::parseRawRecord(uint16_t iOpCode, const string& iRawRecord
         case ocLightSourcePalette: parseAncillaryRecord<LightSourcePaletteRecord>(iRawRecord); break;
         case ocVertexList: parsePrimaryRecord<VertexListRecord>(iRawRecord); break;
         case ocTranslate: parseAncillaryRecord<TranslateRecord>(iRawRecord); break;
-    default: parseMissingRecord(iRawRecord); break;
+    default: parseUnsupportedRecord(iRawRecord); break;
     }   
 }
 

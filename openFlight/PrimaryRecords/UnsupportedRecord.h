@@ -18,14 +18,14 @@ namespace OpenFlight
     // An unsupported node will appear in the warnings. see 
     // OpenFlightReader::getAndClearLastWarnings()
     //
-    class MissingRecord : public PrimaryRecord
+    class UnsupportedRecord : public PrimaryRecord
     {
     public:
-        MissingRecord() = delete;
-        explicit MissingRecord(PrimaryRecord* ipParent);
-        MissingRecord(const MissingRecord&) = delete;
-        MissingRecord& operator=(const MissingRecord&) = delete;
-        virtual ~MissingRecord();
+        UnsupportedRecord() = delete;
+        explicit UnsupportedRecord(PrimaryRecord* ipParent);
+        UnsupportedRecord(const UnsupportedRecord&) = delete;
+        UnsupportedRecord& operator=(const UnsupportedRecord&) = delete;
+        virtual ~UnsupportedRecord();
 
         std::string getAsciiId() const;
         opCode getOriginalOpCode() const;

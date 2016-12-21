@@ -1,5 +1,5 @@
 
-#include "MissingRecord.h"
+#include "UnsupportedRecord.h"
 #include <sstream>
 #include "StreamUtilities.h"
 
@@ -7,25 +7,25 @@ using namespace std;
 using namespace OpenFlight;
 
 //------------------------------------------------------------------------------
-MissingRecord::MissingRecord(PrimaryRecord* ipParent) :
+UnsupportedRecord::UnsupportedRecord(PrimaryRecord* ipParent) :
 PrimaryRecord(ipParent),
 mAsciiId("n/a")
 {}
 
 //------------------------------------------------------------------------------
-MissingRecord::~MissingRecord()
+UnsupportedRecord::~UnsupportedRecord()
 {}
 
 //------------------------------------------------------------------------------
-std::string MissingRecord::getAsciiId() const
+std::string UnsupportedRecord::getAsciiId() const
 { return mAsciiId;}
 
 //------------------------------------------------------------------------------
-opCode MissingRecord::getOriginalOpCode() const
+opCode UnsupportedRecord::getOriginalOpCode() const
 { return mOriginalOpCode;}
 
 //------------------------------------------------------------------------------
-bool MissingRecord::parseRecord(const std::string& iRawRecord, int iVersion)
+bool UnsupportedRecord::parseRecord(const std::string& iRawRecord, int iVersion)
 {
     Record::parseRecord(iRawRecord, iVersion);
     

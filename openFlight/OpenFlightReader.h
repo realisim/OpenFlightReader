@@ -75,7 +75,7 @@ namespace OpenFlight
         template<typename T> void parsePrimaryRecord(const std::string& iRawRecord);
         void parseExternalReferenceRecord(const std::string& iRawRecord);
         void parseHeaderRecord(const std::string& iRawRecord);
-        void parseMissingRecord(const std::string& iRawRecord);
+        void parseUnsupportedRecord(const std::string& iRawRecord);
         void parseRawRecord(uint16_t iOpCode, const std::string& iRawRecord);
         void parseVertexPaletteEntry(const std::string& iRawRecord);
         void popLevel();
