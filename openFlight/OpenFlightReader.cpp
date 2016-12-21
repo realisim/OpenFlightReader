@@ -56,6 +56,7 @@ namespace
 OpenFlightReader::OpenFlightReader() :
 mErrors(),
 mHasDebugEnabled(false),
+mHasExternalReferenceLoadingEnabled(true),
 mpRootNode(nullptr),
 mReadState(),
 mReadStateStack()
@@ -85,14 +86,15 @@ void OpenFlightReader::addPrimaryRecord(PrimaryRecord* iPr)
 //-----------------------------------------------------------------------------
 void OpenFlightReader::addWarning(const std::string& iW) const
 {
-    mWarnings += hasWarnings() ? "\n" + iW : iW;
+    if(!iW.empty())
+    { mWarnings.insert(iW); }
 }
 
 //-----------------------------------------------------------------------------
 void OpenFlightReader::clear()
 {
     mErrors = string();
-    mWarnings = string();
+    mWarnings.clear();
     
     mpRootNode = nullptr;
     mReadState = ReadState();
@@ -105,6 +107,12 @@ void OpenFlightReader::clear()
 //-----------------------------------------------------------------------------
 void OpenFlightReader::enableDebug(bool iE)
 { mHasDebugEnabled = iE; }
+
+bool OpenFlightReader::enableExternalReferenceLoading(bool iE)
+{ mHasExternalReferenceLoadingEnabled = iE; }
+
+bool OpenFlightReader::hasExternalReferenceLoadingEnabled() const
+{ return mHasExternalReferenceLoadingEnabled; }
 
 //-----------------------------------------------------------------------------
 bool OpenFlightReader::hasDebugEnabled() const
@@ -121,7 +129,12 @@ std::string OpenFlightReader::getAndClearLastErrors() const
 //-----------------------------------------------------------------------------
 std::string OpenFlightReader::getAndClearLastWarnings() const
 {
-    string r = mWarnings;
+    string r;
+    auto it = mWarnings.begin();
+    for(; it != mWarnings.end(); ++it)
+    {
+        r += *it + "\n";
+    }
     mWarnings.clear();
     return r;
 }
@@ -198,7 +211,11 @@ void OpenFlightReader::open(const std::string& iFileNamePath,
     {
         ostringstream oss;
         oss << "OpenFlightReader::open - Could not open file " << iFileNamePath;
-        addError( oss.str() );
+        
+        if(!iIsExternalReference)
+        { addError( oss.str() ); }
+        else
+        { addWarning( oss.str() ); }
     }
     
     ifs.close();
@@ -223,6 +240,11 @@ void OpenFlightReader::parseExternalReferenceRecord(const std::string& iRawRecor
     //
     pushReadState();
     
+    // We force a push level so all nodes comming from the external ref will be
+    // properly parented to the external ref node.
+    //
+    pushLevel();
+    
     // External reference filenamePath should always be relative.
     // In order to locate the file on disk, we prepend the relative
     // path with the current filePath.
@@ -244,7 +266,13 @@ void OpenFlightReader::parseExternalReferenceRecord(const std::string& iRawRecor
     // yet supported...
     //
     if( extRef->getNodeName().empty() )
-    { open( getFilePath() + filenamePath, true ); }
+    {
+        //skip external reference content if so desired.
+        if( hasExternalReferenceLoadingEnabled() )
+        { open( getFilePath() + filenamePath, true ); }
+        else if(hasDebugEnabled())
+        { printf("--- External reference content skipped; hasExternalReferenceLoadingEnabled is false ---\n\n"); }
+    }
     else
     {
         ostringstream oss;
@@ -291,18 +319,26 @@ void OpenFlightReader::parseHeaderRecord(const string& iRawRecord)
     // format revision...
     //
     setCurrentHeaderNode(r);
-    
-    setLastPrimaryNodeAdded(r);
+    addPrimaryRecord(r);
 }
 
 //-----------------------------------------------------------------------------
 void OpenFlightReader::parseMissingRecord(const string& iRawRecord)
 {
-    Record r;
-    r.parseRecord(iRawRecord, 0);
+    MissingRecord* r = new MissingRecord( getCurrentParentNode() );
+    ((Record*)r)->parseRecord(iRawRecord, 0);
+    
+    if( isPrimaryRecord( r->getOriginalOpCode() ) )
+    { addPrimaryRecord(r); }
+    
+    if( isAncillaryRecord( r->getOriginalOpCode() ) )
+    {
+        /*nothing for now... Dont care that much about ancillary record
+         since they dont have childs...*/
+    }
     
     ostringstream oss;
-    oss << "Record type '" << toString(r.getOpCode()) << "' was found but is not yet supported.";
+    oss << "Record type '" << toString(r->getOriginalOpCode()) << "' was found but is not yet supported.";
     
     addWarning( oss.str() );
 }
@@ -385,7 +421,8 @@ void OpenFlightReader::pushLevel()
         // This effectively moves us down one level.
         //
         PrimaryRecord* p = getCurrentParentNode();
-        setCurrentPrimaryNode( p->getChild( p->getNumberOfChilds() - 1 ) );
+        if( p->getNumberOfChilds() > 0 )
+        { setCurrentPrimaryNode( p->getChild( p->getNumberOfChilds() - 1 ) ); }
     }
     else
     {

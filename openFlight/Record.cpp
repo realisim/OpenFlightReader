@@ -9,7 +9,7 @@ using namespace OpenFlight;
 //--- Record
 //-----------------------------------------------------------------------------
 Record::Record() :
-mOpCode(ocUnknown),
+mOpCode(ocUnsupported),
 mRecordLenght(0)
 {}
 

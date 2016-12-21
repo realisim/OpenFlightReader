@@ -4,6 +4,7 @@
 //Records is here so clients only have to include
 //OpenflightReader.h
 #include "Records.h"
+#include <set>
 #include <string>
 #include <stack>
 
@@ -26,7 +27,9 @@ namespace OpenFlight
         std::string getFilename() const;
         std::string getFilenamePath() const;
         void enableDebug(bool);
+        bool enableExternalReferenceLoading(bool);
         bool hasDebugEnabled() const;
+        bool hasExternalReferenceLoadingEnabled() const;
         bool hasErrors() const;
         bool hasWarnings() const;
         HeaderRecord* open(const std::string& iFileNamePath); //Should return a clas Document.
@@ -86,8 +89,9 @@ namespace OpenFlight
         void setLastPrimaryNodeAdded(PrimaryRecord*);
 
         mutable std::string mErrors;
-        mutable std::string mWarnings;
+        mutable std::set<std::string> mWarnings;
         bool mHasDebugEnabled;
+        bool mHasExternalReferenceLoadingEnabled;
 
         HeaderRecord* mpRootNode; //not owned
         ReadState mReadState;

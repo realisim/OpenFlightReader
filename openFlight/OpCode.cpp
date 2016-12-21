@@ -9,7 +9,7 @@ std::string OpenFlight::toString(opCode iOpcode)
     std::string r;
     switch (iOpcode)
     {
-        case ocUnknown: r = "Unknown"; break;
+        case ocUnsupported: r = "Unsupported record"; break;
         case ocHeader: r = "Header Record"; break;
         case ocGroup: r = "Group Record"; break;
         case ocObject: r = "Object Record"; break;
@@ -306,6 +306,7 @@ bool OpenFlight::isPrimaryRecord(opCode iOpcode)
     bool r = false;
     switch (iOpcode)
     {
+        case ocUnsupported:
         case ocHeader :
         case ocGroup :
         case ocObject :

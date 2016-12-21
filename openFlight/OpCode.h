@@ -6,7 +6,7 @@ namespace OpenFlight
 {
     enum opCode
     {
-        ocUnknown = 0,
+        ocUnsupported = 0,                                 //"An unsupported primary record - not part of the Presagis specification"
         ocHeader                                 =   1  ,  //“Header Record”
         ocGroup                                  =   2  ,  //“Group Record”
         ocObject                                 =   4  ,  //“Object Record”

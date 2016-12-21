@@ -9,8 +9,8 @@ using namespace std;
 void parseArgs(int argc, char** argv, string *oFilenamePath, bool *oEnableDebug)
 {
     // Default value if no args
-    //string filenamePath = "../assets/sample/nested_references/master/master.flt";
-    //string filenamePath = "../assets/sample/nested_references2/db/1/1.flt";
+    //*oFilenamePath = "../assets/sample/nested_references/master/master.flt";
+    //*oFilenamePath = "../assets/sample/nested_references2/db/1/1.flt";
     *oFilenamePath = "../assets/sample/nested_references2/db/1/12/123/1234/1234.flt";
     *oEnableDebug = false;
     
