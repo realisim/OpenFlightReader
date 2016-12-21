@@ -1,5 +1,6 @@
 
 #include "AncillaryRecords/AncillaryRecord.h"
+#include "AncillaryRecords/LongIdRecord.h"
 #include "PrimaryRecord.h"
 #include <sstream>
 #include "StreamUtilities.h"
@@ -11,7 +12,8 @@ using namespace std;
 //--- PrimaryRecord
 //-------------------------------------------------------------------------
 PrimaryRecord::PrimaryRecord(PrimaryRecord* ipParent) : Record(),
-mpParent(ipParent)
+mpParent(ipParent),
+mpLongId(nullptr)
 {}
 
 //-------------------------------------------------------------------------
@@ -54,6 +56,10 @@ PrimaryRecord* PrimaryRecord::getChild(int iIndex) const
 { return mChilds.at(iIndex); }
 
 //-------------------------------------------------------------------------
+LongIdRecord* PrimaryRecord::getLongIdRecord() const
+{ return mpLongId; }
+
+//-------------------------------------------------------------------------
 int PrimaryRecord::getNumberOfAncillaryRecords() const
 { return (int)mAncillaryRecords.size(); }
 
@@ -66,14 +72,18 @@ PrimaryRecord* PrimaryRecord::getParent() const
 { return mpParent; }
 
 //-------------------------------------------------------------------------
-void PrimaryRecord::handleAddedAncillaryRecord(Record* ipAncillary)
+void PrimaryRecord::handleAddedAncillaryRecord(AncillaryRecord* ipAncillary)
 {
     switch (ipAncillary->getOpCode())
     {
-        //case ocLongId: mpLongId = ipAncillary; break;
+        case ocLongId: mpLongId = (LongIdRecord*)ipAncillary; break;
         default: break;
     }
 }
+
+//-------------------------------------------------------------------------
+bool PrimaryRecord::hasLongIdRecord() const
+{ return mpLongId != nullptr; }
 
 //-------------------------------------------------------------------------
 bool PrimaryRecord::isExternalReference() const

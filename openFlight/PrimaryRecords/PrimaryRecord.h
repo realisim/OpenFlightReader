@@ -7,6 +7,8 @@
 namespace OpenFlight
 {
     class AncillaryRecord;
+    class LongIdRecord;
+    
     //-------------------------------------------------------------------------
     class PrimaryRecord : public Record
     {
@@ -21,20 +23,25 @@ namespace OpenFlight
         void addChild(PrimaryRecord*);
         AncillaryRecord* getAncillaryRecord(int) const;
         PrimaryRecord* getChild(int) const;
+        LongIdRecord* getLongIdRecord() const;
         int getNumberOfAncillaryRecords() const;
         int getNumberOfChilds() const;
         PrimaryRecord* getParent() const;
+        bool hasLongIdRecord() const;
         bool isExternalReference() const;
         
     protected:
         virtual bool parseRecord(const std::string& iRawRecord, int iVersion) = 0;
-        virtual void handleAddedAncillaryRecord(Record*);
+        virtual void handleAddedAncillaryRecord(AncillaryRecord*);
         
         std::vector<AncillaryRecord*> mAncillaryRecords;
         std::vector<PrimaryRecord*> mChilds;
         PrimaryRecord* mpParent;
         
-        //ancillary records...
+        // ancillary records
+        // These are just convenient pointers to data into mAncillaryRecords.
+        //
+        LongIdRecord *mpLongId; //owned in mAncillaryRecords
         // comment
         // longId
         // transformation

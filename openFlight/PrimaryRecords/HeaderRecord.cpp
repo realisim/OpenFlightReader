@@ -287,7 +287,7 @@ uint16_t HeaderRecord::getVertexStorageType() const
 
 //-------------------------------------------------------------------------
 // Explain...
-void HeaderRecord::handleAddedAncillaryRecord(Record* ipAncillary)
+void HeaderRecord::handleAddedAncillaryRecord(AncillaryRecord* ipAncillary)
 {
     switch (ipAncillary->getOpCode())
     {

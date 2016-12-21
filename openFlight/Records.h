@@ -1,4 +1,5 @@
 #include "AncillaryRecords/AncillaryRecord.h"
+#include "AncillaryRecords/LongIdRecord.h"
 #include "AncillaryRecords/MatrixRecord.h"
 #include "AncillaryRecords/PaletteRecords.h"
 #include "AncillaryRecords/TexturePaletteRecord.h"

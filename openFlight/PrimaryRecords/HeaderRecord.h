@@ -7,6 +7,7 @@
 
 namespace OpenFlight
 {
+    class AncillaryRecord;
     class ColorPaletteRecord;
     class LightSourcePaletteRecord;
     class MaterialPaletteRecord;
@@ -147,7 +148,7 @@ namespace OpenFlight
     protected:
         friend class OpenFlightReader;
         
-        virtual void handleAddedAncillaryRecord(Record*) override;
+        virtual void handleAddedAncillaryRecord(AncillaryRecord*) override;
         virtual bool parseRecord(const std::string& iRawRecord, int iVersion) override;
         void setFileInfo(const std::string& iFilenamePath, const std::string& iFilePath, const std::string& iFilename);
         

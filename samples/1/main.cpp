@@ -6,35 +6,14 @@
 
 using namespace std;
 
-void parseArgs(int argc, char** argv, string *oFilenamePath, bool *oEnableDebug)
-{
-    // Default value if no args
-    //*oFilenamePath = "../assets/sample/nested_references/master/master.flt";
-    //*oFilenamePath = "../assets/sample/nested_references2/db/1/1.flt";
-    *oFilenamePath = "../assets/sample/nested_references2/db/1/12/123/1234/1234.flt";
-    *oEnableDebug = false;
-    
-    if(argc > 1)
-    {
-        for(int i = 1; i < argc; ++i)
-        {
-            if( string(argv[i]) == "-d" )
-                *oEnableDebug = true;
-            else
-                *oFilenamePath = argv[i];
-        }
-    }
-}
-
 int main(int argc, char** argv)
 {
     OpenFlight::OpenFlightReader ofr;
-
-    bool enableDebug = false;
-    std::string filenamePath;
-    parseArgs(argc, argv, &filenamePath, &enableDebug);
-
-    ofr.enableDebug(enableDebug);
+    ofr.enableDebug(true);
+    
+    std::string filenamePath = "../assets/sample/nested_references/master/master.flt";
+    //    std::string filenamePath = "../assets/sample/nested_references2/db/1/1.flt"
+    //    std::string filenamePath = "../assets/sample/nested_references2/db/1/12/123/1234/1234.flt";
     
     OpenFlight::HeaderRecord *pRoot = ofr.open( filenamePath );
     if ( !ofr.hasErrors() )
