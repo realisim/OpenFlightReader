@@ -75,6 +75,7 @@ HeaderRecord::~HeaderRecord()
     mpLightSourcePalette = nullptr;
     mMaterialPalettes.clear();
     mpVertexPalette = nullptr;
+    mTexturePalettes.clear();
 }
 
 //------------------------------------------------------------------------------

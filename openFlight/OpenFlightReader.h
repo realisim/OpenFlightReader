@@ -27,7 +27,7 @@ namespace OpenFlight
         std::string getFilename() const;
         std::string getFilenamePath() const;
         void enableDebug(bool);
-        bool enableExternalReferenceLoading(bool);
+        void enableExternalReferenceLoading(bool);
         bool hasDebugEnabled() const;
         bool hasExternalReferenceLoadingEnabled() const;
         bool hasErrors() const;

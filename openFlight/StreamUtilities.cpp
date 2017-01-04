@@ -1,5 +1,6 @@
 
 #include "StreamUtilities.h"
+#include <iostream>
 
 
 using namespace std;
@@ -15,8 +16,8 @@ namespace OpenFlight
         iStream.read(c, iNumberOfCharToRead);
 
         //no swap involved in reading chars...
-
-        oV = string(c);
+        oV = string(c, iNumberOfCharToRead);
+        
         delete[] c;
 
         return iStream.good();

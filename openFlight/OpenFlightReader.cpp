@@ -108,7 +108,7 @@ void OpenFlightReader::clear()
 void OpenFlightReader::enableDebug(bool iE)
 { mHasDebugEnabled = iE; }
 
-bool OpenFlightReader::enableExternalReferenceLoading(bool iE)
+void OpenFlightReader::enableExternalReferenceLoading(bool iE)
 { mHasExternalReferenceLoadingEnabled = iE; }
 
 bool OpenFlightReader::hasExternalReferenceLoadingEnabled() const

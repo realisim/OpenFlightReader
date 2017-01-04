@@ -205,15 +205,15 @@ int main(int argc, char** argv)
         "\t\t\t ancillaries: all ancillary records\n"<<
         "\t\t\t face: Face Record\n"<<
         "\t\t\t longId: long id records\n"<<
-        "\t\t\t mesh: Mesh Record\n\n"<<
-        "\t\t\t palettes: all palettes records\n"<<
+        "\t\t\t mesh: Mesh Record\n"<<
+        "\t\t\t palettes: all palettes records\n\n"<<
         
         "\t -f: The filename path to be read.\n\n"<<
         
         "Examples: \n"<<
         "\t ofReader -debug -f /Users/Documents/flt/test.flt\n"<<
         "\t ofReader -dotExport -f /Users/Documents/flt/test.flt\n"<<
-        "\t ofReader -dotExport -e face mesh -f /Users/Documents/flt/test.flt\n\n";
+        "\t ofReader -dotExport palettes face mesh -f /Users/Documents/flt/test.flt\n\n";
         
         cout << oss.str();
     }
