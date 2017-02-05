@@ -182,6 +182,16 @@ HeaderRecord* OpenFlightReader::open(const std::string& iFileNamePath)
 void OpenFlightReader::open(const std::string& iFileNamePath,
                                     bool iIsExternalReference )
 {
+    
+//Avant toute chose, on devrait s'assurer que le filenamepath n'a pas déja
+//été ouvert (genre un extRef). Si c'est le cas, on devrait tout simplement
+//retourner le noeud deja existant... Un telle pratique demandera d'ajouter
+//un compte de reference au PrimaryRecord afin de gerer correctement la destruction.
+//
+//De plus pour comparer les filenamePath, il faudra un methode pour transformer
+//un path en path canonique. (genre QFileInfo);
+    
+    
     // When it is not an external reference, we clear
     // all leftover from a previous open call.
     //
@@ -219,6 +229,13 @@ void OpenFlightReader::open(const std::string& iFileNamePath,
     }
     
     ifs.close();
+    
+    
+//finalize!!! l'idée est de résoudre les dépendance un peu bizarre afin
+//de rendre l'interface plus conviviale... Par exemple, les vertexList
+//on des byteOffset dans la vertexPalette... Il devrait plutot contenir directement
+//l'index dans la palette. Il doit y avoir d'autre truc du genre qui pourrait etre
+//finalisé...
 }
 
 //-----------------------------------------------------------------------------
