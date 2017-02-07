@@ -79,6 +79,7 @@ namespace OpenFlight
         uint16_t getNextTextNodeId() const;
         double getNorthEastCornerLatitude() const;
         double getNorthEastCornerLongitude() const;
+        int getNumberOfTexturePalettes() const;
         double getOriginLatitude() const;
         double getOriginLongitude() const;
         projectionType getProjection() const;
@@ -88,6 +89,7 @@ namespace OpenFlight
         double getSouthWestCornerLongitude() const;
         double getSouthWestDbCoordinateX() const;
         double getSouthWestDbCoordinateY() const;
+        TexturePaletteRecord* getTexturePalette(int) const;
         uint16_t getUnitMultiplier() const;
         int16_t getUtmZone() const;
         vertexCoordinateUnits getVertexCoordinateUnits() const;
@@ -202,6 +204,8 @@ namespace OpenFlight
         double mEarthMinorAxis; //in meters
         
         // Ancillary Records
+        // these members are there for convenience. All of them can be found in the PrimaryRecords::ancillaryRecords
+        //
         ColorPaletteRecord *mpColorPalette;
         LightSourcePaletteRecord *mpLightSourcePalette;
         std::vector<MaterialPaletteRecord*> mMaterialPalettes;

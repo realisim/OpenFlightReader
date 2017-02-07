@@ -231,6 +231,10 @@ double HeaderRecord::getNorthEastCornerLongitude() const
 { return mNorthEastCornerLongitude;}
 
 //------------------------------------------------------------------------------
+int HeaderRecord::getNumberOfTexturePalettes() const
+{ return (int)mTexturePalettes.size(); }
+
+//------------------------------------------------------------------------------
 double HeaderRecord::getOriginLatitude() const
 { return mOriginLatitude;}
 
@@ -265,6 +269,17 @@ double HeaderRecord::getSouthWestDbCoordinateX() const
 //------------------------------------------------------------------------------
 double HeaderRecord::getSouthWestDbCoordinateY() const
 { return mSouthWestDbCoordinateY;}
+
+//------------------------------------------------------------------------------
+TexturePaletteRecord* HeaderRecord::getTexturePalette(int iIndex) const
+{
+    TexturePaletteRecord* r = nullptr;
+    if (iIndex >= 0 && iIndex < getNumberOfTexturePalettes())
+    {
+        r = mTexturePalettes[iIndex];
+    }
+    return r;
+}
 
 //------------------------------------------------------------------------------
 uint16_t HeaderRecord::getUnitMultiplier() const
