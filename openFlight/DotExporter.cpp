@@ -39,15 +39,15 @@ std::string bakeName(const PrimaryRecord* ipNode)
     return m;
 }
 
-bool isExcluded(opCode code, const vector<opCode> iExclusions)
+bool isIncluded(opCode code, const set<opCode> iInclusion)
 {
-    return find(iExclusions.begin(), iExclusions.end(), code) != iExclusions.end();
+    return iInclusion.find(code) != iInclusion.end();
 }
 
 //-----------------------------------------------------------------------------
 // see method toDotFormat(const HeaderRecord* ipRoot, const std::vector<opCode>& iExclusions)
 std::string OpenFlight::toDotFormat(const HeaderRecord* ipRoot)
-{ return toDotFormat(ipRoot, vector<opCode>()); }
+{ return toDotFormat(ipRoot, set<opCode>()); }
                                     
 //-----------------------------------------------------------------------------
 // This method will return DOT representation of the current document.
@@ -59,7 +59,7 @@ std::string OpenFlight::toDotFormat(const HeaderRecord* ipRoot)
 //      http://dreampuf.github.io/GraphvizOnline/
 //      http://www.webgraphviz.com/
 //
-std::string OpenFlight::toDotFormat(const HeaderRecord* ipRoot, const std::vector<opCode>& iExclusions)
+std::string OpenFlight::toDotFormat(const HeaderRecord* ipRoot, const std::set<opCode>& iInclusions)
 {
     ostringstream oss;
     
@@ -80,8 +80,8 @@ std::string OpenFlight::toDotFormat(const HeaderRecord* ipRoot, const std::vecto
             q.push_back(c);
         }
         
-        if(n->getParent() && !isExcluded(n->getParent()->getOpCode(), iExclusions) &&
-           !isExcluded(n->getOpCode(), iExclusions))
+        if(n->getParent() && isIncluded(n->getParent()->getOpCode(), iInclusions) &&
+           isIncluded(n->getOpCode(), iInclusions))
         {
             oss << bakeName(n->getParent()) << "--" <<
                 bakeName(n) << ";\n";
@@ -93,7 +93,7 @@ std::string OpenFlight::toDotFormat(const HeaderRecord* ipRoot, const std::vecto
         {
             AncillaryRecord* a = n->getAncillaryRecord(i);
             
-            if( !isExcluded(a->getOpCode(), iExclusions) )
+            if( isIncluded(a->getOpCode(), iInclusions) )
             { oss << bakeName(a) << " [fillcolor=grey];\n"; }
         }
 
@@ -103,8 +103,8 @@ std::string OpenFlight::toDotFormat(const HeaderRecord* ipRoot, const std::vecto
         {
             Record* a = n->getAncillaryRecord(i);
 
-            if( !isExcluded(n->getOpCode(), iExclusions) &&
-               !isExcluded(a->getOpCode(), iExclusions))
+            if( isIncluded(n->getOpCode(), iInclusions) &&
+               isIncluded(a->getOpCode(), iInclusions))
             {
                 oss << bakeName(n) << "--" << bakeName(a) << ";\n";
             }

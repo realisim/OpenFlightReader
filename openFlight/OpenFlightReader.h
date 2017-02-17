@@ -21,18 +21,25 @@ namespace OpenFlight
         OpenFlightReader& operator=(const OpenFlightReader&) = delete;
         ~OpenFlightReader();
         
+        struct Options
+        {
+            Options();
+            bool mDebugEnabled;
+            bool mExternalReferenceLoadingEnabled;
+            bool mVertexDataSkipped;
+            bool mShowCurrentFilenamePathBeingParsed;
+        };
+        
         std::string getAndClearLastErrors() const;
         std::string getAndClearLastWarnings() const;
         std::string getFilePath() const;
         std::string getFilename() const;
         std::string getFilenamePath() const;
-        void enableDebug(bool);
-        void enableExternalReferenceLoading(bool);
-        bool hasDebugEnabled() const;
-        bool hasExternalReferenceLoadingEnabled() const;
+        const Options& getOptions() const;
         bool hasErrors() const;
         bool hasWarnings() const;
         HeaderRecord* open(const std::string& iFileNamePath); //Should return a clas Document.
+        void setOptions(Options);
 
     protected:
         // The ReadState holds information relative to the current
@@ -90,10 +97,9 @@ namespace OpenFlight
 
         mutable std::string mErrors;
         mutable std::set<std::string> mWarnings;
-        bool mHasDebugEnabled;
-        bool mHasExternalReferenceLoadingEnabled;
+        Options mOptions;
 
-        HeaderRecord* mpRootNode; //not owned
+        HeaderRecord* mpRootNode; //not owned, will be pass to caller of open()
         ReadState mReadState;
         std::stack<ReadState> mReadStateStack;
     };

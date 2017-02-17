@@ -9,7 +9,9 @@ using namespace std;
 int main(int argc, char** argv)
 {
     OpenFlight::OpenFlightReader ofr;
-    ofr.enableDebug(true);
+    OpenFlight::OpenFlightReader::Options ofrOptions;
+    ofrOptions.mDebugEnabled = true;
+    ofr.setOptions(ofrOptions);
     
     std::string filenamePath = "../assets/sample/nested_references/master/master.flt";
     //    std::string filenamePath = "../assets/sample/nested_references2/db/1/1.flt"

@@ -55,8 +55,6 @@ namespace
 //-----------------------------------------------------------------------------
 OpenFlightReader::OpenFlightReader() :
 mErrors(),
-mHasDebugEnabled(false),
-mHasExternalReferenceLoadingEnabled(true),
 mpRootNode(nullptr),
 mReadState(),
 mReadStateStack()
@@ -105,20 +103,6 @@ void OpenFlightReader::clear()
 }
 
 //-----------------------------------------------------------------------------
-void OpenFlightReader::enableDebug(bool iE)
-{ mHasDebugEnabled = iE; }
-
-void OpenFlightReader::enableExternalReferenceLoading(bool iE)
-{ mHasExternalReferenceLoadingEnabled = iE; }
-
-bool OpenFlightReader::hasExternalReferenceLoadingEnabled() const
-{ return mHasExternalReferenceLoadingEnabled; }
-
-//-----------------------------------------------------------------------------
-bool OpenFlightReader::hasDebugEnabled() const
-{ return mHasDebugEnabled; }
-
-//-----------------------------------------------------------------------------
 std::string OpenFlightReader::getAndClearLastErrors() const
 {
     string r = mErrors;
@@ -164,6 +148,10 @@ string OpenFlightReader::getFilenamePath() const
 { return mReadState.mFilenamePath; }
 
 //-----------------------------------------------------------------------------
+const OpenFlightReader::Options& OpenFlightReader::getOptions() const
+{ return mOptions; }
+
+//-----------------------------------------------------------------------------
 bool OpenFlightReader::hasErrors() const
 { return !mErrors.empty(); }
 
@@ -186,11 +174,15 @@ void OpenFlightReader::open(const std::string& iFileNamePath,
 //Avant toute chose, on devrait s'assurer que le filenamepath n'a pas déja
 //été ouvert (genre un extRef). Si c'est le cas, on devrait tout simplement
 //retourner le noeud deja existant... Un telle pratique demandera d'ajouter
-//un compte de reference au PrimaryRecord afin de gerer correctement la destruction.
+//un compte de reference (shared_ptr) au PrimaryRecord afin de gerer correctement la destruction.
 //
 //De plus pour comparer les filenamePath, il faudra un methode pour transformer
 //un path en path canonique. (genre QFileInfo);
     
+    if(getOptions().mShowCurrentFilenamePathBeingParsed)
+    {
+        printf("OpenFlightReader::open %s\n", iFileNamePath.c_str());
+    }
     
     // When it is not an external reference, we clear
     // all leftover from a previous open call.
@@ -203,7 +195,10 @@ void OpenFlightReader::open(const std::string& iFileNamePath,
         clear();
     }
     
-    //first lets separate the filename from the path.
+    // first lets separate the filename from the path.
+    // hum... we could keep only mFilenamePath and call
+    // the methods for mFilenae and mFilepath...
+    //
     mReadState.mFilenamePath = iFileNamePath;
     mReadState.mFilename = extractFilename(iFileNamePath);
     mReadState.mFilePath = extractPath(iFileNamePath);
@@ -241,7 +236,7 @@ void OpenFlightReader::open(const std::string& iFileNamePath,
 //-----------------------------------------------------------------------------
 void OpenFlightReader::parseExternalReferenceRecord(const std::string& iRawRecord)
 {
-    if(hasDebugEnabled())
+    if( getOptions().mDebugEnabled )
     {printf("--- External reference begins ---\n\n");}
     
     ExternalReferenceRecord *extRef = new ExternalReferenceRecord(getCurrentParentNode());
@@ -285,9 +280,9 @@ void OpenFlightReader::parseExternalReferenceRecord(const std::string& iRawRecor
     if( extRef->getNodeName().empty() )
     {
         //skip external reference content if so desired.
-        if( hasExternalReferenceLoadingEnabled() )
+        if( getOptions().mExternalReferenceLoadingEnabled )
         { open( getFilePath() + filenamePath, true ); }
-        else if(hasDebugEnabled())
+        else if( getOptions().mDebugEnabled )
         { printf("--- External reference content skipped; hasExternalReferenceLoadingEnabled is false ---\n\n"); }
     }
     else
@@ -304,7 +299,7 @@ void OpenFlightReader::parseExternalReferenceRecord(const std::string& iRawRecor
     
     // Maybe we should apply the palettes, accordingly with the flags
     // from the external ref, to the HeaderRecord that was just added.
-    if(hasDebugEnabled())
+    if( getOptions().mDebugEnabled )
     {printf("--- External reference ends ---\n\n");}
 }
 
@@ -484,7 +479,7 @@ void OpenFlightReader::readRecord(ifstream& iFileStream)
         {
             string rawRecordAsString(rawRecord, lengthOfRecord);
             
-            if( hasDebugEnabled() )
+            if( getOptions().mDebugEnabled )
             {
                 ostringstream oss;
                 oss << toString((OpenFlight::opCode)opCode) << endl;
@@ -548,3 +543,19 @@ void OpenFlightReader::setCurrentPrimaryNode(PrimaryRecord* ipR)
 //-----------------------------------------------------------------------------
 void OpenFlightReader::setLastPrimaryNodeAdded(PrimaryRecord* ipR)
 { mReadState.mpLastPrimaryNodeAdded = ipR; }
+
+//-----------------------------------------------------------------------------
+void OpenFlightReader::setOptions(Options iO)
+{ mOptions = iO; }
+
+//-----------------------------------------------------------------------------
+//--- OpenFlightReader::Options
+//-----------------------------------------------------------------------------
+OpenFlightReader::OpenFlightReader::Options::Options() :
+mDebugEnabled(false),
+mExternalReferenceLoadingEnabled(true),
+mVertexDataSkipped(false),
+mShowCurrentFilenamePathBeingParsed(true)
+{}
+
+

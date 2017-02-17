@@ -4,123 +4,177 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <set>
 #include <vector>
 
 using namespace std;
 
 struct Options
 {
-    Options() : mDebug(false), mExportToDot(false), mDotExclusions(),
+    Options() : mDebug(false), mExportToDot(false), mDotInclusions(),
     mFilenamePath(){}
     
     bool mDebug;
     bool mExportToDot;
-    vector<OpenFlight::opCode> mDotExclusions;
+    set<OpenFlight::opCode> mDotInclusions;
     string mFilenamePath;
 };
 
-vector<OpenFlight::opCode> makeAncillaryExlusions()
+set<OpenFlight::opCode> makePrimaryInclusions()
 {
     using namespace OpenFlight;
+    set<OpenFlight::opCode> r;
     
-    vector<OpenFlight::opCode> r;
-    
-    r.push_back(ocContinuation);
-    r.push_back(ocComment);
-    r.push_back(ocColorPalette);
-    r.push_back(ocLongId);
-    r.push_back(ocMatrix);
-    r.push_back(ocVector);
-    r.push_back(ocMultitexture);
-    r.push_back(ocUvList);
-    r.push_back(ocReplicate);
-    r.push_back(ocTexturePalette);
-    r.push_back(ocVertexPalette);
-    r.push_back(ocVertexWithColor);
-    r.push_back(ocVertexWithColorAndNormal);
-    r.push_back(ocVertexWithColorNormalAndUv);
-    r.push_back(ocVertexWithColorAndUv);
-    r.push_back(ocBoundingBox);
-    r.push_back(ocRotateAboutEdge);
-    r.push_back(ocTranslate);
-    r.push_back(ocScale);
-    r.push_back(ocRotateAboutPoint);
-    r.push_back(ocRotateScaleToPoint);
-    r.push_back(ocPut);
-    r.push_back(ocEyepointAndTrackplanePalette);
-    r.push_back(ocLinkagePalette);
-    r.push_back(ocSoundPalette);
-    r.push_back(ocGeneralMatrix);
-    r.push_back(ocLineStylePalette);
-    r.push_back(ocLightSourcePalette);
-    r.push_back(ocBoundingSphere);
-    r.push_back(ocBoundingCylinder);
-    r.push_back(ocBoundingConvexHull);
-    r.push_back(ocBoundingVolumeCenter);
-    r.push_back(ocBoundingVolumeOrientation);
-    r.push_back(ocTextureMappingPalette);
-    r.push_back(ocMaterialPalette);
-    r.push_back(ocNameTable);
-    r.push_back(ocBoundingHistogram);
-    r.push_back(ocLightPointAppearancePalette);
-    r.push_back(ocLightPointAnimationPalette);
-    r.push_back(ocShaderPalette);
-    r.push_back(ocExtendedMaterialHeader);
-    r.push_back(ocExtendedMaterialAmbient);
-    r.push_back(ocExtendedMaterialDiffuse);
-    r.push_back(ocExtendedMaterialSpecular);
-    r.push_back(ocExtendedMaterialEmissive);
-    r.push_back(ocExtendedMaterialAlpha);
-    r.push_back(ocExtendedMaterialLightMap);
-    r.push_back(ocExtendedMaterialNormalMap);
-    r.push_back(ocExtendedMaterialBumpMap);
-    r.push_back(ocExtendedMaterialShadowMap);
-    r.push_back(ocExtendedMaterialReflectionMap);
-    r.push_back(ocExtensionGuidPalette);
-    r.push_back(ocExtensionFieldBoolean);
-    r.push_back(ocExtensionFieldInteger);
-    r.push_back(ocExtensionFieldFloat);
-    r.push_back(ocExtensionFieldDouble);
-    r.push_back(ocExtensionFieldString);
-    r.push_back(ocExtensionFieldXmlString);
+    r.insert( ocUnsupported);
+    r.insert( ocHeader );
+    r.insert( ocGroup );
+    r.insert( ocObject );
+    r.insert( ocFace );
+    r.insert( ocDegreeofFreedom );
+    r.insert( ocBinarySeparatingPlane );
+    r.insert( ocInstanceReference );
+    r.insert( ocInstanceDefinition );
+    r.insert( ocExternalReference );
+    r.insert( ocVertexList );
+    r.insert( ocLevelofDetail );
+    r.insert( ocMesh );
+    r.insert( ocLocalVertexPool );
+    r.insert( ocMeshPrimitive );
+    r.insert( ocRoadSegment );
+    r.insert( ocRoadZone );
+    r.insert( ocMorphVertexList );
+    r.insert( ocSound );
+    r.insert( ocRoadPath );
+    r.insert( ocText );
+    r.insert( ocSwitch );
+    r.insert( ocClipRegion );
+    r.insert( ocExtension );
+    r.insert( ocLightSource );
+    r.insert( ocReserved103 );
+    r.insert( ocReserved104 );
+    r.insert( ocReserved110 );
+    r.insert( ocLightPoint );
+    r.insert( ocContinuouslyAdaptiveTerrain );
+    r.insert( ocCatData );
+    r.insert( ocReserved117 );
+    r.insert( ocReserved118 );
+    r.insert( ocReserved120 );
+    r.insert( ocReserved121 );
+    r.insert( ocReserved124 );
+    r.insert( ocReserved125 );
+    r.insert( ocCurve );
+    r.insert( ocRoadConstruction );
+    r.insert( ocIndexedLightPoint );
+    r.insert( ocLightPointSystem );
+    r.insert( ocIndexedString );
+    r.insert( ocReserved134 );
+    r.insert( ocReserved144 );
+    r.insert( ocReserved146 );
     
     return r;
 }
 
-vector<OpenFlight::opCode> makePaletteExlusions()
+set<OpenFlight::opCode> makeAncillaryInclusions()
 {
     using namespace OpenFlight;
     
-    vector<OpenFlight::opCode> r;
+    set<OpenFlight::opCode> r;
     
-    r.push_back(ocColorPalette);
-    r.push_back(ocTexturePalette);
-    r.push_back(ocVertexPalette);
-    r.push_back(ocEyepointAndTrackplanePalette);
-    r.push_back(ocLinkagePalette);
-    r.push_back(ocSoundPalette);
-    r.push_back(ocLineStylePalette);
-    r.push_back(ocLightSourcePalette);
-    r.push_back(ocTextureMappingPalette);
-    r.push_back(ocMaterialPalette);
-    r.push_back(ocNameTable);
-    r.push_back(ocLightPointAppearancePalette);
-    r.push_back(ocLightPointAnimationPalette);
-    r.push_back(ocShaderPalette);
-    r.push_back(ocExtendedMaterialHeader);
-    r.push_back(ocExtendedMaterialAmbient);
-    r.push_back(ocExtendedMaterialDiffuse);
-    r.push_back(ocExtendedMaterialSpecular);
-    r.push_back(ocExtendedMaterialEmissive);
-    r.push_back(ocExtendedMaterialAlpha);
-    r.push_back(ocExtendedMaterialLightMap);
-    r.push_back(ocExtendedMaterialNormalMap);
-    r.push_back(ocExtendedMaterialBumpMap);
-    r.push_back(ocExtendedMaterialShadowMap);
-    r.push_back(ocExtendedMaterialReflectionMap);
-    r.push_back(ocExtensionGuidPalette);
+    r.insert(ocContinuation);
+    r.insert(ocComment);
+    r.insert(ocColorPalette);
+    r.insert(ocLongId);
+    r.insert(ocMatrix);
+    r.insert(ocVector);
+    r.insert(ocMultitexture);
+    r.insert(ocUvList);
+    r.insert(ocReplicate);
+    r.insert(ocTexturePalette);
+    r.insert(ocVertexPalette);
+    r.insert(ocVertexWithColor);
+    r.insert(ocVertexWithColorAndNormal);
+    r.insert(ocVertexWithColorNormalAndUv);
+    r.insert(ocVertexWithColorAndUv);
+    r.insert(ocBoundingBox);
+    r.insert(ocRotateAboutEdge);
+    r.insert(ocTranslate);
+    r.insert(ocScale);
+    r.insert(ocRotateAboutPoint);
+    r.insert(ocRotateScaleToPoint);
+    r.insert(ocPut);
+    r.insert(ocEyepointAndTrackplanePalette);
+    r.insert(ocLinkagePalette);
+    r.insert(ocSoundPalette);
+    r.insert(ocGeneralMatrix);
+    r.insert(ocLineStylePalette);
+    r.insert(ocLightSourcePalette);
+    r.insert(ocBoundingSphere);
+    r.insert(ocBoundingCylinder);
+    r.insert(ocBoundingConvexHull);
+    r.insert(ocBoundingVolumeCenter);
+    r.insert(ocBoundingVolumeOrientation);
+    r.insert(ocTextureMappingPalette);
+    r.insert(ocMaterialPalette);
+    r.insert(ocNameTable);
+    r.insert(ocBoundingHistogram);
+    r.insert(ocLightPointAppearancePalette);
+    r.insert(ocLightPointAnimationPalette);
+    r.insert(ocShaderPalette);
+    r.insert(ocExtendedMaterialHeader);
+    r.insert(ocExtendedMaterialAmbient);
+    r.insert(ocExtendedMaterialDiffuse);
+    r.insert(ocExtendedMaterialSpecular);
+    r.insert(ocExtendedMaterialEmissive);
+    r.insert(ocExtendedMaterialAlpha);
+    r.insert(ocExtendedMaterialLightMap);
+    r.insert(ocExtendedMaterialNormalMap);
+    r.insert(ocExtendedMaterialBumpMap);
+    r.insert(ocExtendedMaterialShadowMap);
+    r.insert(ocExtendedMaterialReflectionMap);
+    r.insert(ocExtensionGuidPalette);
+    r.insert(ocExtensionFieldBoolean);
+    r.insert(ocExtensionFieldInteger);
+    r.insert(ocExtensionFieldFloat);
+    r.insert(ocExtensionFieldDouble);
+    r.insert(ocExtensionFieldString);
+    r.insert(ocExtensionFieldXmlString);
+    
+    return r;
+}
 
+set<OpenFlight::opCode> makePaletteInclusions()
+{
+    using namespace OpenFlight;
     
+    set<OpenFlight::opCode> r;
+    
+    r.insert(ocColorPalette);
+    r.insert(ocTexturePalette);
+    r.insert(ocVertexPalette);
+    r.insert(ocEyepointAndTrackplanePalette);
+    r.insert(ocLinkagePalette);
+    r.insert(ocSoundPalette);
+    r.insert(ocLineStylePalette);
+    r.insert(ocLightSourcePalette);
+    r.insert(ocTextureMappingPalette);
+    r.insert(ocMaterialPalette);
+    r.insert(ocNameTable);
+    r.insert(ocLightPointAppearancePalette);
+    r.insert(ocLightPointAnimationPalette);
+    r.insert(ocShaderPalette);
+    r.insert(ocExtendedMaterialHeader);
+    r.insert(ocExtendedMaterialAmbient);
+    r.insert(ocExtendedMaterialDiffuse);
+    r.insert(ocExtendedMaterialSpecular);
+    r.insert(ocExtendedMaterialEmissive);
+    r.insert(ocExtendedMaterialAlpha);
+    r.insert(ocExtendedMaterialLightMap);
+    r.insert(ocExtendedMaterialNormalMap);
+    r.insert(ocExtendedMaterialBumpMap);
+    r.insert(ocExtendedMaterialShadowMap);
+    r.insert(ocExtendedMaterialReflectionMap);
+    r.insert(ocExtensionGuidPalette);
+
     return r;
 }
 
@@ -140,20 +194,31 @@ Options parseArgs(int argc, char** argv)
                 opt.mExportToDot = true;
                 while( argc > (i+1) && string(argv[i+1]).find("-") == string::npos )
                 {
-                    string exclusion(argv[++i]);
-                    if(exclusion == "ancillaries")
+                    string inclusion(argv[++i]);
+                    if(inclusion == "primaryRecords")
                     {
-                        vector<OpenFlight::opCode> e = makeAncillaryExlusions();
-                        opt.mDotExclusions.insert(opt.mDotExclusions.end(), e.begin(), e.end()) ;
+                        set<OpenFlight::opCode> e = makePrimaryInclusions();
+                        opt.mDotInclusions.insert(e.begin(), e.end()) ;
                     }
-                    if(exclusion == "face"){ opt.mDotExclusions.push_back(OpenFlight::ocFace); }
-                    if(exclusion == "longId"){ opt.mDotExclusions.push_back(OpenFlight::ocLongId); }
-                    if(exclusion == "mesh"){ opt.mDotExclusions.push_back(OpenFlight::ocMesh); }
-                    if(exclusion == "palettes")
+                    if(inclusion == "ancillaryRecords")
                     {
-                        vector<OpenFlight::opCode> e = makePaletteExlusions();
-                        opt.mDotExclusions.insert(opt.mDotExclusions.end(), e.begin(), e.end()) ;
+                        set<OpenFlight::opCode> e = makeAncillaryInclusions();
+                        opt.mDotInclusions.insert(e.begin(), e.end()) ;
                     }
+                    if(inclusion == "paletteRecords")
+                    {
+                        set<OpenFlight::opCode> e = makePaletteInclusions();
+                        opt.mDotInclusions.insert(e.begin(), e.end()) ;
+                    }
+                    
+                    if(inclusion == "headerRecord")
+                    { opt.mDotInclusions.insert( OpenFlight::ocHeader ); }
+                    if(inclusion == "groupRecord")
+                    { opt.mDotInclusions.insert( OpenFlight::ocGroup ); }
+                    if(inclusion == "objectRecord")
+                    { opt.mDotInclusions.insert( OpenFlight::ocObject ); }
+                    if(inclusion == "matrixRecord")
+                    { opt.mDotInclusions.insert( OpenFlight::ocMatrix ); }
                 }
             }
             
@@ -175,7 +240,8 @@ int main(int argc, char** argv)
     
     if(!opt.mFilenamePath.empty())
     {
-        ofr.enableDebug(opt.mDebug);
+        OpenFlight::OpenFlightReader::Options ofrOptions;
+        ofrOptions.mDebugEnabled = opt.mDebug;
         
         OpenFlight::HeaderRecord *pRoot = ofr.open( opt.mFilenamePath );
         if ( !ofr.hasErrors() )
@@ -185,7 +251,7 @@ int main(int argc, char** argv)
             
             if( opt.mExportToDot )
             {
-                cout << OpenFlight::toDotFormat( pRoot, opt.mDotExclusions );
+                cout << OpenFlight::toDotFormat( pRoot, opt.mDotInclusions );
             }
         }
         else
@@ -200,20 +266,25 @@ int main(int argc, char** argv)
         "\t -debug: will print, for each record found, the record type and the binary payload.\n\n"<<
         
         "\t -dotExport: will print the graph in dot format to be visualize with graphViz for example.\n"<<
-        "\t\t exlusionList: Exclusion list of the dotExport. The record excluded will not appear in the dot export.\n"<<
-        "\t\t Currently supported exclusion:\n"<<
-        "\t\t\t ancillaries: all ancillary records\n"<<
-        "\t\t\t face: Face Record\n"<<
-        "\t\t\t longId: long id records\n"<<
-        "\t\t\t mesh: Mesh Record\n"<<
-        "\t\t\t palettes: all palettes records\n\n"<<
+        "\t\t Inclusion list must follow the -dotExport options. Every record type listed will appear in the dot export.\n"<<
+        "\t\t Currently supported inclusion:\n"<<
+        "\t\t\t all: all records\n"<<
+        "\t\t\t primaryRecords: all primary records\n"<<
+        "\t\t\t ancillaryRecords: all ancillary records\n"<<
+        "\t\t\t paletteRecords: all palette records\n"<<
+        
+        "\t\t\t headerRecord: header record\n"<<
+        "\t\t\t groupRecord: group record\n"<<
+        "\t\t\t objectRecord: object record\n"<<
+        
+        "\t\t\t matrixRecord: matrix record\n"<<
         
         "\t -f: The filename path to be read.\n\n"<<
         
         "Examples: \n"<<
         "\t ofReader -debug -f /Users/Documents/flt/test.flt\n"<<
         "\t ofReader -dotExport -f /Users/Documents/flt/test.flt\n"<<
-        "\t ofReader -dotExport palettes face mesh -f /Users/Documents/flt/test.flt\n\n";
+        "\t ofReader -dotExport headerRecords groupRecords objectRecords -f /Users/Documents/flt/test.flt\n\n";
         
         cout << oss.str();
     }
