@@ -8,6 +8,9 @@
 
 namespace OpenFlight
 {
+    // it would be a lot clearer if all parameters where passed by pointer
+    // instead of reference
+    //
     bool readChar(std::istream& iStream, int iNumberOfCharToRead, std::string& oV);
     bool readDouble(std::istream& iStream, double& oV);
     bool readColor3f(std::istream& iss, Color3f& oC);

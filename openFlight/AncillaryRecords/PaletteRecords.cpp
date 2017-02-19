@@ -305,7 +305,6 @@ const std::vector<Vertex>& VertexPaletteRecord::getVertices() const
 //-------------------------------------------------------------------------
 bool VertexPaletteRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
 {
-    std::streamoff startPos = iRawRecord.tellg();
     Record::parseRecord(iRawRecord, iVersion);
     
     bool ok = true;

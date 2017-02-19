@@ -1,7 +1,7 @@
 
 #pragma once
 
-//Records is here so clients only have to include
+//Records.h is here so clients only have to include
 //OpenflightReader.h
 #include "Records.h"
 #include <set>
@@ -102,6 +102,7 @@ namespace OpenFlight
         HeaderRecord* mpRootNode; //not owned, will be pass to caller of open()
         ReadState mReadState;
         std::stack<ReadState> mReadStateStack;
+        std::map<std::string, ExternalReferenceRecord*> mExternalReferences;
     };
     
     //-----------------------------------------------------------------------------

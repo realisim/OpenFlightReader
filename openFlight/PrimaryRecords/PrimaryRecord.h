@@ -12,6 +12,9 @@ namespace OpenFlight
     class LongIdRecord;
     
     //-------------------------------------------------------------------------
+    // Explication sur le refcount...
+    //
+    //
     class PrimaryRecord : public Record
     {
     public:
@@ -23,14 +26,17 @@ namespace OpenFlight
 
         void addAncillaryRecord(AncillaryRecord*);
         void addChild(PrimaryRecord*);
+        int decrementUseCount();
         AncillaryRecord* getAncillaryRecord(int) const;
         PrimaryRecord* getChild(int) const;
         LongIdRecord* getLongIdRecord() const;
         int getNumberOfAncillaryRecords() const;
         int getNumberOfChilds() const;
         PrimaryRecord* getParent() const;
+        int getUseCount() const;
         bool hasLongIdRecord() const;
         bool isExternalReference() const;
+        void incrementUseCount();
         
     protected:
         virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) = 0;
@@ -49,5 +55,9 @@ namespace OpenFlight
         // transformation
         //   matrix
         //   rotate...
+        
+        // cheap way of ref counting... see openflightReader::parseExternalReference
+        //
+        int mUseCount;
     };
 }
