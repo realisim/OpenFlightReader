@@ -35,7 +35,7 @@ namespace OpenFlight
         bool hasFlag( flag ) const;
 
     protected:
-        virtual bool parseRecord(const std::string& iRawRecord, int iVersion) override;
+        virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override;
 
         std::string mAsciiId;
         int32_t mFlags;

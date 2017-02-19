@@ -18,7 +18,7 @@ namespace OpenFlight
         PrimaryRecord* getParent() const {return mpParent;}
         
     protected:
-        virtual bool parseRecord(const std::string& iRawRecord, int iVersion) override
+        virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override
         { return Record::parseRecord(iRawRecord, iVersion); };
 
         PrimaryRecord* mpParent; //not owned

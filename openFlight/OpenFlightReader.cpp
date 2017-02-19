@@ -1,4 +1,5 @@
 
+#include <cassert>
 #include <fstream>
 #include <iostream>
 #include "OpCode.h"
@@ -217,6 +218,12 @@ void OpenFlightReader::open(const std::string& iFileNamePath,
         ostringstream oss;
         oss << "OpenFlightReader::open - Could not open file " << iFileNamePath;
         
+        // if not an external reference, it means it is a top level file.
+        // If a top level file was not open, we flag it as an error.
+        // If it is an external reference, then we simply report as a warning
+        // that the file could not be open. The idea, is that we do not want
+        // to cancel the opening of an flt file is an external ref is missing...
+        //
         if(!iIsExternalReference)
         { addError( oss.str() ); }
         else
@@ -234,7 +241,7 @@ void OpenFlightReader::open(const std::string& iFileNamePath,
 }
 
 //-----------------------------------------------------------------------------
-void OpenFlightReader::parseExternalReferenceRecord(const std::string& iRawRecord)
+void OpenFlightReader::parseExternalReferenceRecord(std::ifstream& iRawRecord)
 {
     if( getOptions().mDebugEnabled )
     {printf("--- External reference begins ---\n\n");}
@@ -304,7 +311,7 @@ void OpenFlightReader::parseExternalReferenceRecord(const std::string& iRawRecor
 }
 
 //-----------------------------------------------------------------------------
-void OpenFlightReader::parseHeaderRecord(const string& iRawRecord)
+void OpenFlightReader::parseHeaderRecord(std::ifstream& iRawRecord)
 {
     HeaderRecord *r = new HeaderRecord(getCurrentParentNode());
     ((Record*)r)->parseRecord( iRawRecord, 0 );
@@ -335,18 +342,20 @@ void OpenFlightReader::parseHeaderRecord(const string& iRawRecord)
 }
 
 //-----------------------------------------------------------------------------
-void OpenFlightReader::parseUnsupportedRecord(const string& iRawRecord)
+void OpenFlightReader::parseUnsupportedRecord(std::ifstream& iRawRecord)
 {
     UnsupportedRecord* r = new UnsupportedRecord( getCurrentParentNode() );
     ((Record*)r)->parseRecord(iRawRecord, 0);
     
     if( isPrimaryRecord( r->getOriginalOpCode() ) )
     { addPrimaryRecord(r); }
-    
-    if( isAncillaryRecord( r->getOriginalOpCode() ) )
+    else
     {
-        /*nothing for now... Dont care that much about ancillary record
-         since they dont have childs...*/
+        // we do not care much about unsupported record that are not
+        // a primary record since it has no child.
+        // Not having them in the tree will not break
+        // the structure, so we delete it.
+        delete r;
     }
     
     ostringstream oss;
@@ -356,7 +365,7 @@ void OpenFlightReader::parseUnsupportedRecord(const string& iRawRecord)
 }
 
 //-----------------------------------------------------------------------------
-void OpenFlightReader::parseRawRecord(uint16_t iOpCode, const string& iRawRecord)
+void OpenFlightReader::parseRawRecord(uint16_t iOpCode, ifstream& iRawRecord)
 {
     switch (iOpCode)
     {
@@ -377,7 +386,8 @@ void OpenFlightReader::parseRawRecord(uint16_t iOpCode, const string& iRawRecord
         case ocVertexWithColorAndNormal:
         case ocVertexWithColorNormalAndUv:
         case ocVertexWithColorAndUv:
-            parseVertexPaletteEntry(iRawRecord);
+            if(!getOptions().mVertexDataSkipped)
+            { parseVertexPaletteEntry(iRawRecord); }
             break;
         case ocLightSourcePalette: parseAncillaryRecord<LightSourcePaletteRecord>(iRawRecord); break;
         case ocVertexList: parsePrimaryRecord<VertexListRecord>(iRawRecord); break;
@@ -387,7 +397,7 @@ void OpenFlightReader::parseRawRecord(uint16_t iOpCode, const string& iRawRecord
 }
 
 //-----------------------------------------------------------------------------
-void OpenFlightReader::parseVertexPaletteEntry(const std::string& iRawRecord)
+void OpenFlightReader::parseVertexPaletteEntry(std::ifstream& iRawRecord)
 {
     // these are added to the vertex palette of the current header node
     // As stated by the specification, Vertex in the Vertex palette
@@ -462,32 +472,34 @@ void OpenFlightReader::readRecord(ifstream& iFileStream)
     bool ok = true;
     uint16_t opCode = 0;
     uint16_t lengthOfRecord = 0;
+    std::streamoff startOfRecord = iFileStream.tellg();
     ok &= readUint16(iFileStream, opCode);
     ok &= readUint16(iFileStream, lengthOfRecord);
     
     if (ok)
     {
-        char *rawRecord = new char[lengthOfRecord];
-
-        // lets move back at the begining of the record and read the whole  thing
+        // we have found a record...
+        // lets move back at the beginning of the record
+        // to read cleanly the whole thing
         //
-        std::streamoff currentPosition = iFileStream.tellg();
-        iFileStream.seekg( currentPosition - 4 );
-        iFileStream.read(rawRecord, lengthOfRecord);
-
+        
+        iFileStream.seekg( startOfRecord );
         if( iFileStream.good() )
         {
-            string rawRecordAsString(rawRecord, lengthOfRecord);
-            
             if( getOptions().mDebugEnabled )
             {
                 ostringstream oss;
                 oss << toString((OpenFlight::opCode)opCode) << endl;
-                oss << rawRecordToString(rawRecordAsString) << endl << endl;
+                oss << rawRecordToString(iFileStream, lengthOfRecord) << endl << endl;
                 cout << oss.str();
             }
 
-            parseRawRecord( opCode, rawRecordAsString );
+            parseRawRecord( opCode, iFileStream );
+            
+            // make sure we go to next record, even if the current record parsing
+            // broked the fstream.
+            //
+            iFileStream.seekg(startOfRecord + lengthOfRecord);
         }
         else
         {
@@ -496,8 +508,6 @@ void OpenFlightReader::readRecord(ifstream& iFileStream)
                 " . " << lengthOfRecord << " bytes were requested, only " << iFileStream.gcount() << " could be read." ;
             addError( oss.str() );
         }
-
-        delete[] rawRecord;
     }
     
     // when reaching eof, ok will be false (see istream documentation about eof, mostly due because
@@ -515,20 +525,29 @@ void OpenFlightReader::readRecord(ifstream& iFileStream)
 // iOpCode is in decimal
 // iPayload is in hexadecimal at this point and not yet parsed.
 //
-string OpenFlightReader::rawRecordToString(const std::string& iRawRecord) const
+string OpenFlightReader::rawRecordToString(ifstream& iRawRecord, int iRecordLength) const
 {
-    ostringstream oss;
+    // keep the current position
+    std::streamoff currentPos = iRawRecord.tellg();
+    
+    // read the record
+    string record;
+    readChar(iRawRecord, iRecordLength, record);
     
     string hexPayload;
     char hex[5];
-    for(size_t i = 0; i < iRawRecord.size(); ++i)
+    for(size_t i = 0; i < record.size(); ++i)
     { 
-        sprintf(hex, "[%02X]", (unsigned char)iRawRecord[i]);
+        sprintf(hex, "[%02X]", (unsigned char)record[i]);
         hexPayload += hex;
     }
 
+    ostringstream oss;
     oss << "Raw Record (hex):" << hexPayload;
 
+    // move back the stream cursor in place
+    iRawRecord.seekg(currentPos);
+    
     return oss.str();
 }
 

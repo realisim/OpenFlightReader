@@ -1,6 +1,6 @@
 
 #include "FaceRecord.h"
-#include <sstream>
+#include <fstream>
 #include "StreamUtilities.h"
 
 using namespace std;
@@ -155,56 +155,49 @@ double FaceRecord::getTransparency() const
 }
 
 //------------------------------------------------------------------------------
-bool FaceRecord::parseRecord(const std::string& iRawRecord, int iVersion)
+bool FaceRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
 {
+    std::streamoff startPos = iRawRecord.tellg();
     Record::parseRecord(iRawRecord, iVersion);
     
-    stringstream iss(stringstream::in | stringstream::binary);
-    iss.str( iRawRecord );
-
-    // Lets move by 4 to skip the opCode and recordLenght... we already know
-    // we have a valid record at this point.
-    //
-    iss.seekg(4);
-    
     bool ok = true;
-    ok &= readChar(iss, 8, mAsciiId);
-    ok &= readInt32(iss, mIrColorCode);
-    ok &= readInt16(iss, mRelativePriority);
-    ok &= readInt8(iss, mDrawType);
-    ok &= readInt8(iss, mShouldDrawTexturedFaceWhite);
-    ok &= readUint16(iss, mColorNameIndex);
-    ok &= readUint16(iss, mAlternateColorNameIndex);
+    ok &= readChar(iRawRecord, 8, mAsciiId);
+    ok &= readInt32(iRawRecord, mIrColorCode);
+    ok &= readInt16(iRawRecord, mRelativePriority);
+    ok &= readInt8(iRawRecord, mDrawType);
+    ok &= readInt8(iRawRecord, mShouldDrawTexturedFaceWhite);
+    ok &= readUint16(iRawRecord, mColorNameIndex);
+    ok &= readUint16(iRawRecord, mAlternateColorNameIndex);
     
-    iss.seekg(25);
-    ok &= readInt8(iss, mBillboardTemplate);
-    ok &= readInt16(iss, mDetailTexturePattern);
-    ok &= readInt16(iss, mTexturePatternIndex);
-    ok &= readInt16(iss, mMaterialIndex);
-    ok &= readInt16(iss, mSurfaceMaterialCode);
-    ok &= readInt16(iss, mFeatureId);
-    ok &= readInt32(iss, mIrMaterialCode);
-    ok &= readUint16(iss, mTransparency);
-    ok &= readUint8(iss, mLodGenerationControl);
-    ok &= readUint8(iss, mLineStyleIndex);
-    ok &= readInt32(iss, mFlags);
-    ok &= readUint8(iss, mLightMode);
+    iRawRecord.seekg(startPos + 25);
+    ok &= readInt8(iRawRecord, mBillboardTemplate);
+    ok &= readInt16(iRawRecord, mDetailTexturePattern);
+    ok &= readInt16(iRawRecord, mTexturePatternIndex);
+    ok &= readInt16(iRawRecord, mMaterialIndex);
+    ok &= readInt16(iRawRecord, mSurfaceMaterialCode);
+    ok &= readInt16(iRawRecord, mFeatureId);
+    ok &= readInt32(iRawRecord, mIrMaterialCode);
+    ok &= readUint16(iRawRecord, mTransparency);
+    ok &= readUint8(iRawRecord, mLodGenerationControl);
+    ok &= readUint8(iRawRecord, mLineStyleIndex);
+    ok &= readInt32(iRawRecord, mFlags);
+    ok &= readUint8(iRawRecord, mLightMode);
     
-    iss.seekg(56);
-    ok &= readUint32(iss, mPackedColor); //a,b,g,r
+    iRawRecord.seekg(startPos + 56);
+    ok &= readUint32(iRawRecord, mPackedColor); //a,b,g,r
     swapBytes4((void*)&mPackedColor);
-    ok &= readUint32(iss, mAlternatePackedColor);
+    ok &= readUint32(iRawRecord, mAlternatePackedColor);
     swapBytes4((void*)&mAlternatePackedColor);
-    ok &= readInt16(iss, mTextureMappingIndex);
+    ok &= readInt16(iRawRecord, mTextureMappingIndex);
 
-    iss.seekg(68);
-    ok &= readUint32(iss, mColorIndex);
-    ok &= readUint32(iss, mAlternateColorIndex);
+    iRawRecord.seekg(startPos + 68);
+    ok &= readUint32(iRawRecord, mColorIndex);
+    ok &= readUint32(iRawRecord, mAlternateColorIndex);
 
     if(iVersion >= 1600)
     {
-        iss.seekg(78);
-        ok &= readInt16(iss, mShaderIndex);
+        iRawRecord.seekg(startPos + 78);
+        ok &= readInt16(iRawRecord, mShaderIndex);
     }
     return ok;
 }

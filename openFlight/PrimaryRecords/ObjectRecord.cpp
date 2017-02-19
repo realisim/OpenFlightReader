@@ -1,6 +1,6 @@
 
 #include "ObjectRecord.h"
-#include <sstream>
+#include <fstream>
 #include "StreamUtilities.h"
 
 using namespace std;
@@ -63,25 +63,18 @@ bool ObjectRecord::hasFlag(ObjectRecord::flag iFlag) const
 }
 
 //------------------------------------------------------------------------------
-bool ObjectRecord::parseRecord(const std::string& iRawRecord, int iVersion)
+bool ObjectRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
 {
     Record::parseRecord(iRawRecord, iVersion);
     
-    stringstream iss(stringstream::in | stringstream::binary);
-    iss.str( iRawRecord );
-
-    // Lets move by 4 to skip the opCode and recordLenght... we already know
-    // we have a valid record at this point.
-    //
-    iss.seekg(4);
     
     bool ok = true;
-    ok &= readChar(iss, 8, mAsciiId);
-    ok &= readInt32(iss, mFlags);
-    ok &= readInt16(iss, mRelativePriority);
-    ok &= readUint16(iss, mTransparency);
-    ok &= readInt16(iss, mSpecialEffectId1);
-    ok &= readInt16(iss, mSpecialEffectId2);
-    ok &= readInt16(iss, mSignificance);
+    ok &= readChar(iRawRecord, 8, mAsciiId);
+    ok &= readInt32(iRawRecord, mFlags);
+    ok &= readInt16(iRawRecord, mRelativePriority);
+    ok &= readUint16(iRawRecord, mTransparency);
+    ok &= readInt16(iRawRecord, mSpecialEffectId1);
+    ok &= readInt16(iRawRecord, mSpecialEffectId2);
+    ok &= readInt16(iRawRecord, mSignificance);
     return ok;
 }

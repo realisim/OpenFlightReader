@@ -78,19 +78,19 @@ namespace OpenFlight
         PrimaryRecord* getLastPrimaryNodeAdded();
         PrimaryRecord* getCurrentParentNode();
         void open(const std::string& iFileNamePath, bool iIsExternalReference);
-        template<typename T> void parseAncillaryRecord(const std::string& iRawRecord);
-        template<typename T> void parsePrimaryRecord(const std::string& iRawRecord);
-        void parseExternalReferenceRecord(const std::string& iRawRecord);
-        void parseHeaderRecord(const std::string& iRawRecord);
-        void parseUnsupportedRecord(const std::string& iRawRecord);
-        void parseRawRecord(uint16_t iOpCode, const std::string& iRawRecord);
-        void parseVertexPaletteEntry(const std::string& iRawRecord);
+        template<typename T> void parseAncillaryRecord(std::ifstream& iRawRecord);
+        template<typename T> void parsePrimaryRecord(std::ifstream& iRawRecord);
+        void parseExternalReferenceRecord(std::ifstream& iRawRecord);
+        void parseHeaderRecord(std::ifstream& iRawRecord);
+        void parseUnsupportedRecord(std::ifstream& iRawRecord);
+        void parseRawRecord(uint16_t iOpCode, std::ifstream& iRawRecord);
+        void parseVertexPaletteEntry(std::ifstream& iRawRecord);
         void popLevel();
         void popReadState();
         void pushLevel();
         void pushReadState();
         void readRecord(std::ifstream& iFileStream);
-        std::string rawRecordToString(const std::string& iRawRecord) const;
+        std::string rawRecordToString(std::ifstream& iRawRecord, int iRecordLength) const;
         void setCurrentHeaderNode(HeaderRecord*);
         void setCurrentPrimaryNode(PrimaryRecord*);
         void setLastPrimaryNodeAdded(PrimaryRecord*);
@@ -110,7 +110,7 @@ namespace OpenFlight
     // So we add the ancillary to the lastly added primary node.
     //
     template<class T>
-    void OpenFlightReader::parseAncillaryRecord(const std::string& iRawRecord)
+    void OpenFlightReader::parseAncillaryRecord(std::ifstream& iRawRecord)
     {
         T *r = new T(getCurrentParentNode());
         ((Record*)r)->parseRecord(iRawRecord, getCurrentHeaderNode()->getFormatRevision());
@@ -120,7 +120,7 @@ namespace OpenFlight
     
     //-----------------------------------------------------------------------------
     template<class T>
-    void OpenFlightReader::parsePrimaryRecord(const std::string& iRawRecord)
+    void OpenFlightReader::parsePrimaryRecord(std::ifstream& iRawRecord)
     {
         T *r = new T(getCurrentParentNode());
         ((Record*)r)->parseRecord(iRawRecord, getCurrentHeaderNode()->getFormatRevision());

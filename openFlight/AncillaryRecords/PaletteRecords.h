@@ -18,7 +18,7 @@ namespace OpenFlight
         virtual ~ColorPaletteRecord() {}
 
     protected:
-        virtual bool parseRecord(const std::string& iRawRecord, int iVersion) override;
+        virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override;
 
         std::vector< Color4ub > mColors;
         std::map<std::string, int> mColorNameToIndex;
@@ -68,7 +68,7 @@ namespace OpenFlight
         void setYaw(float);*/
         
     protected:
-        virtual bool parseRecord(const std::string& iRawRecord, int iVersion) override;
+        virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override;
         
         int32_t mIndex;
         std::string mName;
@@ -117,7 +117,7 @@ namespace OpenFlight
         void setSpecular(Color3f);*/
         
     protected:
-        virtual bool parseRecord(const std::string& iRawRecord, int iVersion) override;
+        virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override;
         
         int32_t mIndex;
         std::string mName;
@@ -140,14 +140,14 @@ namespace OpenFlight
         VertexPaletteRecord& operator=(const VertexPaletteRecord&) = delete;
         virtual ~VertexPaletteRecord() {}
         
-        bool addVertexRawRecord(const std::string&); //protected...
+        bool addVertexRawRecord(std::ifstream& iRawRecord); //protected...
         int getIndexFromByteOffset(int iOffset) const;
         int getNumberOfVertices() const;
         const Vertex& getVertex(int iIndex) const;
         const std::vector<Vertex>& getVertices() const;
         
     protected:
-        virtual bool parseRecord(const std::string& iRawRecord, int iVersion) override;
+        virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override;
         
         int mOffset;
         std::map<int, int> mOffsetToVertexIndex;

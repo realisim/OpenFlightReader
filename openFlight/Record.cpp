@@ -1,5 +1,5 @@
 #include "Record.h"
-#include <sstream>
+#include <fstream>
 #include "StreamUtilities.h"
 
 using namespace std;
@@ -18,16 +18,13 @@ Record::~Record()
 {}
 
 //-----------------------------------------------------------------------------
-bool Record::parseRecord(const std::string& iRawRecord, int iVersion)
+bool Record::parseRecord(std::ifstream& iRawRecord, int iVersion)
 {
-    stringstream iss(stringstream::in | stringstream::binary);
-    iss.str( iRawRecord );
-
     bool ok = true;
     uint16_t d;
-    ok &= readUint16(iss, d);
+    ok &= readUint16(iRawRecord, d);
     mOpCode = (opCode)d;
-    ok &= readUint16(iss, mRecordLenght);
+    ok &= readUint16(iRawRecord, mRecordLenght);
     
     return ok;
 }

@@ -2,7 +2,7 @@
 #include "HeaderRecord.h"
 #include "AncillaryRecords/PaletteRecords.h"
 #include "AncillaryRecords/TexturePaletteRecord.h"
-#include <sstream>
+#include <fstream>
 #include "StreamUtilities.h"
 
 using namespace OpenFlight;
@@ -317,95 +317,89 @@ void HeaderRecord::handleAddedAncillaryRecord(AncillaryRecord* ipAncillary)
 }
 
 //-------------------------------------------------------------------------
-bool HeaderRecord::parseRecord(const std::string& iRawRecord, int iVersion)
+bool HeaderRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
 {
+    std::streamoff startPos = iRawRecord.tellg();
     Record::parseRecord(iRawRecord, iVersion);
-    
-    stringstream iss(stringstream::in | stringstream::binary);
-    iss.str( iRawRecord );
-
-    // Lets move by 4 to skip the opCode and recordLenght... we already know
-    // we have a valid record at this point.
-    //
-    iss.seekg(4);
 
     uint8_t dummyUint8;
     int16_t dummyInt16;
     int32_t dummyInt32;
 
     bool ok = true;    
-    ok &= readChar(iss, 8, mAsciiId);
-    ok &= readInt32(iss, mFormatRevision);
-    ok &= readInt32(iss, mEditRevision);
-    ok &= readChar(iss, 32, mDateAntTimeOfLastRevision );
-    ok &= readUint16(iss, mNextGroupNodeId);
-    ok &= readUint16(iss, mNextLodNodeId);
-    ok &= readUint16(iss, mNextObjectNodeId);
-    ok &= readUint16(iss, mNextFaceNodeId);
-    ok &= readUint16(iss, mUnitMultiplier);
-    ok &= readUint8(iss, dummyUint8); mVertexCoordinateUnits = (vertexCoordinateUnits)dummyUint8;
-    ok &= readUint8(iss, dummyUint8); mShouldSetWhiteTextureOnNewFace = dummyUint8 != 0;
+    ok &= readChar(iRawRecord, 8, mAsciiId);
+    ok &= readInt32(iRawRecord, mFormatRevision);
+    ok &= readInt32(iRawRecord, mEditRevision);
+    ok &= readChar(iRawRecord, 32, mDateAntTimeOfLastRevision );
+    ok &= readUint16(iRawRecord, mNextGroupNodeId);
+    ok &= readUint16(iRawRecord, mNextLodNodeId);
+    ok &= readUint16(iRawRecord, mNextObjectNodeId);
+    ok &= readUint16(iRawRecord, mNextFaceNodeId);
+    ok &= readUint16(iRawRecord, mUnitMultiplier);
+    ok &= readUint8(iRawRecord, dummyUint8); mVertexCoordinateUnits = (vertexCoordinateUnits)dummyUint8;
+    ok &= readUint8(iRawRecord, dummyUint8); mShouldSetWhiteTextureOnNewFace = dummyUint8 != 0;
+    ok &= readInt32(iRawRecord, mFlags);
     //reserved
-    iss.seekg(92);
-    ok &= readInt32(iss, dummyInt32); mProjection = (projectionType)dummyInt32;
+    iRawRecord.seekg(startPos + 92);
+    ok &= readInt32(iRawRecord, dummyInt32); mProjection = (projectionType)dummyInt32;
     //reserved
-    iss.seekg(124);
-    ok &= readUint16(iss, mNextDofNodeId);
-    ok &= readUint16(iss, mVertexStorageType);
-    ok &= readInt32(iss, dummyInt32); mDatabaseOrigin = (databaseOrigin)dummyInt32;
-    ok &= readDouble(iss, mSouthWestDbCoordinateX);
-    ok &= readDouble(iss, mSouthWestDbCoordinateY);
-    ok &= readDouble(iss, mDeltaX);
-    ok &= readDouble(iss, mDeltaY);
-    ok &= readUint16(iss, mNextSoundNodeId);
-    ok &= readUint16(iss, mNextPathNodeId);
+    iRawRecord.seekg(startPos + 124);
+    ok &= readUint16(iRawRecord, mNextDofNodeId);
+    ok &= readUint16(iRawRecord, mVertexStorageType);
+    ok &= readInt32(iRawRecord, dummyInt32); mDatabaseOrigin = (databaseOrigin)dummyInt32;
+    ok &= readDouble(iRawRecord, mSouthWestDbCoordinateX);
+    ok &= readDouble(iRawRecord, mSouthWestDbCoordinateY);
+    ok &= readDouble(iRawRecord, mDeltaX);
+    ok &= readDouble(iRawRecord, mDeltaY);
+    ok &= readUint16(iRawRecord, mNextSoundNodeId);
+    ok &= readUint16(iRawRecord, mNextPathNodeId);
     //reserved
-    iss.seekg(176);
-    ok &= readUint16(iss, mNextClipNodeId);
-    ok &= readUint16(iss, mNextTextNodeId);
-    ok &= readUint16(iss, mNextBspNodeId);
-    ok &= readUint16(iss, mNextSwitchNodeId);
+    iRawRecord.seekg(startPos + 176);
+    ok &= readUint16(iRawRecord, mNextClipNodeId);
+    ok &= readUint16(iRawRecord, mNextTextNodeId);
+    ok &= readUint16(iRawRecord, mNextBspNodeId);
+    ok &= readUint16(iRawRecord, mNextSwitchNodeId);
     //reserved
-    iss.seekg(188);
-    ok &= readDouble(iss, mSouthWestCornerLatitude);
-    ok &= readDouble(iss, mSouthWestCornerLongitude);
-    ok &= readDouble(iss, mNorthEastCornerLatitude);
-    ok &= readDouble(iss, mNorthEastCornerLongitude);
-    ok &= readDouble(iss, mOriginLatitude);
-    ok &= readDouble(iss, mOriginLongitude);
-    ok &= readDouble(iss, mLambertUpperLatitude);
-    ok &= readDouble(iss, mLambertLowerLatitude);
-    ok &= readUint16(iss, mNextLightSourceNodeId);
-    ok &= readUint16(iss, mNextLightPointNodeId);
-    ok &= readUint16(iss, mNextRoadNodeId);
-    ok &= readUint16(iss, mNextCatNodeId);
+    iRawRecord.seekg(startPos + 188);
+    ok &= readDouble(iRawRecord, mSouthWestCornerLatitude);
+    ok &= readDouble(iRawRecord, mSouthWestCornerLongitude);
+    ok &= readDouble(iRawRecord, mNorthEastCornerLatitude);
+    ok &= readDouble(iRawRecord, mNorthEastCornerLongitude);
+    ok &= readDouble(iRawRecord, mOriginLatitude);
+    ok &= readDouble(iRawRecord, mOriginLongitude);
+    ok &= readDouble(iRawRecord, mLambertUpperLatitude);
+    ok &= readDouble(iRawRecord, mLambertLowerLatitude);
+    ok &= readUint16(iRawRecord, mNextLightSourceNodeId);
+    ok &= readUint16(iRawRecord, mNextLightPointNodeId);
+    ok &= readUint16(iRawRecord, mNextRoadNodeId);
+    ok &= readUint16(iRawRecord, mNextCatNodeId);
     //reserved
-    iss.seekg(268);
-    ok &= readInt32(iss, dummyInt32); mEarthEllipsoidModel = (earthEllipsoidModel)dummyInt32;
-    ok &= readUint16(iss, mNextAdaptiveNodeId);
-    ok &= readUint16(iss, mNextCurveNodeId);
+    iRawRecord.seekg(startPos + 268);
+    ok &= readInt32(iRawRecord, dummyInt32); mEarthEllipsoidModel = (earthEllipsoidModel)dummyInt32;
+    ok &= readUint16(iRawRecord, mNextAdaptiveNodeId);
+    ok &= readUint16(iRawRecord, mNextCurveNodeId);
   
     if(ok && mFormatRevision >= 1580)
-    { ok &= readInt16(iss, mUtmZone); }
-    else{ readInt16(iss, dummyInt16); }
+    { ok &= readInt16(iRawRecord, mUtmZone); }
+    else{ readInt16(iRawRecord, dummyInt16); }
   
     //reserved
-    iss.seekg(284);
+    iRawRecord.seekg(startPos + 284);
   
     if(ok && mFormatRevision >= 1570)
     {
-      ok &= readDouble(iss, mDeltaZ);
-      ok &= readDouble(iss, mRadius);
-      ok &= readUint16(iss, mNextMeshNodeId);
+      ok &= readDouble(iRawRecord, mDeltaZ);
+      ok &= readDouble(iRawRecord, mRadius);
+      ok &= readUint16(iRawRecord, mNextMeshNodeId);
     }
   
     if(ok && mFormatRevision >= 1580)
     {
-      ok &= readUint16(iss, mNextLightPointSystemId);
+      ok &= readUint16(iRawRecord, mNextLightPointSystemId);
       //reserved
-      iss.seekg(308);
-      ok &= readDouble(iss, mEarthMajorAxis);
-      ok &= readDouble(iss, mEarthMinorAxis);
+      iRawRecord.seekg(startPos + 308);
+      ok &= readDouble(iRawRecord, mEarthMajorAxis);
+      ok &= readDouble(iRawRecord, mEarthMinorAxis);
     }
     
     return ok;

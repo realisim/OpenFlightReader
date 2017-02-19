@@ -2,7 +2,9 @@
 #pragma once
 
 #include "Record.h"
+#include <memory>
 #include <vector>
+
 
 namespace OpenFlight
 {
@@ -31,11 +33,11 @@ namespace OpenFlight
         bool isExternalReference() const;
         
     protected:
-        virtual bool parseRecord(const std::string& iRawRecord, int iVersion) = 0;
+        virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) = 0;
         virtual void handleAddedAncillaryRecord(AncillaryRecord*);
         
         std::vector<AncillaryRecord*> mAncillaryRecords;
-        std::vector<PrimaryRecord*> mChilds;
+        std::vector< PrimaryRecord* > mChilds;
         PrimaryRecord* mpParent;
         
         // ancillary records

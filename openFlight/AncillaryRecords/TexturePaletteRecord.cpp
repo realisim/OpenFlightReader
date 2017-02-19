@@ -1,6 +1,6 @@
 #include <cassert>
 #include "TexturePaletteRecord.h"
-#include <sstream>
+#include <fstream>
 #include "StreamUtilities.h"
 
 using namespace std;
@@ -24,20 +24,14 @@ int32_t TexturePaletteRecord::getTexturePatternIndex() const
 { return mTexturePatternIndex; }
 
 //-------------------------------------------------------------------------
-bool TexturePaletteRecord::parseRecord(const std::string& iRawRecord, int iVersion)
+bool TexturePaletteRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
 {
     Record::parseRecord(iRawRecord, iVersion);
-    
-    stringstream iss(stringstream::in | stringstream::binary);
-    iss.str( iRawRecord );
-
-    //skip header...
-    iss.seekg(4);
 
     bool ok = true;
-    ok &= readChar(iss, 200, mFilenamePath);
-    ok &= readInt32(iss, mTexturePatternIndex);
-    ok &= readVector2i(iss, mLocation);
+    ok &= readChar(iRawRecord, 200, mFilenamePath);
+    ok &= readInt32(iRawRecord, mTexturePatternIndex);
+    ok &= readVector2i(iRawRecord, mLocation);
 
     return ok;
 }

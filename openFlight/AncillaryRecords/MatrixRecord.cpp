@@ -1,6 +1,6 @@
 #include <cassert>
 #include "MatrixRecord.h"
-#include <sstream>
+#include <fstream>
 #include "StreamUtilities.h"
 
 using namespace std;
@@ -15,18 +15,12 @@ const Matrix4f& MatrixRecord::getMatrix() const
 { return mMatrix; }
 
 //-------------------------------------------------------------------------
-bool MatrixRecord::parseRecord(const std::string& iRawRecord, int iVersion)
+bool MatrixRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
 {
     Record::parseRecord(iRawRecord, iVersion);
-    
-    stringstream iss(stringstream::in | stringstream::binary);
-    iss.str( iRawRecord );
-
-    //skip header...
-    iss.seekg(4);
 
     bool ok = true;
-    ok &= readMatrix4f(iss, mMatrix);
+    ok &= readMatrix4f(iRawRecord, mMatrix);
     
     return ok;
 }

@@ -21,7 +21,7 @@ namespace OpenFlight
          records, he is friend.*/
         friend class OpenFlightReader;
         
-        virtual bool parseRecord(const std::string& iRawRecord, int iVersion);
+        virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion);
         
         opCode mOpCode;
         uint16_t mRecordLenght;

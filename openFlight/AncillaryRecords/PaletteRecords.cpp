@@ -1,7 +1,7 @@
 
 #include <cassert>
 #include "PaletteRecords.h"
-#include <sstream>
+#include <fstream>
 #include "StreamUtilities.h"
 
 using namespace std;
@@ -23,21 +23,21 @@ AncillaryRecord(ipParent)
 }
 
 //-------------------------------------------------------------------------
-bool ColorPaletteRecord::parseRecord(const std::string& iRawRecord, int iVersion)
+bool ColorPaletteRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
 {
+    std::streamoff startPos = iRawRecord.tellg();
     Record::parseRecord(iRawRecord, iVersion);
-    
-    stringstream iss(stringstream::in | stringstream::binary);
-    iss.str( iRawRecord );
     
     bool ok = true;
     
-    iss.seekg(132);
+    // 132 is where the data starts, 
+    //
+    iRawRecord.seekg(startPos + 132);
     //color format is a, b, g, r.
     for(int i = 0; i < kNumberOfColorEntries && ok; ++i)
     {
         uint32_t color;
-        ok &= readUint32(iss, color);
+        ok &= readUint32(iRawRecord, color);
         swapBytes4((void*)&color); //swap to have r g b a;
         
         mColors[i] = Color4ub(color);
@@ -114,40 +114,36 @@ bool LightSourcePaletteRecord::isModelingLight() const
 { return mIsModelingLight;}
 
 //-------------------------------------------------------------------------
-bool LightSourcePaletteRecord::parseRecord(const std::string& iRawRecord, int iVersion)
+bool LightSourcePaletteRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
 {
+    std::streamoff startPos = iRawRecord.tellg();
     Record::parseRecord(iRawRecord, iVersion);
     
-    stringstream iss(stringstream::in | stringstream::binary);
-    iss.str( iRawRecord );
-    
     bool ok = true;
-    
-    //skip opcode and record length
     int32_t dummyInt32;
-    iss.seekg(4);
-    ok &= readInt32(iss, mIndex);
+
+    ok &= readInt32(iRawRecord, mIndex);
     
-    iss.seekg(16);
-    ok &= readChar(iss, 20, mName);
+    iRawRecord.seekg(startPos + 16);
+    ok &= readChar(iRawRecord, 20, mName);
     
-    iss.seekg(40);
-    ok &= readColor4f(iss, mAmbient);
-    ok &= readColor4f(iss, mDiffuse);
-    ok &= readColor4f(iss, mSpecular);
-    ok &= readInt32(iss, dummyInt32);
+    iRawRecord.seekg(startPos + 40);
+    ok &= readColor4f(iRawRecord, mAmbient);
+    ok &= readColor4f(iRawRecord, mDiffuse);
+    ok &= readColor4f(iRawRecord, mSpecular);
+    ok &= readInt32(iRawRecord, dummyInt32);
     mLightType = (lightType)dummyInt32;
     
-    iss.seekg(132);
-    ok &= readFloat32(iss, mSpotExponentialDropoff);
-    ok &= readFloat32(iss, mSpotCutoffAngle);
-    ok &= readFloat32(iss, mYaw);
-    ok &= readFloat32(iss, mPitch);
-    ok &= readFloat32(iss, mConstantAttenuationCoefficient);
-    ok &= readFloat32(iss, mLinearAttenuationCoefficient);
-    ok &= readFloat32(iss, mQuadraticAttenuationCoefficient);
+    iRawRecord.seekg(startPos + 132);
+    ok &= readFloat32(iRawRecord, mSpotExponentialDropoff);
+    ok &= readFloat32(iRawRecord, mSpotCutoffAngle);
+    ok &= readFloat32(iRawRecord, mYaw);
+    ok &= readFloat32(iRawRecord, mPitch);
+    ok &= readFloat32(iRawRecord, mConstantAttenuationCoefficient);
+    ok &= readFloat32(iRawRecord, mLinearAttenuationCoefficient);
+    ok &= readFloat32(iRawRecord, mQuadraticAttenuationCoefficient);
     
-    ok &= readInt32(iss, dummyInt32);
+    ok &= readInt32(iRawRecord, dummyInt32);
     mIsModelingLight = dummyInt32 == 0 ? false : true;
     return ok;
 }
@@ -196,27 +192,21 @@ const Color3f& MaterialPaletteRecord::getSpecular() const
 { return mSpecular;}
 
 //-------------------------------------------------------------------------
-bool MaterialPaletteRecord::parseRecord(const std::string& iRawRecord, int iVersion)
+bool MaterialPaletteRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
 {
     Record::parseRecord(iRawRecord, iVersion);
     
-    stringstream iss(stringstream::in | stringstream::binary);
-    iss.str( iRawRecord );
-    
     bool ok = true;
     
-    //skip opcode and record length
-    iss.seekg(4);
-    
-    ok &= readInt32(iss, mIndex);
-    ok &= readChar(iss, 12, mName);
-    ok &= readInt32(iss, mFlags);
-    ok &= readColor3f(iss, mAmbient);
-    ok &= readColor3f(iss, mDiffuse);
-    ok &= readColor3f(iss, mSpecular);
-    ok &= readColor3f(iss, mEmissive);
-    ok &= readFloat32(iss, mShininess);
-    ok &= readFloat32(iss, mAlpha);
+    ok &= readInt32(iRawRecord, mIndex);
+    ok &= readChar(iRawRecord, 12, mName);
+    ok &= readInt32(iRawRecord, mFlags);
+    ok &= readColor3f(iRawRecord, mAmbient);
+    ok &= readColor3f(iRawRecord, mDiffuse);
+    ok &= readColor3f(iRawRecord, mSpecular);
+    ok &= readColor3f(iRawRecord, mEmissive);
+    ok &= readFloat32(iRawRecord, mShininess);
+    ok &= readFloat32(iRawRecord, mAlpha);
     return ok;
 }
 
@@ -232,24 +222,22 @@ mOffset(8)
 }
 
 //-------------------------------------------------------------------------
-bool VertexPaletteRecord::addVertexRawRecord(const std::string& iRawRecord)
+bool VertexPaletteRecord::addVertexRawRecord(std::ifstream& iRawRecord)
 {
-    stringstream iss(stringstream::in | stringstream::binary);
-    iss.str( iRawRecord );
     bool ok = true;
     
     uint16_t dummyInt16;
     uint16_t recordLength = 0;
-    ok &= readUint16(iss, dummyInt16);
+    ok &= readUint16(iRawRecord, dummyInt16);
     opCode oc = (opCode)dummyInt16;
-    ok &= readUint16(iss, recordLength);
+    ok &= readUint16(iRawRecord, recordLength);
     if(ok)
     {
         Vertex v;
         
-        ok &= readUint16(iss, v.mColorNameIndex);
-        ok &= readUint16(iss, v.mFlags);
-        ok &= readVector3d(iss, v.mCoordinate);
+        ok &= readUint16(iRawRecord, v.mColorNameIndex);
+        ok &= readUint16(iRawRecord, v.mFlags);
+        ok &= readVector3d(iRawRecord, v.mCoordinate);
         
         int32_t dummyInt32;
         switch (oc)
@@ -259,16 +247,16 @@ bool VertexPaletteRecord::addVertexRawRecord(const std::string& iRawRecord)
             }break;
             case ocVertexWithColorAndNormal:
             {
-                ok &= readVector3f(iss, v.mNormal);
+                ok &= readVector3f(iRawRecord, v.mNormal);
             }break;
             case ocVertexWithColorNormalAndUv:
             {
-                ok &= readVector3f(iss, v.mNormal);
-                ok &= readVector2f(iss, v.mTextureCoordinate);
+                ok &= readVector3f(iRawRecord, v.mNormal);
+                ok &= readVector2f(iRawRecord, v.mTextureCoordinate);
             }break;
             case ocVertexWithColorAndUv:
             {
-                ok &= readVector2f(iss, v.mTextureCoordinate);
+                ok &= readVector2f(iRawRecord, v.mTextureCoordinate);
             }break;
                 
             default: break;
@@ -279,14 +267,14 @@ bool VertexPaletteRecord::addVertexRawRecord(const std::string& iRawRecord)
         if( !v.hasFlag(Vertex::fNoColor) )
         {
             //packed color is in a,b,g,r and we want r,g,b,a
-            ok &= readInt32(iss, dummyInt32);
+            ok &= readInt32(iRawRecord, dummyInt32);
             swapBytes4((void*) &dummyInt32);
             v.mPackedColor = Color4ub(dummyInt32);
-            ok &= readUint32(iss, v.mColorIndex);
+            ok &= readUint32(iRawRecord, v.mColorIndex);
         }
         
         mOffsetToVertexIndex.insert( make_pair(mOffset, mVertices.size() ) );
-        mOffset += iRawRecord.size();
+        mOffset += recordLength;
         mVertices.push_back( v );
     }
     return ok;
@@ -315,23 +303,28 @@ const std::vector<Vertex>& VertexPaletteRecord::getVertices() const
 { return mVertices; }
 
 //-------------------------------------------------------------------------
-bool VertexPaletteRecord::parseRecord(const std::string& iRawRecord, int iVersion)
+bool VertexPaletteRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
 {
+    std::streamoff startPos = iRawRecord.tellg();
     Record::parseRecord(iRawRecord, iVersion);
     
-    stringstream iss(stringstream::in | stringstream::binary);
-    iss.str( iRawRecord );
-    
     bool ok = true;
-    
-    //skip opcode and record length
-    iss.seekg(4);
     
     //since all vertex data are contained in the records following
     //the vertex palette, there is nothing to read here!
     
     //The vertex palette will be populated by the reader when
     //it encouters the actual vertex record.
+    
+    // it is possible to skip the whole vertex data by skipping
+    // all the following records
+    //
+    // ocVertexWithColor:
+    // ocVertexWithColorAndNormal:
+    // ocVertexWithColorNormalAndUv:
+    // ocVertexWithColorAndUv:
+    //
+    //
     
     return ok;
 }

@@ -1,6 +1,6 @@
 #include <cassert>
 #include "TranslateRecord.h"
-#include <sstream>
+#include <fstream>
 #include "StreamUtilities.h"
 
 using namespace std;
@@ -20,18 +20,16 @@ const Vector3d& TranslateRecord::getOrigin() const
 { return mOrigin; }
 
 //-------------------------------------------------------------------------
-bool TranslateRecord::parseRecord(const std::string& iRawRecord, int iVersion)
+bool TranslateRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
 {
+    std::streamoff startPos = iRawRecord.tellg();
     Record::parseRecord(iRawRecord, iVersion);
     
-    stringstream iss(stringstream::in | stringstream::binary);
-    iss.str( iRawRecord );
-
-    iss.seekg(8);
+    iRawRecord.seekg(startPos + 8);
 
     bool ok = true;
-    ok &= readVector3d(iss, mOrigin);
-    ok &= readVector3d(iss, mDelta);
+    ok &= readVector3d(iRawRecord, mOrigin);
+    ok &= readVector3d(iRawRecord, mDelta);
     
     return ok;
 }

@@ -20,7 +20,7 @@ namespace OpenFlight
         const Vector3d& getOrigin() const;
 
     protected:
-        virtual bool parseRecord(const std::string& iRawRecord, int iVersion) override;
+        virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override;
         
         Vector3d mOrigin;
         Vector3d mDelta;

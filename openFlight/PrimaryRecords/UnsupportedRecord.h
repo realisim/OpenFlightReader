@@ -31,7 +31,7 @@ namespace OpenFlight
         opCode getOriginalOpCode() const;
 
     protected:
-        virtual bool parseRecord(const std::string& iRawRecord, int iVersion) override;
+        virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override;
 
         std::string mAsciiId;
         opCode mOriginalOpCode;

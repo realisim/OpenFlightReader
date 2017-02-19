@@ -25,17 +25,9 @@ opCode UnsupportedRecord::getOriginalOpCode() const
 { return mOriginalOpCode;}
 
 //------------------------------------------------------------------------------
-bool UnsupportedRecord::parseRecord(const std::string& iRawRecord, int iVersion)
+bool UnsupportedRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
 {
     Record::parseRecord(iRawRecord, iVersion);
-    
-    stringstream iss(stringstream::in | stringstream::binary);
-    iss.str( iRawRecord );
-
-    // Lets move by 4 to skip the opCode and recordLenght... we already know
-    // we have a valid record at this point.
-    //
-    iss.seekg(4);
     
     bool ok = true;
     mAsciiId = "Missing";

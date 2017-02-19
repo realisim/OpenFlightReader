@@ -19,7 +19,7 @@ namespace OpenFlight
         const Matrix4f& getMatrix() const;
 
     protected:
-        virtual bool parseRecord(const std::string& iRawRecord, int iVersion) override;
+        virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override;
         
         Matrix4f mMatrix;
     };

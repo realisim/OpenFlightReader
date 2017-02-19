@@ -1,6 +1,6 @@
 
 #include "GroupRecord.h"
-#include <sstream>
+#include <fstream>
 #include "StreamUtilities.h"
 
 using namespace std;
@@ -62,35 +62,29 @@ int16_t GroupRecord::getSpecialEffectId2() const
 { return mSpecialEffectId2;}
 
 //------------------------------------------------------------------------------
-bool GroupRecord::parseRecord(const std::string& iRawRecord, int iVersion)
+bool GroupRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
 {
+    std::streamoff startPos = iRawRecord.tellg();
     Record::parseRecord(iRawRecord, iVersion);
     
-    stringstream iss(stringstream::in | stringstream::binary);
-    iss.str( iRawRecord );
-
-    // Lets move by 4 to skip the opCode and recordLenght... we already know
-    // we have a valid record at this point.
-    //
-    iss.seekg(4);
     
     bool ok = true;
-    ok &= readChar(iss, 8, mAsciiId);
-    ok &= readInt16(iss, mRelativePriority);
+    ok &= readChar(iRawRecord, 8, mAsciiId);
+    ok &= readInt16(iRawRecord, mRelativePriority);
     
-    iss.seekg(16);
-    ok &= readInt32(iss, mFlags);
-    ok &= readInt16(iss, mSpecialEffectId1);
-    ok &= readInt16(iss, mSpecialEffectId2);
-    ok &= readInt16(iss, mSignificance);
-    ok &= readInt8(iss, mLayerCode);
+    iRawRecord.seekg(startPos + 16);
+    ok &= readInt32(iRawRecord, mFlags);
+    ok &= readInt16(iRawRecord, mSpecialEffectId1);
+    ok &= readInt16(iRawRecord, mSpecialEffectId2);
+    ok &= readInt16(iRawRecord, mSignificance);
+    ok &= readInt8(iRawRecord, mLayerCode);
     
     if( iVersion >= 1580 )
     {
-        iss.seekg(32);
-        ok &= readInt32(iss, mLoopCount);
-        ok &= readFloat32(iss, mLoopDuration);
-        ok &= readFloat32(iss, mLastFrameDuration);
+        iRawRecord.seekg(startPos + 32);
+        ok &= readInt32(iRawRecord, mLoopCount);
+        ok &= readFloat32(iRawRecord, mLoopDuration);
+        ok &= readFloat32(iRawRecord, mLastFrameDuration);
     }
     return ok;
 }

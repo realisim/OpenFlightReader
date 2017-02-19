@@ -11,11 +11,16 @@ using namespace std;
 
 struct Options
 {
-    Options() : mDebug(false), mExportToDot(false), mDotInclusions(),
-    mFilenamePath(){}
+    Options() :
+        mDebug(false),
+        mExportToDot(false),
+        mVertexDataSkipped(false),
+        mDotInclusions(),
+        mFilenamePath(){}
     
     bool mDebug;
     bool mExportToDot;
+    bool mVertexDataSkipped;
     set<OpenFlight::opCode> mDotInclusions;
     string mFilenamePath;
 };
@@ -213,6 +218,8 @@ Options parseArgs(int argc, char** argv)
                     
                     if(inclusion == "headerRecord")
                     { opt.mDotInclusions.insert( OpenFlight::ocHeader ); }
+                    if(inclusion == "externalReference")
+                    { opt.mDotInclusions.insert( OpenFlight::ocExternalReference ); }
                     if(inclusion == "groupRecord")
                     { opt.mDotInclusions.insert( OpenFlight::ocGroup ); }
                     if(inclusion == "objectRecord")
@@ -220,6 +227,11 @@ Options parseArgs(int argc, char** argv)
                     if(inclusion == "matrixRecord")
                     { opt.mDotInclusions.insert( OpenFlight::ocMatrix ); }
                 }
+            }
+            
+            if(string(argv[i]) == "-skipVertexData" )
+            {
+                opt.mVertexDataSkipped = true;
             }
             
             if( string(argv[i]) == "-f" && argc > i+1)
@@ -242,6 +254,8 @@ int main(int argc, char** argv)
     {
         OpenFlight::OpenFlightReader::Options ofrOptions;
         ofrOptions.mDebugEnabled = opt.mDebug;
+        ofrOptions.mVertexDataSkipped = opt.mVertexDataSkipped;
+        ofr.setOptions(ofrOptions);
         
         OpenFlight::HeaderRecord *pRoot = ofr.open( opt.mFilenamePath );
         if ( !ofr.hasErrors() )
@@ -274,11 +288,14 @@ int main(int argc, char** argv)
         "\t\t\t paletteRecords: all palette records\n"<<
         
         "\t\t\t headerRecord: header record\n"<<
+        "\t\t\t externalReference: group record\n"<<
         "\t\t\t groupRecord: group record\n"<<
         "\t\t\t objectRecord: object record\n"<<
         
         "\t\t\t matrixRecord: matrix record\n"<<
         
+        
+        "\t -skipVertexData: All vertex data (vertex palette content and vertex pool content records) will be skipped.\n\n"<<
         "\t -f: The filename path to be read.\n\n"<<
         
         "Examples: \n"<<

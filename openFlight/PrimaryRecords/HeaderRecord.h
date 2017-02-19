@@ -151,7 +151,7 @@ namespace OpenFlight
         friend class OpenFlightReader;
         
         virtual void handleAddedAncillaryRecord(AncillaryRecord*) override;
-        virtual bool parseRecord(const std::string& iRawRecord, int iVersion) override;
+        virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override;
         void setFileInfo(const std::string& iFilenamePath, const std::string& iFilePath, const std::string& iFilename);
         
         std::string mAsciiId;

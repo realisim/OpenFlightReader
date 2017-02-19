@@ -44,7 +44,7 @@ namespace OpenFlight
         void setSpecialEffectId2(int16_t);*/
 
     protected:
-        virtual bool parseRecord(const std::string& iRawRecord, int iVersion) override;
+        virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override;
 
         std::string mAsciiId;
         int16_t mRelativePriority;
