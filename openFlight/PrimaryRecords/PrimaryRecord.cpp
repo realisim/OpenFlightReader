@@ -13,7 +13,8 @@ using namespace std;
 //-------------------------------------------------------------------------
 PrimaryRecord::PrimaryRecord(PrimaryRecord* ipParent) : Record(),
 mpParent(ipParent),
-mpLongId(nullptr)
+mpLongId(nullptr),
+mUseCount(1)
 {}
 
 //-------------------------------------------------------------------------
@@ -26,8 +27,13 @@ PrimaryRecord::~PrimaryRecord()
     mAncillaryRecords.clear();
     
     // delete all childs
+    PrimaryRecord *c = nullptr;
     for(size_t i = 0; i < mChilds.size(); ++i)
-    { delete mChilds[i]; }
+    {
+        c = mChilds[i];
+        if(c->decrementUseCount() == 1)
+        { delete c; }
+    }
 
     mChilds.clear();
 }
@@ -45,6 +51,14 @@ void PrimaryRecord::addChild(PrimaryRecord* iChild)
 { 
     if (iChild != nullptr)
     { mChilds.push_back(iChild); }
+}
+
+//-------------------------------------------------------------------------
+int PrimaryRecord::decrementUseCount()
+{
+    int r = mUseCount;
+    --mUseCount;
+    return r;
 }
 
 //-------------------------------------------------------------------------
@@ -72,6 +86,10 @@ PrimaryRecord* PrimaryRecord::getParent() const
 { return mpParent; }
 
 //-------------------------------------------------------------------------
+int PrimaryRecord::getUseCount() const
+{return mUseCount; }
+
+//-------------------------------------------------------------------------
 void PrimaryRecord::handleAddedAncillaryRecord(AncillaryRecord* ipAncillary)
 {
     switch (ipAncillary->getOpCode())
@@ -91,3 +109,6 @@ bool PrimaryRecord::isExternalReference() const
     return getParent() != nullptr && getParent()->getOpCode() == ocExternalReference;
 }
 
+//-------------------------------------------------------------------------
+void PrimaryRecord::incrementUseCount()
+{ ++mUseCount; }

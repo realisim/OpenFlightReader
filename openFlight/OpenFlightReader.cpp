@@ -97,6 +97,7 @@ void OpenFlightReader::clear()
     
     mpRootNode = nullptr;
     mReadState = ReadState();
+    mExternalReferences.clear();
     
     //clear the stack
     while ( !mReadStateStack.empty() )
@@ -195,7 +196,7 @@ void OpenFlightReader::open(const std::string& iFileNamePath,
     {
         clear();
     }
-    
+
     // first lets separate the filename from the path.
     // hum... we could keep only mFilenamePath and call
     // the methods for mFilenae and mFilepath...
@@ -216,7 +217,7 @@ void OpenFlightReader::open(const std::string& iFileNamePath,
     else
     {
         ostringstream oss;
-        oss << "OpenFlightReader::open - Could not open file " << iFileNamePath;
+        oss << "OpenFlightReader::open - Could not open file " << iFileNamePath << "\n";
         
         // if not an external reference, it means it is a top level file.
         // If a top level file was not open, we flag it as an error.
@@ -249,60 +250,85 @@ void OpenFlightReader::parseExternalReferenceRecord(std::ifstream& iRawRecord)
     ExternalReferenceRecord *extRef = new ExternalReferenceRecord(getCurrentParentNode());
     ((Record*)extRef)->parseRecord(iRawRecord, getCurrentHeaderNode()->getFormatRevision());
     
-    addPrimaryRecord(extRef);
-    
-    // Here, we push the read state because we are about
-    // to call OpenFlightReader::open() again. A call to open
-    // will break the internal reading state of the object. By
-    // pushing right before and poping right after, we are
-    // able to keep our internal reading state.
-    //
-    pushReadState();
-    
-    // We force a push level so all nodes comming from the external ref will be
-    // properly parented to the external ref node.
-    //
-    pushLevel();
-    
+
+    string relativeFilenamePath = extRef->getFilenamePath();
     // External reference filenamePath should always be relative.
     // In order to locate the file on disk, we prepend the relative
-    // path with the current filePath.
+    // path with the current filePath (see getFilePath() and ReadState).
     //
     // Sometimes, the external ref filename path is aboslute, we will
     // try to make it relative to the current filePath...
-    string filenamePath = extRef->getFilenamePath();
-    if( isPathAbsolute( filenamePath ) )
+    
+    if( isPathAbsolute( relativeFilenamePath ) )
     {
         ostringstream oss;
         oss << "An absolute path was found while parsing an external reference: \n" <<
-            filenamePath;
+        relativeFilenamePath;
         addWarning(oss.str());
         
-        filenamePath = makePathRelativeTo( filenamePath, getFilePath() );
+        relativeFilenamePath = makePathRelativeTo( relativeFilenamePath, getFilePath() );
     }
+    const string filenamePath = getFilePath() + relativeFilenamePath;
     
-    // opening a specific node from an external ref is not
-    // yet supported...
+    // try to insert the filename path into the map of already parsed
+    // external refs.
+    // If the external ref has already been parse, we will reuse it.
     //
-    if( extRef->getNodeName().empty() )
+    auto insertFileIt = mExternalReferences.insert( make_pair( filenamePath, extRef ) );
+    const bool fileAlreadyParsed = !insertFileIt.second;
+    printf("external ref %s insert state: %d\n", filenamePath.c_str(), fileAlreadyParsed);
+    
+    if( !fileAlreadyParsed )
     {
-        //skip external reference content if so desired.
-        if( getOptions().mExternalReferenceLoadingEnabled )
-        { open( getFilePath() + filenamePath, true ); }
-        else if( getOptions().mDebugEnabled )
-        { printf("--- External reference content skipped; hasExternalReferenceLoadingEnabled is false ---\n\n"); }
-    }
-    else
-    {
-        ostringstream oss;
-        oss << "Loading a specific node from an external reference is not " <<
+        addPrimaryRecord(extRef);
+        
+        // Here, we push the read state because we are about
+        // to call OpenFlightReader::open() again. A call to open
+        // will break the internal reading state of the object. By
+        // pushing right before and poping right after, we are
+        // able to keep our internal reading state.
+        //
+        pushReadState();
+        
+        // We force a push level so all nodes comming from the external ref will be
+        // properly parented to the external ref node.
+        //
+        pushLevel();
+        
+        // opening a specific node from an external ref is not
+        // yet supported...
+        //
+        if( extRef->getNodeName().empty() )
+        {
+            //skip external reference content if so desired.
+            if( getOptions().mExternalReferenceLoadingEnabled )
+            { open( filenamePath, true ); }
+            else if( getOptions().mDebugEnabled )
+            { printf("--- External reference content skipped; hasExternalReferenceLoadingEnabled is false ---\n\n"); }
+        }
+        else
+        {
+            ostringstream oss;
+            oss << "Loading a specific node from an external reference is not " <<
             "supported. This was encountered in file: \n" <<
             "\t" << getFilenamePath() << "\n With external reference: \n" <<
             "\t" << extRef->getFilenamePath() << " node: " << extRef->getNodeName() << endl;
-        addError( oss.str() );
+            addError( oss.str() );
+        }
+        
+        popReadState();
+        
+    }
+    else
+    {
+        // reuse already existing ext ref
+        //
+        delete extRef;
+        extRef = insertFileIt.first->second;
+        extRef->incrementUseCount();
+        addPrimaryRecord(extRef);
     }
     
-    popReadState();
     
     // Maybe we should apply the palettes, accordingly with the flags
     // from the external ref, to the HeaderRecord that was just added.
