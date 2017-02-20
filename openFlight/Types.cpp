@@ -21,7 +21,7 @@ Matrix4f::Matrix4f()
 //-------------------------------------------------------------------------
 bool Vertex::hasFlag(Vertex::flag iFlag) const
 {
-    return mFlags & iFlag;
+    return mFlags & (uint16_t)iFlag;
 }
 
 

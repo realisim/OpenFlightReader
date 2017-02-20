@@ -273,7 +273,7 @@ bool VertexPaletteRecord::addVertexRawRecord(std::ifstream& iRawRecord)
             ok &= readUint32(iRawRecord, v.mColorIndex);
         }
         
-        mOffsetToVertexIndex.insert( make_pair(mOffset, mVertices.size() ) );
+        mOffsetToVertexIndex.insert( make_pair(mOffset, (int)mVertices.size() ) );
         mOffset += recordLength;
         mVertices.push_back( v );
     }
