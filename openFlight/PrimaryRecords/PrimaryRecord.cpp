@@ -54,10 +54,12 @@ void PrimaryRecord::addChild(PrimaryRecord* iChild)
 }
 
 //-------------------------------------------------------------------------
+// Arg! this should be recursive
+//
 int PrimaryRecord::decrementUseCount()
 {
     int r = mUseCount;
-    --mUseCount;
+    incrementUseCount(this, -1);
     return r;
 }
 
@@ -111,4 +113,15 @@ bool PrimaryRecord::isExternalReference() const
 
 //-------------------------------------------------------------------------
 void PrimaryRecord::incrementUseCount()
-{ ++mUseCount; }
+{ incrementUseCount(this, 1); }
+
+//-------------------------------------------------------------------------
+void PrimaryRecord::incrementUseCount(PrimaryRecord* ipR, int iInc)
+{ 
+    ipR->mUseCount += iInc;
+    
+    for (int i = 0; i < ipR->getNumberOfChilds(); ++i)
+    {
+        incrementUseCount( ipR->mChilds[i], iInc );
+    }
+}

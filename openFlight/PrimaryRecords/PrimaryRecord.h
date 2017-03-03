@@ -41,6 +41,7 @@ namespace OpenFlight
     protected:
         virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) = 0;
         virtual void handleAddedAncillaryRecord(AncillaryRecord*);
+        void incrementUseCount(PrimaryRecord*, int);
         
         std::vector<AncillaryRecord*> mAncillaryRecords;
         std::vector< PrimaryRecord* > mChilds;

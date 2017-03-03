@@ -276,7 +276,7 @@ void OpenFlightReader::parseExternalReferenceRecord(std::ifstream& iRawRecord)
     //
     auto insertFileIt = mExternalReferences.insert( make_pair( filenamePath, extRef ) );
     const bool fileAlreadyParsed = !insertFileIt.second;
-    printf("external ref %s insert state: %d\n", filenamePath.c_str(), fileAlreadyParsed);
+    //printf("external ref %s insert state: %d\n", filenamePath.c_str(), fileAlreadyParsed);
     
     if( !fileAlreadyParsed )
     {
