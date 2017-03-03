@@ -8,6 +8,7 @@
 #include "PrimaryRecords/FaceRecord.h"
 #include "PrimaryRecords/GroupRecord.h"
 #include "PrimaryRecords/HeaderRecord.h"
+#include "PrimaryRecords/LevelOfDetailRecord.h"
 #include "PrimaryRecords/ObjectRecord.h"
 #include "PrimaryRecords/PrimaryRecord.h"
 #include "PrimaryRecords/UnsupportedRecord.h"

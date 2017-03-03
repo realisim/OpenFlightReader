@@ -1,5 +1,13 @@
-className: TexturePaletteRecord
+className: LevelOfDetailRecord
 
-std::string mFilenamePath;
-int32_t mTexturePatternIndex;
-Vector2i mLocation; //Location in the texture palette (x, y)
+std::string mAsciiId;
+double mSwitchInDistance;
+double mSwitchOutDistance;
+int16_t mSpecialEffectId1;
+int16_t mSpecialEffectId2;
+int32_t mFlags;
+double mLodX;
+double mLodY;
+double mLodZ;
+double mTransitionRange;
+double mSignificantSize;
