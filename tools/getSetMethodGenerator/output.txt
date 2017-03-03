@@ -1,48 +1,136 @@
 
     Members
-std::string mFilenamePath;
-int32_t mTexturePatternIndex;
-Vector2i mLocation; //Location in the texture palette (x, y)
+std::string mAsciiId;
+double mSwitchInDistance;
+double mSwitchOutDistance;
+int16_t mSpecialEffectId1;
+int16_t mSpecialEffectId2;
+int32_t mFlags;
+double mLodX;
+double mLodY;
+double mLodZ;
+double mTransitionRange;
+double mSignificantSize;
 
 
     Getters
-std::string getFilenamePath() const;
-Vector2i getLocation() const;
-int32_t getTexturePatternIndex() const;
+std::string getAsciiId() const;
+int32_t getFlags() const;
+double getLodX() const;
+double getLodY() const;
+double getLodZ() const;
+double getSignificantSize() const;
+int16_t getSpecialEffectId1() const;
+int16_t getSpecialEffectId2() const;
+double getSwitchInDistance() const;
+double getSwitchOutDistance() const;
+double getTransitionRange() const;
 
 
     Setters
-void setFilenamePath(std::string);
-void setLocation(Vector2i);
-void setTexturePatternIndex(int32_t);
+void setAsciiId(std::string);
+void setFlags(int32_t);
+void setLodX(double);
+void setLodY(double);
+void setLodZ(double);
+void setSignificantSize(double);
+void setSpecialEffectId1(int16_t);
+void setSpecialEffectId2(int16_t);
+void setSwitchInDistance(double);
+void setSwitchOutDistance(double);
+void setTransitionRange(double);
 
 
     Getter instantiation
 //------------------------------------------------------------------------------
-std::string TexturePaletteRecord::getFilenamePath() const
-{ return mFilenamePath; }
+std::string LevelOfDetailRecord::getAsciiId() const
+{ return mAsciiId; }
 
 //------------------------------------------------------------------------------
-Vector2i TexturePaletteRecord::getLocation() const
-{ return mLocation; }
+int32_t LevelOfDetailRecord::getFlags() const
+{ return mFlags; }
 
 //------------------------------------------------------------------------------
-int32_t TexturePaletteRecord::getTexturePatternIndex() const
-{ return mTexturePatternIndex; }
+double LevelOfDetailRecord::getLodX() const
+{ return mLodX; }
+
+//------------------------------------------------------------------------------
+double LevelOfDetailRecord::getLodY() const
+{ return mLodY; }
+
+//------------------------------------------------------------------------------
+double LevelOfDetailRecord::getLodZ() const
+{ return mLodZ; }
+
+//------------------------------------------------------------------------------
+double LevelOfDetailRecord::getSignificantSize() const
+{ return mSignificantSize; }
+
+//------------------------------------------------------------------------------
+int16_t LevelOfDetailRecord::getSpecialEffectId1() const
+{ return mSpecialEffectId1; }
+
+//------------------------------------------------------------------------------
+int16_t LevelOfDetailRecord::getSpecialEffectId2() const
+{ return mSpecialEffectId2; }
+
+//------------------------------------------------------------------------------
+double LevelOfDetailRecord::getSwitchInDistance() const
+{ return mSwitchInDistance; }
+
+//------------------------------------------------------------------------------
+double LevelOfDetailRecord::getSwitchOutDistance() const
+{ return mSwitchOutDistance; }
+
+//------------------------------------------------------------------------------
+double LevelOfDetailRecord::getTransitionRange() const
+{ return mTransitionRange; }
 
 
 
     Setter instantiation
 //------------------------------------------------------------------------------
-void TexturePaletteRecord::setFilenamePath(std::string)
+void LevelOfDetailRecord::setAsciiId(std::string)
 {}
 
 //------------------------------------------------------------------------------
-void TexturePaletteRecord::setLocation(Vector2i)
+void LevelOfDetailRecord::setFlags(int32_t)
 {}
 
 //------------------------------------------------------------------------------
-void TexturePaletteRecord::setTexturePatternIndex(int32_t)
+void LevelOfDetailRecord::setLodX(double)
+{}
+
+//------------------------------------------------------------------------------
+void LevelOfDetailRecord::setLodY(double)
+{}
+
+//------------------------------------------------------------------------------
+void LevelOfDetailRecord::setLodZ(double)
+{}
+
+//------------------------------------------------------------------------------
+void LevelOfDetailRecord::setSignificantSize(double)
+{}
+
+//------------------------------------------------------------------------------
+void LevelOfDetailRecord::setSpecialEffectId1(int16_t)
+{}
+
+//------------------------------------------------------------------------------
+void LevelOfDetailRecord::setSpecialEffectId2(int16_t)
+{}
+
+//------------------------------------------------------------------------------
+void LevelOfDetailRecord::setSwitchInDistance(double)
+{}
+
+//------------------------------------------------------------------------------
+void LevelOfDetailRecord::setSwitchOutDistance(double)
+{}
+
+//------------------------------------------------------------------------------
+void LevelOfDetailRecord::setTransitionRange(double)
 {}
 
 

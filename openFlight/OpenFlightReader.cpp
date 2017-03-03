@@ -417,6 +417,7 @@ void OpenFlightReader::parseRawRecord(uint16_t iOpCode, ifstream& iRawRecord)
             break;
         case ocLightSourcePalette: parseAncillaryRecord<LightSourcePaletteRecord>(iRawRecord); break;
         case ocVertexList: parsePrimaryRecord<VertexListRecord>(iRawRecord); break;
+        case ocLevelofDetail: parsePrimaryRecord<LevelOfDetailRecord>(iRawRecord); break;
         case ocTranslate: parseAncillaryRecord<TranslateRecord>(iRawRecord); break;
     default: parseUnsupportedRecord(iRawRecord); break;
     }   
