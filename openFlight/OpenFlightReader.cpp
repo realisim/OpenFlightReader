@@ -373,6 +373,9 @@ void OpenFlightReader::parseUnsupportedRecord(std::ifstream& iRawRecord)
     UnsupportedRecord* r = new UnsupportedRecord( getCurrentParentNode() );
     ((Record*)r)->parseRecord(iRawRecord, 0);
     
+    ostringstream oss;
+    oss << "Record type '" << toString(r->getOriginalOpCode()) << "' was found but is not yet supported.";
+
     if( isPrimaryRecord( r->getOriginalOpCode() ) )
     { addPrimaryRecord(r); }
     else
@@ -383,9 +386,6 @@ void OpenFlightReader::parseUnsupportedRecord(std::ifstream& iRawRecord)
         // the structure, so we delete it.
         delete r;
     }
-    
-    ostringstream oss;
-    oss << "Record type '" << toString(r->getOriginalOpCode()) << "' was found but is not yet supported.";
     
     addWarning( oss.str() );
 }
@@ -417,7 +417,7 @@ void OpenFlightReader::parseRawRecord(uint16_t iOpCode, ifstream& iRawRecord)
             break;
         case ocLightSourcePalette: parseAncillaryRecord<LightSourcePaletteRecord>(iRawRecord); break;
         case ocVertexList: parsePrimaryRecord<VertexListRecord>(iRawRecord); break;
-        case ocLevelofDetail: parsePrimaryRecord<LevelOfDetailRecord>(iRawRecord); break;
+        case ocLevelOfDetail: parsePrimaryRecord<LevelOfDetailRecord>(iRawRecord); break;
         case ocTranslate: parseAncillaryRecord<TranslateRecord>(iRawRecord); break;
     default: parseUnsupportedRecord(iRawRecord); break;
     }   

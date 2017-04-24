@@ -38,7 +38,7 @@ namespace OpenFlight
         ocVertexWithColorNormalAndUv             =   70 ,  //“Vertex with Color, Normal and UV Record”
         ocVertexWithColorAndUv                   =   71 ,  //“Vertex with Color and UV Record”
         ocVertexList                             =   72 ,  //“Vertex List Record”
-        ocLevelofDetail                          =   73 ,  //“Level of Detail Record”
+        ocLevelOfDetail                          =   73 ,  //“Level of Detail Record”
         ocBoundingBox                            =   74 ,  //“Bounding Box Record”
         ocRotateAboutEdge                        =   76 ,  //“Rotate About Edge Record”
         ocTranslate                              =   78 ,  //“Translate Record”

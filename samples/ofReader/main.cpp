@@ -41,7 +41,7 @@ set<OpenFlight::opCode> makePrimaryInclusions()
     r.insert( ocInstanceDefinition );
     r.insert( ocExternalReference );
     r.insert( ocVertexList );
-    r.insert( ocLevelofDetail );
+    r.insert( ocLevelOfDetail);
     r.insert( ocMesh );
     r.insert( ocLocalVertexPool );
     r.insert( ocMeshPrimitive );
@@ -301,7 +301,7 @@ int main(int argc, char** argv)
         "Examples: \n"<<
         "\t ofReader -debug -f /Users/Documents/flt/test.flt\n"<<
         "\t ofReader -dotExport -f /Users/Documents/flt/test.flt\n"<<
-        "\t ofReader -dotExport headerRecords groupRecords objectRecords -f /Users/Documents/flt/test.flt\n\n";
+        "\t ofReader -dotExport headerRecord groupRecord objectRecord -f /Users/Documents/flt/test.flt\n\n";
         
         cout << oss.str();
     }

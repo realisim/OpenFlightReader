@@ -41,7 +41,7 @@ std::string OpenFlight::toString(opCode iOpcode)
         case ocVertexWithColorNormalAndUv: r = "Vertex with Color, Normal and UV Record"; break;
         case ocVertexWithColorAndUv: r = "Vertex with Color and UV Record"; break;
         case ocVertexList: r = "Vertex List Record"; break;
-        case ocLevelofDetail: r = "Level of Detail Record"; break;
+        case ocLevelOfDetail: r = "Level of Detail Record"; break;
         case ocBoundingBox: r = "Bounding Box Record"; break;
         case ocRotateAboutEdge: r = "Rotate About Edge Record"; break;
         case ocTranslate: r = "Translate Record"; break;
@@ -317,7 +317,7 @@ bool OpenFlight::isPrimaryRecord(opCode iOpcode)
         case ocInstanceDefinition :
         case ocExternalReference :
         case ocVertexList :
-        case ocLevelofDetail :
+        case ocLevelOfDetail :
         case ocMesh :
         case ocLocalVertexPool :
         case ocMeshPrimitive :
