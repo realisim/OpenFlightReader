@@ -398,9 +398,10 @@ void OpenFlightReader::parseRawRecord(uint16_t iOpCode, ifstream& iRawRecord)
         case ocHeader: parseHeaderRecord(iRawRecord); break;
         case ocGroup: parsePrimaryRecord<GroupRecord>(iRawRecord); break;
         case ocObject: parsePrimaryRecord<ObjectRecord>(iRawRecord); break;
-        case ocFace: parsePrimaryRecord<FaceRecord>(iRawRecord); break;
+        case ocFace: parsePrimaryRecord<FaceRecord>(iRawRecord); break;        
         case ocPushLevel: pushLevel(); break;
         case ocPopLevel: popLevel(); break;
+        case ocComment: parseAncillaryRecord<CommentRecord>(iRawRecord); break;
         case ocColorPalette: parseAncillaryRecord<ColorPaletteRecord>(iRawRecord); break;
         case ocLongId: parseAncillaryRecord<LongIdRecord>(iRawRecord); break;
         case ocMatrix: parseAncillaryRecord<MatrixRecord>(iRawRecord); break;

@@ -1,5 +1,7 @@
 
+
 #include "HeaderRecord.h"
+#include "AncillaryRecords/CommentRecord.h"
 #include "AncillaryRecords/PaletteRecords.h"
 #include "AncillaryRecords/TexturePaletteRecord.h"
 #include <fstream>
@@ -65,7 +67,8 @@ mpColorPalette(nullptr),
 mpLightSourcePalette(nullptr),
 mMaterialPalettes(),
 mpVertexPalette(nullptr),
-mTexturePalettes()
+mTexturePalettes(),
+mComments()
 {}
 
 //-------------------------------------------------------------------------
@@ -76,11 +79,23 @@ HeaderRecord::~HeaderRecord()
     mMaterialPalettes.clear();
     mpVertexPalette = nullptr;
     mTexturePalettes.clear();
+    mComments.clear();
 }
 
 //------------------------------------------------------------------------------
 string HeaderRecord::getAsciiId() const
 { return mAsciiId;}
+
+//------------------------------------------------------------------------------
+CommentRecord* HeaderRecord::getCommentRecord(int iIndex) const
+{
+    CommentRecord *r = nullptr;
+    if (iIndex >= 0 && iIndex < (int)mComments.size())
+    {
+        r = mComments[iIndex];
+    }
+    return r;
+}
 
 //------------------------------------------------------------------------------
 string HeaderRecord::getDateAntTimeOfLastRevision() const
@@ -145,6 +160,17 @@ double HeaderRecord::getLambertLowerLatitude() const
 //------------------------------------------------------------------------------
 double HeaderRecord::getLambertUpperLatitude() const
 { return mLambertUpperLatitude;}
+
+//------------------------------------------------------------------------------
+MaterialPaletteRecord* HeaderRecord::getMaterialPalette(int iIndex) const
+{
+    MaterialPaletteRecord *r = nullptr;
+    if (iIndex >= 0 && iIndex < (int)mMaterialPalettes.size())
+    {
+        r = mMaterialPalettes[iIndex];
+    }
+    return r;
+}
 
 //------------------------------------------------------------------------------
 uint16_t HeaderRecord::getNextAdaptiveNodeId() const
@@ -229,6 +255,14 @@ double HeaderRecord::getNorthEastCornerLatitude() const
 //------------------------------------------------------------------------------
 double HeaderRecord::getNorthEastCornerLongitude() const
 { return mNorthEastCornerLongitude;}
+
+//------------------------------------------------------------------------------
+int HeaderRecord::getNumberOfComments() const
+{ return (int)mComments.size();  }
+
+//------------------------------------------------------------------------------
+int HeaderRecord::getNumberOfMaterialPalettes() const
+{ return (int)mMaterialPalettes.size(); }
 
 //------------------------------------------------------------------------------
 int HeaderRecord::getNumberOfTexturePalettes() const

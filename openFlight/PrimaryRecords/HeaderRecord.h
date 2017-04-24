@@ -9,6 +9,7 @@ namespace OpenFlight
 {
     class AncillaryRecord;
     class ColorPaletteRecord;
+    class CommentRecord;
     class LightSourcePaletteRecord;
     class MaterialPaletteRecord;
     class VertexPaletteRecord;
@@ -42,6 +43,7 @@ namespace OpenFlight
             eemClarke1866 = 3, eemNad1927 = 4, eemUserDefined = -1 };
         
         std::string getAsciiId() const;
+        CommentRecord* getCommentRecord(int) const;
         std::string getDateAntTimeOfLastRevision() const;
         databaseOrigin getDatabaseOrigin() const;
         double getDeltaX() const;
@@ -58,6 +60,7 @@ namespace OpenFlight
         int getFormatRevision() const;
         double getLambertLowerLatitude() const;
         double getLambertUpperLatitude() const;
+        MaterialPaletteRecord* getMaterialPalette(int) const;
         uint16_t getNextAdaptiveNodeId() const;
         uint16_t getNextBspNodeId() const;
         uint16_t getNextCatNodeId() const;
@@ -79,6 +82,8 @@ namespace OpenFlight
         uint16_t getNextTextNodeId() const;
         double getNorthEastCornerLatitude() const;
         double getNorthEastCornerLongitude() const;
+        int getNumberOfComments() const;
+        int getNumberOfMaterialPalettes() const;
         int getNumberOfTexturePalettes() const;
         double getOriginLatitude() const;
         double getOriginLongitude() const;
@@ -211,6 +216,7 @@ namespace OpenFlight
         std::vector<MaterialPaletteRecord*> mMaterialPalettes;
         VertexPaletteRecord *mpVertexPalette; //owned in PrimaryRecords::mAncillaryRecord ;
         std::vector<TexturePaletteRecord*> mTexturePalettes;
+        std::vector<CommentRecord*> mComments;
         
         // additionnal data, not part of the binary flt file
         std::string mFilenamePath;
