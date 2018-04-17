@@ -42,7 +42,7 @@ std::string ExternalReferenceRecord::getNodeName() const
 //------------------------------------------------------------------------------
 bool ExternalReferenceRecord::hasFlag(flag iFlag) const
 {
-    return mFlags & iFlag;
+    return (bool)(mFlags & iFlag);
 }
 
 //------------------------------------------------------------------------------

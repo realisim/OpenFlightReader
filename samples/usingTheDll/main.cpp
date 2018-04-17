@@ -1,6 +1,6 @@
 
 #include <deque>
-#include "OpenFlight/OpenFlightReader.h"
+#include "OpenFlightReader.h"
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -83,7 +83,10 @@ void FltDocument::collectStatistics()
         switch (n->getOpCode())
         {
             case ocGroup: mStatistics.mNumberOfGroups++; break;
-            case ocObject: mStatistics.mNumberOfObjects++; break;
+            case ocObject: 
+                mStatistics.mNumberOfObjects++;
+                printf("\t object name: %s\n", ((ObjectRecord*)n)->getAsciiId().c_str() );
+                break;
             case ocFace: mStatistics.mNumberOfPolygons++; break;
             case ocMesh: break;
             default: break;
@@ -132,7 +135,7 @@ int main(int argc, char** argv)
 
     //string filenamePath = "../assets/sample/nested_references/master/master.flt";
     //string filenamePath = "../assets/sample/nested_references2/db/1/1.flt";
-    string filenamePath = "../../assets/sample/nested_references2/db/1/12/123/1234/1234.flt";
+    string filenamePath = "../../../assets/sample/nested_references2/db/1/12/123/1234/1234.flt";
 
     OpenFlight::HeaderRecord *pRoot = ofr.open( filenamePath );
     FltDocument doc(filenamePath, pRoot);

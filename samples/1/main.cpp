@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     ofrOptions.mDebugEnabled = true;
     ofr.setOptions(ofrOptions);
     
-    std::string filenamePath = "../assets/sample/nested_references/master/master.flt";
+    std::string filenamePath = "../../assets/sample/nested_references/master/master.flt";
     //    std::string filenamePath = "../assets/sample/nested_references2/db/1/1.flt"
     //    std::string filenamePath = "../assets/sample/nested_references2/db/1/12/123/1234/1234.flt";
     
