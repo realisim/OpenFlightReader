@@ -1,7 +1,7 @@
 
 PROJECT( "Sample1" )
 
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OpenFlightReader_SOURCE_DIR}/bin/ )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OpenFlightReader_SOURCE_DIR}/bin/samples )
 
 INCLUDE_DIRECTORIES( ${OpenFlightReader_SOURCE_DIR}/.)
 INCLUDE_DIRECTORIES( ${OpenFlightReader_SOURCE_DIR}/openFlight/)
