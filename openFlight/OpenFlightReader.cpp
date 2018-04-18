@@ -374,9 +374,9 @@ void OpenFlightReader::parseUnsupportedRecord(std::ifstream& iRawRecord)
     ((Record*)r)->parseRecord(iRawRecord, 0);
     
     ostringstream oss;
-    oss << "Record type '" << toString(r->getOriginalOpCode()) << "' was found but is not yet supported.";
+    oss << "Record type '" << OpCodeUtils::toString(r->getOriginalOpCode()) << "' was found but is not yet supported.";
 
-    if( isPrimaryRecord( r->getOriginalOpCode() ) )
+    if(OpCodeUtils::isPrimaryRecord( r->getOriginalOpCode() ) )
     { addPrimaryRecord(r); }
     else
     {
@@ -517,7 +517,7 @@ void OpenFlightReader::readRecord(ifstream& iFileStream)
             if( getOptions().mDebugEnabled )
             {
                 ostringstream oss;
-                oss << toString((OpenFlight::opCode)opCode) << endl;
+                oss << OpCodeUtils::toString((OpenFlight::opCode)opCode) << endl;
                 oss << rawRecordToString(iFileStream, lengthOfRecord) << endl << endl;
                 cout << oss.str();
             }

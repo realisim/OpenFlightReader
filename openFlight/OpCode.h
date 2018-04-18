@@ -146,14 +146,19 @@ namespace OpenFlight
         oocScale77                         = 77      //(replaced by Opcode 79)
     };
 
-    bool isAncillaryRecord(opCode iOpcode);
-    bool isContinuationRecord(opCode iOpcode);
-    bool isControlRecord(opCode iOpcode);
-    bool isExtendedMaterialPaletteRecord(opCode iOpcode);
-    bool isPaletteRecord(opCode iOpcode);
-    bool isPrimaryRecord(opCode iOpcode);
-    bool isTransformationRecord(opCode iOpcode);
-    std::string toString(opCode iOpcode);
+	namespace OpCodeUtils
+	{
+		bool isAncillaryRecord(opCode iOpcode);
+		bool isContinuationRecord(opCode iOpcode);
+		bool isControlRecord(opCode iOpcode);
+		bool isExtendedMaterialPaletteRecord(opCode iOpcode);
+		bool isPaletteRecord(opCode iOpcode);
+		bool isPrimaryRecord(opCode iOpcode);
+		bool isTransformationRecord(opCode iOpcode);
+		std::string toString(opCode iOpcode);
+	}
+
+   
     
 }
 

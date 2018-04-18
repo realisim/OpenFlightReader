@@ -5,8 +5,13 @@ cmake_minimum_required(VERSION 3.1)
 # Options and variables in CMake GUI
 #------------------------------------------------------------------------------
 option(BUILD_AS_SHARED_LIB "Builds the shared library (.dll)" OFF)
+option(BUILD_CSHARP_GENERATOR "Build CSharp Generator" OFF)
 
 ADD_SUBDIRECTORY(samples)
+
+if (BUILD_CSHARP_GENERATOR)
+	ADD_SUBDIRECTORY(generators)
+endif()
 
 #------------------------------------------------------------------------------
 # Create shared lib project

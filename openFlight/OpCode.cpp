@@ -4,7 +4,7 @@
 using namespace std;
 using namespace OpenFlight;
 
-std::string OpenFlight::toString(opCode iOpcode)
+std::string OpCodeUtils::toString(opCode iOpcode)
 {
     std::string r;
     switch (iOpcode)
@@ -126,7 +126,7 @@ std::string OpenFlight::toString(opCode iOpcode)
 }
 
 //------------------------------------------------------------------------------
-bool OpenFlight::isAncillaryRecord(opCode iOpcode)
+bool OpCodeUtils::isAncillaryRecord(opCode iOpcode)
 {
     bool r = false;
     switch (iOpcode)
@@ -197,7 +197,7 @@ bool OpenFlight::isAncillaryRecord(opCode iOpcode)
 }
 
 //------------------------------------------------------------------------------
-bool OpenFlight::isExtendedMaterialPaletteRecord(opCode iOpcode)
+bool OpCodeUtils::isExtendedMaterialPaletteRecord(opCode iOpcode)
 {
     bool r = false;
     switch(iOpcode)
@@ -221,7 +221,7 @@ bool OpenFlight::isExtendedMaterialPaletteRecord(opCode iOpcode)
 }
 
 //------------------------------------------------------------------------------
-bool OpenFlight::isContinuationRecord(opCode iOpcode)
+bool OpCodeUtils::isContinuationRecord(opCode iOpcode)
 {
     bool r = false;
     switch(iOpcode)
@@ -241,7 +241,7 @@ bool OpenFlight::isContinuationRecord(opCode iOpcode)
 }
 
 //------------------------------------------------------------------------------
-bool OpenFlight::isControlRecord(opCode iOpcode)
+bool OpCodeUtils::isControlRecord(opCode iOpcode)
 {
     bool r = false;
     switch(iOpcode)
@@ -262,7 +262,7 @@ bool OpenFlight::isControlRecord(opCode iOpcode)
 }
 
 //------------------------------------------------------------------------------
-bool OpenFlight::isPaletteRecord(opCode iOpcode)
+bool OpCodeUtils::isPaletteRecord(opCode iOpcode)
 {
     bool r = false;
     switch (iOpcode)
@@ -301,7 +301,7 @@ bool OpenFlight::isPaletteRecord(opCode iOpcode)
 }
 
 //------------------------------------------------------------------------------
-bool OpenFlight::isPrimaryRecord(opCode iOpcode)
+bool OpCodeUtils::isPrimaryRecord(opCode iOpcode)
 {
     bool r = false;
     switch (iOpcode)
@@ -359,7 +359,7 @@ bool OpenFlight::isPrimaryRecord(opCode iOpcode)
 }
 
 //------------------------------------------------------------------------------
-bool OpenFlight::isTransformationRecord(opCode iOpcode)
+bool OpCodeUtils::isTransformationRecord(opCode iOpcode)
 {
     bool r = false;
     switch(iOpcode)

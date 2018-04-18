@@ -13,7 +13,7 @@ std::string bakeName(const Record* ipNode)
     char m[200];
     
     sprintf(m, "\"%s 0x%08llx\"",
-            toString(ipNode->getOpCode()).c_str(), (uint64_t)ipNode);
+		OpCodeUtils::toString(ipNode->getOpCode()).c_str(), (uint64_t)ipNode);
     
     return m;
 }
@@ -33,7 +33,7 @@ std::string bakeName(const PrimaryRecord* ipNode)
     else
     {
         sprintf(m, "\"%s 0x%08llx\"",
-                toString(ipNode->getOpCode()).c_str(), (uint64_t)ipNode);
+			OpCodeUtils::toString(ipNode->getOpCode()).c_str(), (uint64_t)ipNode);
     }
     
     return m;
