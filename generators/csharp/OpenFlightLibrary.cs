@@ -11,6 +11,14 @@ namespace OpenFlight.CSharp
 {
     class OpenFlightLibrary : ILibrary
     {
+        public string LibDirectoryPath = "";
+        public string IncludeDirectoryPath = "";
+
+        public string LibFilename = "";
+        public string HeaderFilename = "";
+
+        public string OutputDirectoryPath = "";
+
         public void Postprocess(Driver driver, ASTContext ctx)
         {
         }
@@ -29,6 +37,10 @@ namespace OpenFlight.CSharp
 
             var options = driver.Options;
             options.GeneratorKind = GeneratorKind.CSharp;
+
+            if (!string.IsNullOrEmpty(OutputDirectoryPath))
+                options.OutputDir = OutputDirectoryPath;
+
             //options.CheckSymbols = true;
             //options.CompileCode = true;
             //options.GenerateDefaultValuesForArguments = true;
@@ -36,10 +48,10 @@ namespace OpenFlight.CSharp
             //options.CommentKind = CommentKind.BCPLSlash;
 
             var module = driver.Options.AddModule("OpenFlightReader");
-            module.IncludeDirs.Add(@"F:\Git\OpenFlightReader\bin\include");
-            module.Headers.Add("OpenFlightReader.h");
-            module.LibraryDirs.Add(@"F:\Git\OpenFlightReader\bin\dll");
-            module.Libraries.Add("OpenFlightReader.lib");
+            module.IncludeDirs.Add(IncludeDirectoryPath);
+            module.Headers.Add(HeaderFilename);
+            module.LibraryDirs.Add(LibDirectoryPath);
+            module.Libraries.Add(LibFilename);
             
         }
 
