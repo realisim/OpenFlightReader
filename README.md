@@ -2,6 +2,7 @@
 
 ## Yet Another OpenFlight Reader 
 
+[![Build status](https://ci.appveyor.com/api/projects/status/jcvjftfpicwg7xas/branch/master?svg=true)](https://ci.appveyor.com/project/jbltx/openflightreader/branch/master)
 
 ### Requirements
 
