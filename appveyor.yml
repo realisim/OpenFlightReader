@@ -1,0 +1,61 @@
+#---------------------------------#
+#      general configuration      #
+#---------------------------------#
+
+# version format
+version: 0.1.{build}
+
+# branches to build
+branches:
+  # whitelist
+  only:
+    - master
+  # blacklist
+  except:
+    - develop
+
+# Do not build on tags (GitHub and BitBucket)
+skip_tags: true
+
+# Start builds on tags only (GitHub and BitBucket)
+skip_non_tags: true
+
+#---------------------------------#
+#    environment configuration    #
+#---------------------------------#
+
+# Build worker image (VM template)
+image: Visual Studio 2015
+
+# scripts that are called at very beginning, before repo cloning
+init:
+  - ps: Start-FileDownload https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -FileName c:\nuget.exe 
+
+shallow_clone: true
+
+# clone directory
+clone_folder: c:\projects\OpenFlightReader
+
+environment:
+  MSBUILD_FLAGS: /verbosity:minimal /maxcpucount
+
+matrix:
+  fast_finish: true     # set this flag to immediately finish build once one of the jobs fails.
+  allow_failures:
+    - platform: x64
+      configuration: Debug
+    - platform: x86
+      configuration: Debug
+
+# scripts that run after cloning repository
+install:
+  - cd c:\projects\OpenFlightReader && mkdir build && cd build
+  - cmake -DBUILD_AS_SHARED_LIB=ON -DBUILD_CSHARP_GENERATOR=OFF -G"Visual Studio 14 2015 Win64" ..
+
+#---------------------------------#
+#       build configuration       #
+#---------------------------------#
+
+build_script:
+  - if "%APPVEYOR_REPO_TAG%"=="true" (set CONFIGURATION=RelWithDebInfo) else (set CONFIGURATION=Debug)
+  - cmake --build . --config "%CONFIGURATION%" --target INSTALL -- %MSBUILD_FLAGS%
