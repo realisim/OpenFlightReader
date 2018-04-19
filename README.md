@@ -1,4 +1,4 @@
-# OpenFlightReader :airplane
+# OpenFlightReader :airplane:
 
 ## Yet Another OpenFlight Reader 
 
@@ -19,7 +19,7 @@
 
 ### Build
 
-```sh
+```bat
 mkdir build
 cd build
 cmake -DBUILD_AS_SHARED_LIB=ON -DBUILD_CSHARP_GENERATOR=OFF -G"Visual Studio 14 2015 Win64" ..
@@ -29,7 +29,7 @@ cmake --build . --config Release --target INSTALL
 
 ### OpenFlightReader.CSharp Generator Usage
 
-```sh
+```bat
 OpenFlightReader.CSharp.exe ^
  -L F:\Projects\Libs\OpenFlightReader\bin\dll ^
  -l OpenFlightReader.lib ^
