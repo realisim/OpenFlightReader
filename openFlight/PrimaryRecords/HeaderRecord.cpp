@@ -83,6 +83,30 @@ HeaderRecord::~HeaderRecord()
 }
 
 //------------------------------------------------------------------------------
+MaterialPaletteRecord* HeaderRecord::findMaterialPaletteByMaterialIndex(int iIndex)
+{
+    MaterialPaletteRecord *r = nullptr;
+    for (size_t i = 0; i < mMaterialPalettes.size() && !r; ++i )
+    {
+        if(mMaterialPalettes[i]->getIndex() == iIndex)
+        { r =  mMaterialPalettes[i]; }
+    }
+    return r;
+}
+
+//------------------------------------------------------------------------------
+TexturePaletteRecord* HeaderRecord::findTexturePaletteByTexturePatternIndex(int iIndex)
+{
+    TexturePaletteRecord *r = nullptr;
+    for (size_t i = 0; i < mTexturePalettes.size() && !r; ++i )
+    {
+        if(mTexturePalettes[i]->getTexturePatternIndex() == iIndex)
+        { r =  mTexturePalettes[i]; }
+    }
+    return r;
+}
+
+//------------------------------------------------------------------------------
 string HeaderRecord::getAsciiId() const
 { return mAsciiId;}
 
