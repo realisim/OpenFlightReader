@@ -10,15 +10,29 @@ namespace OpenFlight
     const bool __BIGENDIAN = false; //Windows machine are little endian...
 
     //-------------------------------------------------------------------------
+    // This function will read iNumberOfCharToRead and will create a string with
+    // the content. The returned string oV will end at the first \0 encountered.
+    //
+    // To read chars and keep \0, see readBytes.
+    // 
     bool readChar(std::istream& iStream, int iNumberOfCharToRead, std::string& oV)
     {
         char *c = new char[iNumberOfCharToRead];
         iStream.read(c, iNumberOfCharToRead);
 
         //no swap involved in reading chars...
-        oV = string(c, iNumberOfCharToRead);
+        oV = string(c);
         
         delete[] c;
+
+        return iStream.good();
+    }
+
+    //-------------------------------------------------------------------------
+    bool readBytes(std::istream& iStream, int iNumberOfBytesToRead, std::string& oV)
+    {
+        oV.resize(iNumberOfBytesToRead);
+        iStream.read(&oV[0], iNumberOfBytesToRead);
 
         return iStream.good();
     }

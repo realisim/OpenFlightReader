@@ -560,7 +560,7 @@ string OpenFlightReader::rawRecordToString(ifstream& iRawRecord, int iRecordLeng
     
     // read the record
     string record;
-    readChar(iRawRecord, iRecordLength, record);
+    readBytes(iRawRecord, iRecordLength, record);
     
     string hexPayload;
     char hex[5];

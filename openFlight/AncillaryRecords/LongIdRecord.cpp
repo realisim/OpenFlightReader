@@ -21,7 +21,7 @@ bool LongIdRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
     Record::parseRecord(iRawRecord, iVersion);
     
     bool ok = true;
-    ok &= readChar(iRawRecord, getRecordLength() - 4, mAsciiId);
+    ok &= readBytes(iRawRecord, getRecordLength() - 4, mAsciiId);
     
     return ok;
 }
