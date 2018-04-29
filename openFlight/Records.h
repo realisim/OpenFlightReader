@@ -2,6 +2,7 @@
 #include "AncillaryRecords/CommentRecord.h"
 #include "AncillaryRecords/LongIdRecord.h"
 #include "AncillaryRecords/MatrixRecord.h"
+#include "AncillaryRecords/MultiTextureRecord.h"
 #include "AncillaryRecords/PaletteRecords.h"
 #include "AncillaryRecords/TexturePaletteRecord.h"
 #include "AncillaryRecords/TranslateRecord.h"
