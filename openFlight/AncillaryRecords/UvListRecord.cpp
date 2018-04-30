@@ -17,8 +17,18 @@ Vector2f UvListRecord::getUv(int iLayerIndex, int iVertexIndex) const
 {
     Vector2f r;
     
-    r.mX = mUCoordinates[iLayerIndex][iVertexIndex];
-    r.mY = mUCoordinates[iLayerIndex][iVertexIndex];
+    if (iLayerIndex >= 0 && iLayerIndex < 8)
+    {
+        const vector<float> &u = mUCoordinates[iLayerIndex];
+        const vector<float> &v = mVCoordinates[iLayerIndex];
+
+        // we assume both vector have same size...
+        if (iVertexIndex >= 0 && iVertexIndex < (int)u.size())
+        {
+            r.mX = u[iVertexIndex];
+            r.mY = v[iVertexIndex];
+        }
+    }
     
     return r;
 }
@@ -74,7 +84,6 @@ bool UvListRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
             mVCoordinates[layerIndex].push_back(value);
         }
     }
-    
-    
+
     return ok;
 }

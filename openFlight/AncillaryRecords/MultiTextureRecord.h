@@ -17,6 +17,9 @@ namespace OpenFlight
     // Here methods with iLayerIndex start at index 0, meaning the first layer
     // of the multitextureRecord, so layer1 of the face.
     //
+    // Note:
+    //  requesting data on a layer that has no data will usually returns a value
+    //  of 0.
     //
     class OFR_API MultiTextureRecord : public AncillaryRecord
     {
@@ -41,8 +44,8 @@ namespace OpenFlight
         
         int32_t mAttributeMask;
         std::array<uint32_t, 7> mTexturePatternIndices;
-        std::array<uint32_t, 7> mMappingIndices;
         std::array<uint32_t, 7> mEffects;
+        std::array<uint32_t, 7> mMappingIndices;
         std::array<uint32_t, 7> mData;
 
     };

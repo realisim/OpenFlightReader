@@ -40,14 +40,14 @@ MultiTextureRecord::EffectType MultiTextureRecord::getEffect(int iLayerIndex) co
     EffectType r = etReserved;
     
     if(e == 0)
-    { e = etTextureEnvironment; }
+    { r = etTextureEnvironment; }
     else if(e == 1)
-    { e = etBump; }
+    { r = etBump; }
     else if(e >= 2 && e <= 100)
-    { e = etReserved; }
+    { r = etReserved; }
     else //( e > 100)
     {
-        e = etUserDefined;
+        r = etUserDefined;
     }
     
     return r;
@@ -107,10 +107,10 @@ bool MultiTextureRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
             mTexturePatternIndices[i] = value;
             
             ok &= readUint32(iRawRecord, value);
-            mMappingIndices[i] = value;
-            
-            ok &= readUint32(iRawRecord, value);
             mEffects[i] = value;
+
+            ok &= readUint32(iRawRecord, value);
+            mMappingIndices[i] = value;
             
             ok &= readUint32(iRawRecord, value);
             mData[i] = value;
