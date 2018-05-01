@@ -8,6 +8,7 @@
 
 namespace OpenFlight
 {
+    bool needsSwapping();
     // it would be a lot clearer if all parameters where passed by pointer
     // instead of reference
     //
@@ -32,4 +33,22 @@ namespace OpenFlight
     void swapBytes2(void* iV);
     void swapBytes4(void* iV);
     void swapBytes8(void* iV);
+
+    bool writeBytes(std::ostream& oss, const std::string& iV);
+    bool writeBytes(std::ostream& oss, int iNumberOfBytesToWrite, const char* iV);
+    bool writeDouble(std::ostream& oss, double iV);
+    //bool writeColor3f(std::ostream& oss, const Color3f& iV);
+    //bool writeColor4f(std::ostream& oss, const Color4f& iV);
+    bool writeFloat32(std::ostream& oss, float iV);
+    bool writeInt8(std::ostream& oss, int8_t iV);
+    bool writeInt16(std::ostream& oss, int16_t iV);
+    bool writeInt32(std::ostream& oss, int32_t iV);
+    //bool writeMatrix4f(std::ostream& oss, const Matrix4f& iV);
+    bool writeUint8(std::ostream& oss, uint8_t iV);
+    bool writeUint16(std::ostream& oss, uint16_t iV);
+    bool writeUint32(std::ostream& oss, uint32_t iV);
+    //bool writeVector2f(std::ostream& oss, const Vector2f& iV);
+    //bool writeVector2i(std::ostream& oss, const Vector2i& iV);
+    //bool writeVector3d(std::ostream& oss, const Vector3d& iV);
+    //bool writeVector3f(std::ostream& oss, const Vector3f& iV);
 }
