@@ -28,7 +28,7 @@ namespace OpenFlight
         explicit MultiTextureRecord(PrimaryRecord* ipParent);
         MultiTextureRecord(const MultiTextureRecord&) = delete;
         MultiTextureRecord& operator=(const MultiTextureRecord&) = delete;
-        virtual ~MultiTextureRecord() {}
+        virtual ~MultiTextureRecord();
         
         enum EffectType{etTextureEnvironment, etBump, etReserved, etUserDefined };
         
@@ -43,10 +43,9 @@ namespace OpenFlight
         virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override;
         
         int32_t mAttributeMask;
-        std::array<uint32_t, 7> mTexturePatternIndices;
-        std::array<uint32_t, 7> mEffects;
-        std::array<uint32_t, 7> mMappingIndices;
-        std::array<uint32_t, 7> mData;
-
+        std::array<uint16_t, 7> mTexturePatternIndices;
+        std::array<uint16_t, 7> mEffects;
+        std::array<uint16_t, 7> mMappingIndices;
+        std::array<uint16_t, 7> mData;
     };
 }

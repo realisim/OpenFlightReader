@@ -57,20 +57,21 @@ void testMultiTextureRecord()
 
     // make multitexture node.
     OpenFlight::writeUint16(ofs, OpenFlight::ocMultitexture);    
-    OpenFlight::writeUint16(ofs, 4 + 9*4);
+    OpenFlight::writeUint16(ofs, 4 + 4 + 8*2);
 
-    int32_t attribMask = 5;
-    OpenFlight::writeInt32(ofs, attribMask);
+    // layer 0 and 2 (1 and 3)...
+    uint32_t attribMask = 0xA0000000; //-> 1010 0000 0000 0000 0000 0000 0000 0000
+    OpenFlight::writeUint32(ofs, attribMask);
 
-    OpenFlight::writeUint32(ofs, 1);
-    OpenFlight::writeUint32(ofs, OpenFlight::MultiTextureRecord::etTextureEnvironment);
-    OpenFlight::writeUint32(ofs, 3);
-    OpenFlight::writeUint32(ofs, 4);
+    OpenFlight::writeUint16(ofs, 1);
+    OpenFlight::writeUint16(ofs, OpenFlight::MultiTextureRecord::etTextureEnvironment);
+    OpenFlight::writeUint16(ofs, 3);
+    OpenFlight::writeUint16(ofs, 4);
     
-    OpenFlight::writeUint32(ofs, 5);
-    OpenFlight::writeUint32(ofs, OpenFlight::MultiTextureRecord::etBump);
-    OpenFlight::writeUint32(ofs, 7);
-    OpenFlight::writeUint32(ofs, 8);
+    OpenFlight::writeUint16(ofs, 5);
+    OpenFlight::writeUint16(ofs, OpenFlight::MultiTextureRecord::etBump);
+    OpenFlight::writeUint16(ofs, 7);
+    OpenFlight::writeUint16(ofs, 8);
 
     // make UV LIST RECORD.
     OpenFlight::writeUint16(ofs, OpenFlight::ocUvList);    
@@ -144,6 +145,7 @@ void testMultiTextureRecord()
         // fetch Uv list record and validate.
         OpenFlight::UvListRecord *pUv = (OpenFlight::UvListRecord*)pRoot->getAncillaryRecord(1);
         CHECK_TRUE(pUv);
+        CHECK_TRUE(pUv->hasLayers());
         CHECK_TRUE(pUv->hasLayer(0));
         CHECK_FALSE(pUv->hasLayer(1));
         CHECK_TRUE(pUv->hasLayer(2));

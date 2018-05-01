@@ -8,6 +8,7 @@
 
 namespace OpenFlight
 {
+    bool needsSwapping();
     // it would be a lot clearer if all parameters where passed by pointer
     // instead of reference
     //

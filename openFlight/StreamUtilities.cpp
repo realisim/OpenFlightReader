@@ -10,6 +10,12 @@ namespace OpenFlight
     const bool __BIGENDIAN = false; //Windows machine are little endian...
 
     //-------------------------------------------------------------------------
+    bool needsSwapping()
+    {
+        return (!__BIGENDIAN);
+    }
+
+    //-------------------------------------------------------------------------
     // This function will read iNumberOfCharToRead and will create a string with
     // the content. The returned string oV will end at the first \0 encountered.
     //

@@ -11,10 +11,15 @@ MultiTextureRecord::MultiTextureRecord(PrimaryRecord* ipParent) :
 AncillaryRecord(ipParent),
 mAttributeMask(0)
 {
-    memset(&mTexturePatternIndices[0], 0, 7*sizeof(uint32_t));
-    memset(&mMappingIndices[0], 0, 7*sizeof(uint32_t));
-    memset(&mEffects[0], 0, 7*sizeof(uint32_t));
-    memset(&mData[0], 0, 7*sizeof(uint32_t));
+    memset(&mTexturePatternIndices[0], 0, 7*sizeof(uint16_t));
+    memset(&mMappingIndices[0], 0, 7*sizeof(uint16_t));
+    memset(&mEffects[0], 0, 7*sizeof(uint16_t));
+    memset(&mData[0], 0, 7*sizeof(uint16_t));
+}
+
+//-------------------------------------------------------------------------
+MultiTextureRecord::~MultiTextureRecord()
+{
 }
 
 //-------------------------------------------------------------------------
@@ -78,16 +83,18 @@ int MultiTextureRecord::getTexturePatternIndex(int iLayerIndex) const
 //-------------------------------------------------------------------------
 bool MultiTextureRecord::hasLayers() const
 {
-    //keep only first 7 bits
-    const int t = mAttributeMask & 0x000F;
+    //keep only first 7 bits (counting from the left side... see doc)
+    const int t = mAttributeMask & 0xFF000000;
 
-    return t > 0;
+    return t != 0;
 }
 
 //-------------------------------------------------------------------------
 bool MultiTextureRecord::hasLayer(int iLayerIndex) const
 {
-    return mAttributeMask & (0x1 << iLayerIndex);
+    // masked bits starts on the left.... so 31 - iLayerIndex
+    //
+    return mAttributeMask & (0x1 << (31 - iLayerIndex));
 }
 
 //-------------------------------------------------------------------------
@@ -102,17 +109,17 @@ bool MultiTextureRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
     {
         if(hasLayer(i))
         {
-            uint32_t value;
-            ok &= readUint32(iRawRecord, value);
+            uint16_t value;
+            ok &= readUint16(iRawRecord, value);
             mTexturePatternIndices[i] = value;
             
-            ok &= readUint32(iRawRecord, value);
+            ok &= readUint16(iRawRecord, value);
             mEffects[i] = value;
 
-            ok &= readUint32(iRawRecord, value);
+            ok &= readUint16(iRawRecord, value);
             mMappingIndices[i] = value;
             
-            ok &= readUint32(iRawRecord, value);
+            ok &= readUint16(iRawRecord, value);
             mData[i] = value;
         }
     }
