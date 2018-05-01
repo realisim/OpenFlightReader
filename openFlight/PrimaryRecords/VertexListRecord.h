@@ -6,6 +6,7 @@
 
 namespace OpenFlight
 {
+    class UvListRecord;
     //-------------------------------------------------------------------------
     // 
     // Current implementation supports the following version:
@@ -22,12 +23,18 @@ namespace OpenFlight
 
         int32_t getByteOffsetIntoVertexPalette(int) const;
         const std::vector<int32_t>& getByteOffsets() const;
+        UvListRecord* getUvListRecord();
         int getNumberOfVertices() const;
+        bool hasUvListRecord() const;
 
     protected:
+        virtual void handleAddedAncillaryRecord(AncillaryRecord* ipAncillary) override;
         virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override;
 
         std::vector<int32_t> mByteOffsets;
+
+        // convenient accessor to UvListAncillary record.
+        UvListRecord *mpUvListRecord; //not owned...
     };
 
 }
