@@ -7,6 +7,8 @@
 
 namespace OpenFlight
 {
+    class MultiTextureRecord;
+
     //-------------------------------------------------------------------------
     // 
     // Current implementation supports the following version:
@@ -52,6 +54,7 @@ namespace OpenFlight
         uint8_t getLineStyleIndex() const;
         uint8_t getLodGenerationControl() const;
         int16_t getMaterialIndex() const;
+        MultiTextureRecord* getMultiTextureRecord();
         Color4ub getPackedColor() const;
         int16_t getRelativePriority() const;
         int16_t getShaderIndex() const;
@@ -60,9 +63,11 @@ namespace OpenFlight
         int16_t getTextureMappingIndex() const;
         int16_t getTexturePatternIndex() const;
         double getTransparency() const;
+        bool hasMultiTexture() const;
 
     protected:
         virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override;
+        virtual void handleAddedAncillaryRecord(AncillaryRecord*) override;
 
         std::string mAsciiId;
         int32_t mIrColorCode;
@@ -89,6 +94,9 @@ namespace OpenFlight
         uint32_t mColorIndex;
         uint32_t mAlternateColorIndex;
         int16_t mShaderIndex;
+
+        // convenient accessor to ancillary records of faceRecord.
+        MultiTextureRecord *mpMultiTextureRecord; //not owned...
 
     };
 

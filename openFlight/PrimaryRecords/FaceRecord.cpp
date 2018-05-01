@@ -1,5 +1,6 @@
 
 #include "FaceRecord.h"
+#include "AncillaryRecords/MultiTextureRecord.h"
 #include <fstream>
 #include "StreamUtilities.h"
 
@@ -33,12 +34,15 @@ mAlternatePackedColor(0),
 mTextureMappingIndex(0),
 mColorIndex(0),
 mAlternateColorIndex(0),
-mShaderIndex(-1)
+mShaderIndex(-1),
+mpMultiTextureRecord(nullptr)
 {}
 
 //------------------------------------------------------------------------------
 FaceRecord::~FaceRecord()
-{}
+{
+    mpMultiTextureRecord = nullptr;
+}
 
 //------------------------------------------------------------------------------
 uint32_t FaceRecord::getAlternateColorIndex() const
@@ -113,6 +117,10 @@ int16_t FaceRecord::getMaterialIndex() const
 { return mMaterialIndex;}
 
 //------------------------------------------------------------------------------
+MultiTextureRecord* FaceRecord::getMultiTextureRecord()
+{ return mpMultiTextureRecord;}
+
+//------------------------------------------------------------------------------
 OpenFlight::Color4ub FaceRecord::getPackedColor() const
 { 
     uint32_t t = mPackedColor;
@@ -152,6 +160,23 @@ double FaceRecord::getTransparency() const
 {
     double r = 1.0 - (mTransparency / 65535.0);
     return r;
+}
+
+//-------------------------------------------------------------------------
+// Explain...
+void FaceRecord::handleAddedAncillaryRecord(AncillaryRecord* ipAncillary)
+{
+    switch (ipAncillary->getOpCode())
+    {
+    case ocMultitexture: mpMultiTextureRecord = (MultiTextureRecord*)ipAncillary; break;    
+    default: break;
+    }
+}
+
+//------------------------------------------------------------------------------
+bool FaceRecord::hasMultiTexture() const
+{
+    return mpMultiTextureRecord != nullptr;
 }
 
 //------------------------------------------------------------------------------
