@@ -11,10 +11,11 @@ MultiTextureRecord::MultiTextureRecord(PrimaryRecord* ipParent) :
 AncillaryRecord(ipParent),
 mAttributeMask(0)
 {
-    memset(&mTexturePatternIndices[0], 0, 7*sizeof(uint16_t));
-    memset(&mMappingIndices[0], 0, 7*sizeof(uint16_t));
-    memset(&mEffects[0], 0, 7*sizeof(uint16_t));
-    memset(&mData[0], 0, 7*sizeof(uint16_t));
+    // -1 will become 65535 because storage is uint16_t
+    memset(&mTexturePatternIndices[0], -1, 7*sizeof(uint16_t));
+    memset(&mMappingIndices[0], -1, 7*sizeof(uint16_t));
+    memset(&mEffects[0], -1, 7*sizeof(uint16_t));
+    memset(&mData[0], -1, 7*sizeof(uint16_t));
 }
 
 //-------------------------------------------------------------------------
@@ -29,6 +30,7 @@ int MultiTextureRecord::getData(int iLayerIndex) const
     if(iLayerIndex >= 0 && iLayerIndex < 7)
     {
         r = mData[iLayerIndex];
+        if(r == 65535){r = -1;}
     }
     return r;
 }
@@ -65,6 +67,7 @@ int MultiTextureRecord::getMappingIndex(int iLayerIndex) const
     if(iLayerIndex >= 0 && iLayerIndex < 7)
     {
         r = mMappingIndices[iLayerIndex];
+        if(r == 65535){r = -1;}
     }
     return r;
 }
@@ -76,6 +79,7 @@ int MultiTextureRecord::getTexturePatternIndex(int iLayerIndex) const
     if(iLayerIndex >= 0 && iLayerIndex < 7)
     {
         r = mTexturePatternIndices[iLayerIndex];
+        if(r == 65535){r = -1;}
     }
     return r;
 }
