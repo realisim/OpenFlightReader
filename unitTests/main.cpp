@@ -126,10 +126,10 @@ void testMultiTextureRecord()
         CHECK_TRUE( pMulti->getMappingIndex(0) == 3);
         CHECK_TRUE( pMulti->getData(0) == 4);
 
-        CHECK_TRUE( pMulti->getTexturePatternIndex(1) == 0);
-        CHECK_TRUE( pMulti->getEffect(1) == 0);
-        CHECK_TRUE( pMulti->getMappingIndex(1) == 0);
-        CHECK_TRUE( pMulti->getData(1) == 0);
+        CHECK_TRUE( pMulti->getTexturePatternIndex(1) == -1);
+        CHECK_TRUE( pMulti->getEffect(1) == OpenFlight::MultiTextureRecord::etUserDefined);
+        CHECK_TRUE( pMulti->getMappingIndex(1) == -1);
+        CHECK_TRUE( pMulti->getData(1) == -1);
 
         CHECK_TRUE( pMulti->getTexturePatternIndex(2) == 5);
         CHECK_TRUE( pMulti->getEffect(2) == OpenFlight::MultiTextureRecord::etBump);
