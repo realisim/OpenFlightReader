@@ -47,3 +47,5 @@ add_custom_command(TARGET ${PROJECT_NAME}
   POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_BINARY_DIR}/packages/CppSharp.${CPPSHARP_VERSION}/output/lib" "$<TARGET_FILE_DIR:${PROJECT_NAME}>/lib"
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
   VERBATIM)
+
+install(DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>/" DESTINATION "${destinationBinPath}/generators/csharp")

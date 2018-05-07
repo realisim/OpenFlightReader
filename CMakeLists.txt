@@ -13,6 +13,7 @@ option(BUILD_CSHARP_GENERATOR "Build CSharp Generator" OFF)
 option(BUILD_SAMPLES "Builds the samples" OFF)
 option(BUILD_UNIT_TESTS "Builds the unit tests" OFF)
 
+SET ( destinationBinPath ${OpenFlightReader_SOURCE_DIR}/bin/ )
 
 if (BUILD_CSHARP_GENERATOR)
 	ADD_SUBDIRECTORY(generators)
@@ -59,8 +60,6 @@ ENDIF()
 #------------------------------------------------------------------------------
 # INSTALL the libs, dll and include package
 #------------------------------------------------------------------------------
-SET ( destinationBinPath ${OpenFlightReader_SOURCE_DIR}/bin/ )
-
 # Install library
 IF(BUILD_AS_SHARED_LIB)
 	install(TARGETS ${PROJECT_NAME} DESTINATION ${destinationBinPath}/dll/)
