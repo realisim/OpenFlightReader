@@ -24,7 +24,7 @@ bool CommentRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
     iRawRecord.seekg(startPos + 4);
 
     bool ok = true;
-    ok &= readChar(iRawRecord, getRecordLength() - 4, mComment);
+    ok &= readBytes(iRawRecord, getRecordLength() - 4, mComment);
     
     return ok;
 }

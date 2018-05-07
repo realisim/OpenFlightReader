@@ -42,6 +42,8 @@ namespace OpenFlight
         enum earthEllipsoidModel{ eemWgs1984 = 0, eemWgs1972 = 1, eemBessel = 2,
             eemClarke1866 = 3, eemNad1927 = 4, eemUserDefined = -1 };
         
+        MaterialPaletteRecord* findMaterialPaletteByMaterialIndex(int iIndex);
+        TexturePaletteRecord* findTexturePaletteByTexturePatternIndex(int iIndex);
         std::string getAsciiId() const;
         CommentRecord* getCommentRecord(int) const;
         std::string getDateAntTimeOfLastRevision() const;

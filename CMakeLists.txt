@@ -7,14 +7,19 @@ cmake_minimum_required(VERSION 3.1)
 option(BUILD_AS_SHARED_LIB "Builds the shared library (.dll)" OFF)
 option(BUILD_CSHARP_GENERATOR "Build CSharp Generator" OFF)
 
-ADD_SUBDIRECTORY(samples)
+#------------------------------------------------------------------------------
+# Options and variables in CMake GUI
+#------------------------------------------------------------------------------
+option(BUILD_SAMPLES "Builds the samples" OFF)
+option(BUILD_UNIT_TESTS "Builds the unit tests" OFF)
+
 
 if (BUILD_CSHARP_GENERATOR)
 	ADD_SUBDIRECTORY(generators)
 endif()
 
 #------------------------------------------------------------------------------
-# Create shared lib project
+# Create main lib project (shared and static)
 #------------------------------------------------------------------------------
 INCLUDE_DIRECTORIES( ${OpenFlightReader_SOURCE_DIR}/.)
 INCLUDE_DIRECTORIES( ${OpenFlightReader_SOURCE_DIR}/openFlight/)
@@ -39,6 +44,17 @@ ELSE(BUILD_AS_SHARED_LIB)
 ENDIF(BUILD_AS_SHARED_LIB)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX _d)
+
+#------------------------------------------------------------------------------
+# conditionnal projects: samples and unit tests.
+#------------------------------------------------------------------------------
+IF(BUILD_SAMPLES)
+    ADD_SUBDIRECTORY(samples)
+ENDIF()
+
+IF(BUILD_UNIT_TESTS)
+    ADD_SUBDIRECTORY(unitTests)
+ENDIF()
 
 #------------------------------------------------------------------------------
 # INSTALL the libs, dll and include package

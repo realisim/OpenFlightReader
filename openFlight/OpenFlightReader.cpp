@@ -405,6 +405,8 @@ void OpenFlightReader::parseRawRecord(uint16_t iOpCode, ifstream& iRawRecord)
         case ocColorPalette: parseAncillaryRecord<ColorPaletteRecord>(iRawRecord); break;
         case ocLongId: parseAncillaryRecord<LongIdRecord>(iRawRecord); break;
         case ocMatrix: parseAncillaryRecord<MatrixRecord>(iRawRecord); break;
+        case ocMultitexture: parseAncillaryRecord<MultiTextureRecord>(iRawRecord); break;
+        case ocUvList: parseAncillaryRecord<UvListRecord>(iRawRecord); break;
         case ocExternalReference: parseExternalReferenceRecord(iRawRecord); break;
         case ocTexturePalette: parseAncillaryRecord<TexturePaletteRecord>(iRawRecord); break;
         case ocMaterialPalette: parseAncillaryRecord<MaterialPaletteRecord>(iRawRecord); break;
@@ -560,7 +562,7 @@ string OpenFlightReader::rawRecordToString(ifstream& iRawRecord, int iRecordLeng
     
     // read the record
     string record;
-    readChar(iRawRecord, iRecordLength, record);
+    readBytes(iRawRecord, iRecordLength, record);
     
     string hexPayload;
     char hex[5];

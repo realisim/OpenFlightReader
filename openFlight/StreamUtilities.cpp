@@ -10,15 +10,35 @@ namespace OpenFlight
     const bool __BIGENDIAN = false; //Windows machine are little endian...
 
     //-------------------------------------------------------------------------
+    bool needsSwapping()
+    {
+        return (!__BIGENDIAN);
+    }
+
+    //-------------------------------------------------------------------------
+    // This function will read iNumberOfCharToRead and will create a string with
+    // the content. The returned string oV will end at the first \0 encountered.
+    //
+    // To read chars and keep \0, see readBytes.
+    // 
     bool readChar(std::istream& iStream, int iNumberOfCharToRead, std::string& oV)
     {
         char *c = new char[iNumberOfCharToRead];
         iStream.read(c, iNumberOfCharToRead);
 
         //no swap involved in reading chars...
-        oV = string(c, iNumberOfCharToRead);
+        oV = string(c);
         
         delete[] c;
+
+        return iStream.good();
+    }
+
+    //-------------------------------------------------------------------------
+    bool readBytes(std::istream& iStream, int iNumberOfBytesToRead, std::string& oV)
+    {
+        oV.resize(iNumberOfBytesToRead);
+        iStream.read(&oV[0], iNumberOfBytesToRead);
 
         return iStream.good();
     }
@@ -242,5 +262,80 @@ namespace OpenFlight
         out[6]  = in[1];
         out[7]  = in[0];
         memcpy(iV, out, 8);
+    }
+
+    //-------------------------------------------------------------------------
+    bool writeBytes(ostream& oss, const string& iV)
+    {
+        return writeBytes( oss, iV.size(), iV.c_str() );
+    }
+
+    //-------------------------------------------------------------------------
+    bool writeBytes(ostream& oss, int iNumberOfBytesToWrite, const char* iV)
+    {
+        oss.write( (char*)iV, iNumberOfBytesToWrite );
+        return oss.good();
+    }
+
+    //-------------------------------------------------------------------------
+    bool writeDouble(std::ostream& oss, double iV)
+    {
+        if(!__BIGENDIAN){ swapBytes8((void*)&iV); }
+        oss.write( (char*)&iV, sizeof(double) );
+        return oss.good();
+    }
+
+    //-------------------------------------------------------------------------
+    bool writeFloat32(std::ostream& oss, float iV)
+    {
+        if(!__BIGENDIAN){ swapBytes4((void*)&iV); }
+        oss.write( (char*)&iV, sizeof(float) );
+        return oss.good();
+    }
+
+    //-------------------------------------------------------------------------
+    bool writeInt8(std::ostream& oss, int8_t iV)
+    {
+        oss.write( (char*)&iV, sizeof(int8_t) );
+        return oss.good();
+    }
+
+    //-------------------------------------------------------------------------
+    bool writeInt16(std::ostream& oss, int16_t iV)
+    {
+        if(!__BIGENDIAN){ swapBytes2((void*)&iV); }
+        oss.write( (char*)&iV, sizeof(int16_t) );
+        return oss.good();
+    }
+
+    //-------------------------------------------------------------------------
+    bool writeInt32(std::ostream& oss, int32_t iV)
+    {
+        if(!__BIGENDIAN){ swapBytes4((void*)&iV); }
+        oss.write( (char*)&iV, sizeof(int32_t) );
+        return oss.good();
+    }
+
+    //-------------------------------------------------------------------------
+    bool writeUint8(std::ostream& oss, uint8_t iV)
+    {
+        oss.write( (char*)&iV, sizeof(uint8_t) );
+        return oss.good();
+    }
+
+    //-------------------------------------------------------------------------
+    bool writeUint16(ostream& oss, uint16_t iV)
+    {
+        if(!__BIGENDIAN){ swapBytes2((void*)&iV); }
+        oss.write( (char*)&iV, sizeof(uint16_t) );
+        return oss.good();
+    }
+
+    //-------------------------------------------------------------------------
+    bool writeUint32(ostream& oss, uint32_t iV)
+    {
+        if(!__BIGENDIAN){ swapBytes4((void*)&iV); }
+        oss.write( (char*)&iV, sizeof(uint32_t) );
+        return oss.good();
     }
 }

@@ -1,4 +1,5 @@
 
+#include "AncillaryRecords/UvListRecord.h"
 #include "VertexListRecord.h"
 #include <fstream>
 #include "StreamUtilities.h"
@@ -8,12 +9,15 @@ using namespace OpenFlight;
 
 //------------------------------------------------------------------------------
 VertexListRecord::VertexListRecord(PrimaryRecord* ipParent) :
-PrimaryRecord(ipParent)
+PrimaryRecord(ipParent),
+mpUvListRecord(nullptr)
 {}
 
 //------------------------------------------------------------------------------
 VertexListRecord::~VertexListRecord()
-{}
+{
+    mpUvListRecord = nullptr;
+}
 
 //------------------------------------------------------------------------------
 const std::vector<int32_t>& VertexListRecord::getByteOffsets() const
@@ -31,6 +35,28 @@ int32_t VertexListRecord::getByteOffsetIntoVertexPalette(int i) const
 //------------------------------------------------------------------------------
 int VertexListRecord::getNumberOfVertices() const
 { return (int)mByteOffsets.size(); }
+
+//------------------------------------------------------------------------------
+UvListRecord* VertexListRecord::getUvListRecord()
+{
+    return mpUvListRecord;
+}
+
+//------------------------------------------------------------------------------
+void VertexListRecord::handleAddedAncillaryRecord(AncillaryRecord* ipAncillary)
+{
+    switch (ipAncillary->getOpCode())
+    {
+    case ocUvList: mpUvListRecord = (UvListRecord*)ipAncillary; break;    
+    default: break;
+    }
+}
+
+//------------------------------------------------------------------------------
+bool VertexListRecord::hasUvListRecord() const
+{
+    return mpUvListRecord != nullptr;
+}
 
 //------------------------------------------------------------------------------
 bool VertexListRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
