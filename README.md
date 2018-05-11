@@ -43,7 +43,7 @@ OpenFlightReader.CSharp.exe ^
  -o generated
 
 ```
-This will generate `.cs` and `.cpp` files inside a folder named "FLT".
+This will generate `.cs` and `.cpp` files inside a folder named "generated".
 
 For the STD library bindings (std::string), you will need to compile a separated dll
 

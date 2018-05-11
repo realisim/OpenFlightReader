@@ -13,12 +13,6 @@ option(BUILD_CSHARP_GENERATOR "Build CSharp Generator" OFF)
 option(BUILD_SAMPLES "Builds the samples" OFF)
 option(BUILD_UNIT_TESTS "Builds the unit tests" OFF)
 
-SET ( destinationBinPath ${OpenFlightReader_SOURCE_DIR}/bin/ )
-
-if (BUILD_CSHARP_GENERATOR)
-	ADD_SUBDIRECTORY(generators)
-endif()
-
 #------------------------------------------------------------------------------
 # Create main lib project (shared and static)
 #------------------------------------------------------------------------------
@@ -45,6 +39,7 @@ ELSE(BUILD_AS_SHARED_LIB)
 ENDIF(BUILD_AS_SHARED_LIB)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX _d)
+SET ( destinationBinPath ${OpenFlightReader_SOURCE_DIR}/bin/ )
 
 #------------------------------------------------------------------------------
 # conditionnal projects: samples and unit tests.
@@ -56,6 +51,10 @@ ENDIF()
 IF(BUILD_UNIT_TESTS)
     ADD_SUBDIRECTORY(unitTests)
 ENDIF()
+
+if (BUILD_CSHARP_GENERATOR)
+	ADD_SUBDIRECTORY(generators)
+endif()
 
 #------------------------------------------------------------------------------
 # INSTALL the libs, dll and include package
