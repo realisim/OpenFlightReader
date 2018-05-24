@@ -23,7 +23,7 @@ namespace OpenFlight
         std::string getAsciiId() const;
         int32_t getCurrentMaskIndex() const;
         std::string getMaskName(int iMaskIndex) const; // fetch the indexedStringRecord...
-        uint32_t getMask(int iMaskIndex) const;
+        uint32_t getMask(int iMaskIndex, int iWordIndex) const;
         int32_t getNumberOfMasks() const;
         int32_t getNumberOfWordsPerMask() const;
         std::vector<int> getSelectedChildFromMask(int iMaskIndex) const;

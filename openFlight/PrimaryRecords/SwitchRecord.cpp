@@ -45,12 +45,12 @@ string SwitchRecord::getMaskName(int iMaskIndex) const
 }
 
 //------------------------------------------------------------------------------
-uint32_t SwitchRecord::getMask(int iIndex) const
+uint32_t SwitchRecord::getMask(int iIndex, int iWordIndex) const
 { 
     uint32_t r = 0;
     if (iIndex >= 0 && iIndex < getNumberOfMasks())
     {
-        r = mMasks[iIndex];
+        r = mMasks[iIndex * mNumberOfWordsPerMask + iWordIndex];
     }
     return r;
 }
