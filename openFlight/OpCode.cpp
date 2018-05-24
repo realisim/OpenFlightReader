@@ -170,6 +170,7 @@ bool OpCodeUtils::isAncillaryRecord(opCode iOpcode)
         case ocBoundingHistogram:
         case ocLightPointAppearancePalette:
         case ocLightPointAnimationPalette:
+        case ocIndexedString :
         case ocShaderPalette:
         case ocExtendedMaterialHeader:
         case ocExtendedMaterialAmbient:
@@ -347,7 +348,6 @@ bool OpCodeUtils::isPrimaryRecord(opCode iOpcode)
         case ocRoadConstruction :
         case ocIndexedLightPoint :
         case ocLightPointSystem :
-        case ocIndexedString :
         case ocReserved134 :
         case ocReserved144 :
         case ocReserved146 :

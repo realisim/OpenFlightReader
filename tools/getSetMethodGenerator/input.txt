@@ -1,13 +1,4 @@
-className: LevelOfDetailRecord
+className: IndexedStringRecord
 
-std::string mAsciiId;
-double mSwitchInDistance;
-double mSwitchOutDistance;
-int16_t mSpecialEffectId1;
-int16_t mSpecialEffectId2;
-int32_t mFlags;
-double mLodX;
-double mLodY;
-double mLodZ;
-double mTransitionRange;
-double mSignificantSize;
+uint32_t iIndex;
+std::string mString;

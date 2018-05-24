@@ -418,10 +418,12 @@ void OpenFlightReader::parseRawRecord(uint16_t iOpCode, ifstream& iRawRecord)
             if(!getOptions().mVertexDataSkipped)
             { parseVertexPaletteEntry(iRawRecord); }
             break;
-        case ocLightSourcePalette: parseAncillaryRecord<LightSourcePaletteRecord>(iRawRecord); break;
+        case ocSwitch: parsePrimaryRecord<SwitchRecord>(iRawRecord); break;
         case ocVertexList: parsePrimaryRecord<VertexListRecord>(iRawRecord); break;
         case ocLevelOfDetail: parsePrimaryRecord<LevelOfDetailRecord>(iRawRecord); break;
         case ocTranslate: parseAncillaryRecord<TranslateRecord>(iRawRecord); break;
+        case ocLightSourcePalette: parseAncillaryRecord<LightSourcePaletteRecord>(iRawRecord); break;
+        case ocIndexedString: parseAncillaryRecord<IndexedStringRecord>(iRawRecord); break;
     default: parseUnsupportedRecord(iRawRecord); break;
     }   
 }
