@@ -1,136 +1,37 @@
 
     Members
-std::string mAsciiId;
-double mSwitchInDistance;
-double mSwitchOutDistance;
-int16_t mSpecialEffectId1;
-int16_t mSpecialEffectId2;
-int32_t mFlags;
-double mLodX;
-double mLodY;
-double mLodZ;
-double mTransitionRange;
-double mSignificantSize;
+uint32_t mIndex;
+std::string mString;
 
 
     Getters
-std::string getAsciiId() const;
-int32_t getFlags() const;
-double getLodX() const;
-double getLodY() const;
-double getLodZ() const;
-double getSignificantSize() const;
-int16_t getSpecialEffectId1() const;
-int16_t getSpecialEffectId2() const;
-double getSwitchInDistance() const;
-double getSwitchOutDistance() const;
-double getTransitionRange() const;
+uint32_t getIndex() const;
+std::string getString() const;
 
 
     Setters
-void setAsciiId(std::string);
-void setFlags(int32_t);
-void setLodX(double);
-void setLodY(double);
-void setLodZ(double);
-void setSignificantSize(double);
-void setSpecialEffectId1(int16_t);
-void setSpecialEffectId2(int16_t);
-void setSwitchInDistance(double);
-void setSwitchOutDistance(double);
-void setTransitionRange(double);
+void setIndex(uint32_t);
+void setString(std::string);
 
 
     Getter instantiation
 //------------------------------------------------------------------------------
-std::string LevelOfDetailRecord::getAsciiId() const
-{ return mAsciiId; }
+uint32_t IndexedStringRecord::getIndex() const
+{ return mIndex; }
 
 //------------------------------------------------------------------------------
-int32_t LevelOfDetailRecord::getFlags() const
-{ return mFlags; }
-
-//------------------------------------------------------------------------------
-double LevelOfDetailRecord::getLodX() const
-{ return mLodX; }
-
-//------------------------------------------------------------------------------
-double LevelOfDetailRecord::getLodY() const
-{ return mLodY; }
-
-//------------------------------------------------------------------------------
-double LevelOfDetailRecord::getLodZ() const
-{ return mLodZ; }
-
-//------------------------------------------------------------------------------
-double LevelOfDetailRecord::getSignificantSize() const
-{ return mSignificantSize; }
-
-//------------------------------------------------------------------------------
-int16_t LevelOfDetailRecord::getSpecialEffectId1() const
-{ return mSpecialEffectId1; }
-
-//------------------------------------------------------------------------------
-int16_t LevelOfDetailRecord::getSpecialEffectId2() const
-{ return mSpecialEffectId2; }
-
-//------------------------------------------------------------------------------
-double LevelOfDetailRecord::getSwitchInDistance() const
-{ return mSwitchInDistance; }
-
-//------------------------------------------------------------------------------
-double LevelOfDetailRecord::getSwitchOutDistance() const
-{ return mSwitchOutDistance; }
-
-//------------------------------------------------------------------------------
-double LevelOfDetailRecord::getTransitionRange() const
-{ return mTransitionRange; }
+std::string IndexedStringRecord::getString() const
+{ return mString; }
 
 
 
     Setter instantiation
 //------------------------------------------------------------------------------
-void LevelOfDetailRecord::setAsciiId(std::string)
+void IndexedStringRecord::setIndex(uint32_t)
 {}
 
 //------------------------------------------------------------------------------
-void LevelOfDetailRecord::setFlags(int32_t)
-{}
-
-//------------------------------------------------------------------------------
-void LevelOfDetailRecord::setLodX(double)
-{}
-
-//------------------------------------------------------------------------------
-void LevelOfDetailRecord::setLodY(double)
-{}
-
-//------------------------------------------------------------------------------
-void LevelOfDetailRecord::setLodZ(double)
-{}
-
-//------------------------------------------------------------------------------
-void LevelOfDetailRecord::setSignificantSize(double)
-{}
-
-//------------------------------------------------------------------------------
-void LevelOfDetailRecord::setSpecialEffectId1(int16_t)
-{}
-
-//------------------------------------------------------------------------------
-void LevelOfDetailRecord::setSpecialEffectId2(int16_t)
-{}
-
-//------------------------------------------------------------------------------
-void LevelOfDetailRecord::setSwitchInDistance(double)
-{}
-
-//------------------------------------------------------------------------------
-void LevelOfDetailRecord::setSwitchOutDistance(double)
-{}
-
-//------------------------------------------------------------------------------
-void LevelOfDetailRecord::setTransitionRange(double)
+void IndexedStringRecord::setString(std::string)
 {}
 
 

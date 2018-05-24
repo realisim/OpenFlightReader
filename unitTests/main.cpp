@@ -182,9 +182,56 @@ void testMultiTextureRecord()
     delete pRoot;
 }
 
+//--------------------------------------------------------------------------
+void testSwitchRecord()
+{
+    printf("\n\n --- testSwitchRecord --- \n");
+
+    OpenFlight::OpenFlightReader ofr;
+    OpenFlight::OpenFlightReader::Options ofrOptions;
+    ofrOptions.mDebugEnabled = false;
+    ofr.setOptions(ofrOptions);
+
+    OpenFlight::HeaderRecord *hr = ofr.open("../../assets/testFiles/switch.flt");
+
+    CHECK_TRUE(!ofr.hasErrors());
+    //CHECK_TRUE(!ofr.hasWarnings());
+
+    OpenFlight::PrimaryRecord *pr = hr->getChild(0)->getChild(0)->getChild(0);
+
+    CHECK_TRUE(pr->getOpCode() == OpenFlight::ocSwitch);
+    OpenFlight::SwitchRecord *sr = (OpenFlight::SwitchRecord*)pr;
+
+    CHECK_TRUE(sr->getCurrentMaskIndex() == 0);
+    CHECK_TRUE(sr->getNumberOfMasks() == 3);
+    CHECK_TRUE(sr->getNumberOfWordsPerMask() == 2);
+
+    CHECK_TRUE(sr->getMaskName(0) == "mask 0");
+    CHECK_TRUE(sr->getMaskName(1) == "mask 1");
+    CHECK_TRUE(sr->getMaskName(2) == "mask 2");
+
+    // mask 0; 0 - 11
+    vector<int> selectedChilds = sr->getSelectedChildFromMask(0);
+    for(int i = 0; i < selectedChilds.size(); ++i)
+        CHECK_TRUE(selectedChilds[i] == i);
+
+    // mask 1; 12 - 24
+    selectedChilds = sr->getSelectedChildFromMask(1);
+    for(int i = 0; i < selectedChilds.size(); ++i)
+        CHECK_TRUE(selectedChilds[i] == i+12);
+
+    // mask 2; 25 - 44
+    selectedChilds = sr->getSelectedChildFromMask(2);
+    for(int i = 0; i < selectedChilds.size(); ++i)
+        CHECK_TRUE(selectedChilds[i] == i+25);
+}
+
+//--------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
     testMultiTextureRecord();
+
+    testSwitchRecord();
 
     return 0;
 }
