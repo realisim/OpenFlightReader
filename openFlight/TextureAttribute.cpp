@@ -107,7 +107,7 @@ bool TextureAttribute::readFromFile(const std::string& iFilenamePath)
     {
         std::streamoff startPos = ifs.tellg();
 
-        bool mIsValid = true;
+        mIsValid = true;
         mIsValid |= readInt32(ifs, mSizeInTexelsX);
         mIsValid |= readInt32(ifs, mSizeInTexelsY);
         
