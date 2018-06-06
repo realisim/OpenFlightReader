@@ -1,37 +1,257 @@
 
     Members
-uint32_t mIndex;
-std::string mString;
+int32_t mSizeInTexelsX;
+int32_t mSizeInTexelsY;
+//int32_t mXComponentOfUpVector;
+//int32_t mYComponentOfUpVector;
+int32_t mFileFormatType;
+int32_t mMinificationFilterType;
+int32_t mMagnificationFilterType;
+int32_t mWrapMethodUV;
+int32_t mWrapMethodU;
+int32_t mWrapMethodV;
+//int32_t mXPivotPointForRotatingTextures;
+//int32_t mYPivotPointForRotatingTextures;
+int32_t mEnvironmentType;
+//int32_t mIsAlphaLoadedWithWhiteInColor;
+//int32_t meserved;
+//int32_t meserved;
+double mRealWorldSizeX;
+double mRealWorldSizeY;
+//int32_t mCodeForOriginOfImportedTexture;
+//int32_t mKernelVersionNumber;
+//int32_t mInternalFormatType;
+//int32_t mExternalFormatType;
 
 
     Getters
-uint32_t getIndex() const;
-std::string getString() const;
+//int32_t getCodeForOriginOfImportedTexture() const;
+int32_t getEnvironmentType() const;
+//int32_t getExternalFormatType() const;
+int32_t getFileFormatType() const;
+//int32_t getInternalFormatType() const;
+//int32_t getIsAlphaLoadedWithWhiteInColor() const;
+//int32_t getKernelVersionNumber() const;
+int32_t getMagnificationFilterType() const;
+int32_t getMinificationFilterType() const;
+double getRealWorldSizeX() const;
+double getRealWorldSizeY() const;
+int32_t getSizeInTexelsX() const;
+int32_t getSizeInTexelsY() const;
+int32_t getWrapMethodU() const;
+int32_t getWrapMethodUV() const;
+int32_t getWrapMethodV() const;
+//int32_t getXComponentOfUpVector() const;
+//int32_t getXPivotPointForRotatingTextures() const;
+//int32_t getYComponentOfUpVector() const;
+//int32_t getYPivotPointForRotatingTextures() const;
+//int32_t geteserved() const;
+//int32_t geteserved() const;
 
 
     Setters
-void setIndex(uint32_t);
-void setString(std::string);
+void setCodeForOriginOfImportedTexture(//int32_t);
+void setEnvironmentType(int32_t);
+void setExternalFormatType(//int32_t);
+void setFileFormatType(int32_t);
+void setInternalFormatType(//int32_t);
+void setIsAlphaLoadedWithWhiteInColor(//int32_t);
+void setKernelVersionNumber(//int32_t);
+void setMagnificationFilterType(int32_t);
+void setMinificationFilterType(int32_t);
+void setRealWorldSizeX(double);
+void setRealWorldSizeY(double);
+void setSizeInTexelsX(int32_t);
+void setSizeInTexelsY(int32_t);
+void setWrapMethodU(int32_t);
+void setWrapMethodUV(int32_t);
+void setWrapMethodV(int32_t);
+void setXComponentOfUpVector(//int32_t);
+void setXPivotPointForRotatingTextures(//int32_t);
+void setYComponentOfUpVector(//int32_t);
+void setYPivotPointForRotatingTextures(//int32_t);
+void seteserved(//int32_t);
+void seteserved(//int32_t);
 
 
     Getter instantiation
 //------------------------------------------------------------------------------
-uint32_t IndexedStringRecord::getIndex() const
-{ return mIndex; }
+//int32_t TextureAttribute::getCodeForOriginOfImportedTexture() const
+{ return mCodeForOriginOfImportedTexture; }
 
 //------------------------------------------------------------------------------
-std::string IndexedStringRecord::getString() const
-{ return mString; }
+int32_t TextureAttribute::getEnvironmentType() const
+{ return mEnvironmentType; }
+
+//------------------------------------------------------------------------------
+//int32_t TextureAttribute::getExternalFormatType() const
+{ return mExternalFormatType; }
+
+//------------------------------------------------------------------------------
+int32_t TextureAttribute::getFileFormatType() const
+{ return mFileFormatType; }
+
+//------------------------------------------------------------------------------
+//int32_t TextureAttribute::getInternalFormatType() const
+{ return mInternalFormatType; }
+
+//------------------------------------------------------------------------------
+//int32_t TextureAttribute::getIsAlphaLoadedWithWhiteInColor() const
+{ return mIsAlphaLoadedWithWhiteInColor; }
+
+//------------------------------------------------------------------------------
+//int32_t TextureAttribute::getKernelVersionNumber() const
+{ return mKernelVersionNumber; }
+
+//------------------------------------------------------------------------------
+int32_t TextureAttribute::getMagnificationFilterType() const
+{ return mMagnificationFilterType; }
+
+//------------------------------------------------------------------------------
+int32_t TextureAttribute::getMinificationFilterType() const
+{ return mMinificationFilterType; }
+
+//------------------------------------------------------------------------------
+double TextureAttribute::getRealWorldSizeX() const
+{ return mRealWorldSizeX; }
+
+//------------------------------------------------------------------------------
+double TextureAttribute::getRealWorldSizeY() const
+{ return mRealWorldSizeY; }
+
+//------------------------------------------------------------------------------
+int32_t TextureAttribute::getSizeInTexelsX() const
+{ return mSizeInTexelsX; }
+
+//------------------------------------------------------------------------------
+int32_t TextureAttribute::getSizeInTexelsY() const
+{ return mSizeInTexelsY; }
+
+//------------------------------------------------------------------------------
+int32_t TextureAttribute::getWrapMethodU() const
+{ return mWrapMethodU; }
+
+//------------------------------------------------------------------------------
+int32_t TextureAttribute::getWrapMethodUV() const
+{ return mWrapMethodUV; }
+
+//------------------------------------------------------------------------------
+int32_t TextureAttribute::getWrapMethodV() const
+{ return mWrapMethodV; }
+
+//------------------------------------------------------------------------------
+//int32_t TextureAttribute::getXComponentOfUpVector() const
+{ return mXComponentOfUpVector; }
+
+//------------------------------------------------------------------------------
+//int32_t TextureAttribute::getXPivotPointForRotatingTextures() const
+{ return mXPivotPointForRotatingTextures; }
+
+//------------------------------------------------------------------------------
+//int32_t TextureAttribute::getYComponentOfUpVector() const
+{ return mYComponentOfUpVector; }
+
+//------------------------------------------------------------------------------
+//int32_t TextureAttribute::getYPivotPointForRotatingTextures() const
+{ return mYPivotPointForRotatingTextures; }
+
+//------------------------------------------------------------------------------
+//int32_t TextureAttribute::geteserved() const
+{ return meserved; }
+
+//------------------------------------------------------------------------------
+//int32_t TextureAttribute::geteserved() const
+{ return meserved; }
 
 
 
     Setter instantiation
 //------------------------------------------------------------------------------
-void IndexedStringRecord::setIndex(uint32_t)
+void TextureAttribute::setCodeForOriginOfImportedTexture(//int32_t)
 {}
 
 //------------------------------------------------------------------------------
-void IndexedStringRecord::setString(std::string)
+void TextureAttribute::setEnvironmentType(int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setExternalFormatType(//int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setFileFormatType(int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setInternalFormatType(//int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setIsAlphaLoadedWithWhiteInColor(//int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setKernelVersionNumber(//int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setMagnificationFilterType(int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setMinificationFilterType(int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setRealWorldSizeX(double)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setRealWorldSizeY(double)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setSizeInTexelsX(int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setSizeInTexelsY(int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setWrapMethodU(int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setWrapMethodUV(int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setWrapMethodV(int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setXComponentOfUpVector(//int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setXPivotPointForRotatingTextures(//int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setYComponentOfUpVector(//int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::setYPivotPointForRotatingTextures(//int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::seteserved(//int32_t)
+{}
+
+//------------------------------------------------------------------------------
+void TextureAttribute::seteserved(//int32_t)
 {}
 
 

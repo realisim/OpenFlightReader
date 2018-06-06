@@ -8,6 +8,9 @@
 #include <string>
 #include <stack>
 
+//TextureAttribute.h is here so clients only have to include
+#include "TextureAttribute.h"
+
 namespace OpenFlight
 {
     class Document;
