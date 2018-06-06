@@ -30,6 +30,20 @@ namespace
 }
 
 //--------------------------------------------------------------------------
+void testFile()
+{
+    printf("\n\n --- testMultiTextureRecord --- \n");
+
+    OpenFlight::OpenFlightReader ofr;
+    OpenFlight::OpenFlightReader::Options ofrOptions;
+    ofrOptions.mDebugEnabled = false;
+    ofr.setOptions(ofrOptions);
+
+    ofr.open("D:/work/Projet/Commando/FLTs/ebbr/ebbr_5m.flt");
+
+}
+
+//--------------------------------------------------------------------------
 void testMultiTextureRecord()
 {
     printf("\n\n --- testMultiTextureRecord --- \n");
@@ -227,11 +241,41 @@ void testSwitchRecord()
 }
 
 //--------------------------------------------------------------------------
+void testTextureAttribute()
+{
+    printf("\n\n --- testTextureAttribute --- \n");
+
+    OpenFlight::TextureAttribute ta;
+    ta.readFromFile("../../assets/testFiles/ice_rwy.rgb.attr");
+
+    CHECK_TRUE(ta.isValid());
+
+    CHECK_TRUE(ta.getEnvironmentType() == OpenFlight::TextureAttribute::etModulate);
+    CHECK_TRUE(ta.getFileFormatType() == OpenFlight::TextureAttribute::SgiRgb);
+
+    CHECK_TRUE(ta.getMagnificationFilterType() == OpenFlight::TextureAttribute::mmftBilinear);
+    CHECK_TRUE(ta.getMinificationFilterType() == OpenFlight::TextureAttribute::mmftBilinear);
+
+    CHECK_TRUE(ta.getRealWorldSizeX() == 1000.0);
+    CHECK_TRUE(ta.getRealWorldSizeY() == 1000.0);
+    CHECK_TRUE(ta.getSizeInTexelsX() == 512);
+    CHECK_TRUE(ta.getSizeInTexelsY() == 512);
+
+    CHECK_TRUE(ta.getWrapMethodU() == OpenFlight::TextureAttribute::wmNone);
+    CHECK_TRUE(ta.getWrapMethodUV() == OpenFlight::TextureAttribute::wmRepeat);
+    CHECK_TRUE(ta.getWrapMethodU() == OpenFlight::TextureAttribute::wmNone);
+}
+
+//--------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
     testMultiTextureRecord();
 
     testSwitchRecord();
+
+    testTextureAttribute();
+
+    //testFile();
 
     return 0;
 }
