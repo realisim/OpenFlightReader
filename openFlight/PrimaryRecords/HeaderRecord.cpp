@@ -66,6 +66,8 @@ mEarthMinorAxis(0.0),
 mpColorPalette(nullptr),
 mpLightSourcePalette(nullptr),
 mMaterialPalettes(),
+mLightPointAppearancePalettes(),
+mLightPointAnimationPalettes(),
 mpVertexPalette(nullptr),
 mTexturePalettes(),
 mComments()
@@ -77,6 +79,8 @@ HeaderRecord::~HeaderRecord()
     mpColorPalette = nullptr;
     mpLightSourcePalette = nullptr;
     mMaterialPalettes.clear();
+    mLightPointAppearancePalettes.clear();
+    mLightPointAnimationPalettes.clear();
     mpVertexPalette = nullptr;
     mTexturePalettes.clear();
     mComments.clear();
@@ -182,6 +186,28 @@ double HeaderRecord::getLambertLowerLatitude() const
 { return mLambertLowerLatitude;}
 
 //------------------------------------------------------------------------------
+LightPointAnimationPaletteRecord* HeaderRecord::getLightPointAnimationPalette(int iIndex) const
+{
+    LightPointAnimationPaletteRecord *r = nullptr;
+    if (iIndex >= 0 && iIndex < (int)mLightPointAnimationPalettes.size())
+    {
+        r = mLightPointAnimationPalettes[iIndex];
+    }
+    return r;
+}
+
+//------------------------------------------------------------------------------
+LightPointAppearancePaletteRecord* HeaderRecord::getLightPointAppearancePalette(int iIndex) const
+{
+    LightPointAppearancePaletteRecord *r = nullptr;
+    if (iIndex >= 0 && iIndex < (int)mLightPointAppearancePalettes.size())
+    {
+        r = mLightPointAppearancePalettes[iIndex];
+    }
+    return r;
+}
+
+//------------------------------------------------------------------------------
 double HeaderRecord::getLambertUpperLatitude() const
 { return mLambertUpperLatitude;}
 
@@ -285,6 +311,14 @@ int HeaderRecord::getNumberOfComments() const
 { return (int)mComments.size();  }
 
 //------------------------------------------------------------------------------
+int HeaderRecord::getNumberOfLightPointAnimationPalettes() const
+{ return (int)mLightPointAnimationPalettes.size(); }
+
+//------------------------------------------------------------------------------
+int HeaderRecord::getNumberOfLightPointAppearancePalettes() const
+{ return (int)mLightPointAppearancePalettes.size(); }
+
+//------------------------------------------------------------------------------
 int HeaderRecord::getNumberOfMaterialPalettes() const
 { return (int)mMaterialPalettes.size(); }
 
@@ -368,6 +402,8 @@ void HeaderRecord::handleAddedAncillaryRecord(AncillaryRecord* ipAncillary)
         case ocColorPalette: mpColorPalette = (ColorPaletteRecord*)ipAncillary; break;
         case ocLightSourcePalette: mpLightSourcePalette = (LightSourcePaletteRecord*)ipAncillary; break;
         case ocMaterialPalette: mMaterialPalettes.push_back( (MaterialPaletteRecord*)ipAncillary ); break;
+        case ocLightPointAppearancePalette: mLightPointAppearancePalettes.push_back( (LightPointAppearancePaletteRecord*)ipAncillary ); break;
+        case ocLightPointAnimationPalette: mLightPointAnimationPalettes.push_back( (LightPointAnimationPaletteRecord*)ipAncillary ); break;
         case ocVertexPalette: mpVertexPalette = (VertexPaletteRecord*)ipAncillary; break;
         case ocTexturePalette: mTexturePalettes.push_back((TexturePaletteRecord*)ipAncillary); break;
         default: break;

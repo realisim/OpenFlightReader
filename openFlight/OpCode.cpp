@@ -194,7 +194,7 @@ bool OpCodeUtils::isAncillaryRecord(opCode iOpcode)
             break;
         default: r = false; break;
     }
-    return true;
+    return r;
 }
 
 //------------------------------------------------------------------------------

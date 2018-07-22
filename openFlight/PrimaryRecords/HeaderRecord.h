@@ -10,6 +10,8 @@ namespace OpenFlight
     class AncillaryRecord;
     class ColorPaletteRecord;
     class CommentRecord;
+    class LightPointAnimationPaletteRecord;
+    class LightPointAppearancePaletteRecord;
     class LightSourcePaletteRecord;
     class MaterialPaletteRecord;
     class VertexPaletteRecord;
@@ -60,6 +62,8 @@ namespace OpenFlight
         std::string getFilenamePath() const;
         int getFlags() const;
         int getFormatRevision() const;
+        LightPointAnimationPaletteRecord* getLightPointAnimationPalette(int) const;
+        LightPointAppearancePaletteRecord* getLightPointAppearancePalette(int) const;
         double getLambertLowerLatitude() const;
         double getLambertUpperLatitude() const;
         MaterialPaletteRecord* getMaterialPalette(int) const;
@@ -85,6 +89,8 @@ namespace OpenFlight
         double getNorthEastCornerLatitude() const;
         double getNorthEastCornerLongitude() const;
         int getNumberOfComments() const;
+        int getNumberOfLightPointAnimationPalettes() const;
+        int getNumberOfLightPointAppearancePalettes() const;
         int getNumberOfMaterialPalettes() const;
         int getNumberOfTexturePalettes() const;
         double getOriginLatitude() const;
@@ -216,6 +222,8 @@ namespace OpenFlight
         ColorPaletteRecord *mpColorPalette;
         LightSourcePaletteRecord *mpLightSourcePalette;
         std::vector<MaterialPaletteRecord*> mMaterialPalettes;
+        std::vector<LightPointAppearancePaletteRecord*> mLightPointAppearancePalettes;
+        std::vector<LightPointAnimationPaletteRecord*> mLightPointAnimationPalettes;
         VertexPaletteRecord *mpVertexPalette; //owned in PrimaryRecords::mAncillaryRecord ;
         std::vector<TexturePaletteRecord*> mTexturePalettes;
         std::vector<CommentRecord*> mComments;

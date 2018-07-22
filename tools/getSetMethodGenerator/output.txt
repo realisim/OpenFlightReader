@@ -1,257 +1,180 @@
 
     Members
-int32_t mSizeInTexelsX;
-int32_t mSizeInTexelsY;
-//int32_t mXComponentOfUpVector;
-//int32_t mYComponentOfUpVector;
-int32_t mFileFormatType;
-int32_t mMinificationFilterType;
-int32_t mMagnificationFilterType;
-int32_t mWrapMethodUV;
-int32_t mWrapMethodU;
-int32_t mWrapMethodV;
-//int32_t mXPivotPointForRotatingTextures;
-//int32_t mYPivotPointForRotatingTextures;
-int32_t mEnvironmentType;
-//int32_t mIsAlphaLoadedWithWhiteInColor;
-//int32_t meserved;
-//int32_t meserved;
-double mRealWorldSizeX;
-double mRealWorldSizeY;
-//int32_t mCodeForOriginOfImportedTexture;
-//int32_t mKernelVersionNumber;
-//int32_t mInternalFormatType;
-//int32_t mExternalFormatType;
+std::string mName;
+int32_t mIndex;
+float mAnimationPeriod; //in seconds
+float mAnimationPhaseDelay;
+float mAnimationEnabledPeriod; //in seconds
+float mRotationAxisX;
+float mRotationAxisY;
+float mRotationAxisZ;
+int32_t mFlags;
+AnimationType mAnimationType;
+MorseCodeTiming mMorseCodeTiming;
+int32_t mWordRate;
+int32_t mharacterRate;
+std::string mMorseCodeString;
+int32_t mNumberOfFlashingSequences;
 
 
     Getters
-//int32_t getCodeForOriginOfImportedTexture() const;
-int32_t getEnvironmentType() const;
-//int32_t getExternalFormatType() const;
-int32_t getFileFormatType() const;
-//int32_t getInternalFormatType() const;
-//int32_t getIsAlphaLoadedWithWhiteInColor() const;
-//int32_t getKernelVersionNumber() const;
-int32_t getMagnificationFilterType() const;
-int32_t getMinificationFilterType() const;
-double getRealWorldSizeX() const;
-double getRealWorldSizeY() const;
-int32_t getSizeInTexelsX() const;
-int32_t getSizeInTexelsY() const;
-int32_t getWrapMethodU() const;
-int32_t getWrapMethodUV() const;
-int32_t getWrapMethodV() const;
-//int32_t getXComponentOfUpVector() const;
-//int32_t getXPivotPointForRotatingTextures() const;
-//int32_t getYComponentOfUpVector() const;
-//int32_t getYPivotPointForRotatingTextures() const;
-//int32_t geteserved() const;
-//int32_t geteserved() const;
+float getAnimationEnabledPeriod() const;
+float getAnimationPeriod() const;
+float getAnimationPhaseDelay() const;
+AnimationType getAnimationType() const;
+int32_t getFlags() const;
+int32_t getIndex() const;
+std::string getMorseCodeString() const;
+MorseCodeTiming getMorseCodeTiming() const;
+std::string getName() const;
+int32_t getNumberOfFlashingSequences() const;
+float getRotationAxisX() const;
+float getRotationAxisY() const;
+float getRotationAxisZ() const;
+int32_t getWordRate() const;
+int32_t getharacterRate() const;
 
 
     Setters
-void setCodeForOriginOfImportedTexture(//int32_t);
-void setEnvironmentType(int32_t);
-void setExternalFormatType(//int32_t);
-void setFileFormatType(int32_t);
-void setInternalFormatType(//int32_t);
-void setIsAlphaLoadedWithWhiteInColor(//int32_t);
-void setKernelVersionNumber(//int32_t);
-void setMagnificationFilterType(int32_t);
-void setMinificationFilterType(int32_t);
-void setRealWorldSizeX(double);
-void setRealWorldSizeY(double);
-void setSizeInTexelsX(int32_t);
-void setSizeInTexelsY(int32_t);
-void setWrapMethodU(int32_t);
-void setWrapMethodUV(int32_t);
-void setWrapMethodV(int32_t);
-void setXComponentOfUpVector(//int32_t);
-void setXPivotPointForRotatingTextures(//int32_t);
-void setYComponentOfUpVector(//int32_t);
-void setYPivotPointForRotatingTextures(//int32_t);
-void seteserved(//int32_t);
-void seteserved(//int32_t);
+void setAnimationEnabledPeriod(float);
+void setAnimationPeriod(float);
+void setAnimationPhaseDelay(float);
+void setAnimationType(AnimationType);
+void setFlags(int32_t);
+void setIndex(int32_t);
+void setMorseCodeString(std::string);
+void setMorseCodeTiming(MorseCodeTiming);
+void setName(std::string);
+void setNumberOfFlashingSequences(int32_t);
+void setRotationAxisX(float);
+void setRotationAxisY(float);
+void setRotationAxisZ(float);
+void setWordRate(int32_t);
+void setharacterRate(int32_t);
 
 
     Getter instantiation
 //------------------------------------------------------------------------------
-//int32_t TextureAttribute::getCodeForOriginOfImportedTexture() const
-{ return mCodeForOriginOfImportedTexture; }
+float LightPointAnimationPaletteRecord::getAnimationEnabledPeriod() const
+{ return mAnimationEnabledPeriod; }
 
 //------------------------------------------------------------------------------
-int32_t TextureAttribute::getEnvironmentType() const
-{ return mEnvironmentType; }
+float LightPointAnimationPaletteRecord::getAnimationPeriod() const
+{ return mAnimationPeriod; }
 
 //------------------------------------------------------------------------------
-//int32_t TextureAttribute::getExternalFormatType() const
-{ return mExternalFormatType; }
+float LightPointAnimationPaletteRecord::getAnimationPhaseDelay() const
+{ return mAnimationPhaseDelay; }
 
 //------------------------------------------------------------------------------
-int32_t TextureAttribute::getFileFormatType() const
-{ return mFileFormatType; }
+AnimationType LightPointAnimationPaletteRecord::getAnimationType() const
+{ return mAnimationType; }
 
 //------------------------------------------------------------------------------
-//int32_t TextureAttribute::getInternalFormatType() const
-{ return mInternalFormatType; }
+int32_t LightPointAnimationPaletteRecord::getFlags() const
+{ return mFlags; }
 
 //------------------------------------------------------------------------------
-//int32_t TextureAttribute::getIsAlphaLoadedWithWhiteInColor() const
-{ return mIsAlphaLoadedWithWhiteInColor; }
+int32_t LightPointAnimationPaletteRecord::getIndex() const
+{ return mIndex; }
 
 //------------------------------------------------------------------------------
-//int32_t TextureAttribute::getKernelVersionNumber() const
-{ return mKernelVersionNumber; }
+std::string LightPointAnimationPaletteRecord::getMorseCodeString() const
+{ return mMorseCodeString; }
 
 //------------------------------------------------------------------------------
-int32_t TextureAttribute::getMagnificationFilterType() const
-{ return mMagnificationFilterType; }
+MorseCodeTiming LightPointAnimationPaletteRecord::getMorseCodeTiming() const
+{ return mMorseCodeTiming; }
 
 //------------------------------------------------------------------------------
-int32_t TextureAttribute::getMinificationFilterType() const
-{ return mMinificationFilterType; }
+std::string LightPointAnimationPaletteRecord::getName() const
+{ return mName; }
 
 //------------------------------------------------------------------------------
-double TextureAttribute::getRealWorldSizeX() const
-{ return mRealWorldSizeX; }
+int32_t LightPointAnimationPaletteRecord::getNumberOfFlashingSequences() const
+{ return mNumberOfFlashingSequences; }
 
 //------------------------------------------------------------------------------
-double TextureAttribute::getRealWorldSizeY() const
-{ return mRealWorldSizeY; }
+float LightPointAnimationPaletteRecord::getRotationAxisX() const
+{ return mRotationAxisX; }
 
 //------------------------------------------------------------------------------
-int32_t TextureAttribute::getSizeInTexelsX() const
-{ return mSizeInTexelsX; }
+float LightPointAnimationPaletteRecord::getRotationAxisY() const
+{ return mRotationAxisY; }
 
 //------------------------------------------------------------------------------
-int32_t TextureAttribute::getSizeInTexelsY() const
-{ return mSizeInTexelsY; }
+float LightPointAnimationPaletteRecord::getRotationAxisZ() const
+{ return mRotationAxisZ; }
 
 //------------------------------------------------------------------------------
-int32_t TextureAttribute::getWrapMethodU() const
-{ return mWrapMethodU; }
+int32_t LightPointAnimationPaletteRecord::getWordRate() const
+{ return mWordRate; }
 
 //------------------------------------------------------------------------------
-int32_t TextureAttribute::getWrapMethodUV() const
-{ return mWrapMethodUV; }
-
-//------------------------------------------------------------------------------
-int32_t TextureAttribute::getWrapMethodV() const
-{ return mWrapMethodV; }
-
-//------------------------------------------------------------------------------
-//int32_t TextureAttribute::getXComponentOfUpVector() const
-{ return mXComponentOfUpVector; }
-
-//------------------------------------------------------------------------------
-//int32_t TextureAttribute::getXPivotPointForRotatingTextures() const
-{ return mXPivotPointForRotatingTextures; }
-
-//------------------------------------------------------------------------------
-//int32_t TextureAttribute::getYComponentOfUpVector() const
-{ return mYComponentOfUpVector; }
-
-//------------------------------------------------------------------------------
-//int32_t TextureAttribute::getYPivotPointForRotatingTextures() const
-{ return mYPivotPointForRotatingTextures; }
-
-//------------------------------------------------------------------------------
-//int32_t TextureAttribute::geteserved() const
-{ return meserved; }
-
-//------------------------------------------------------------------------------
-//int32_t TextureAttribute::geteserved() const
-{ return meserved; }
+int32_t LightPointAnimationPaletteRecord::getharacterRate() const
+{ return mharacterRate; }
 
 
 
     Setter instantiation
 //------------------------------------------------------------------------------
-void TextureAttribute::setCodeForOriginOfImportedTexture(//int32_t)
+void LightPointAnimationPaletteRecord::setAnimationEnabledPeriod(float)
 {}
 
 //------------------------------------------------------------------------------
-void TextureAttribute::setEnvironmentType(int32_t)
+void LightPointAnimationPaletteRecord::setAnimationPeriod(float)
 {}
 
 //------------------------------------------------------------------------------
-void TextureAttribute::setExternalFormatType(//int32_t)
+void LightPointAnimationPaletteRecord::setAnimationPhaseDelay(float)
 {}
 
 //------------------------------------------------------------------------------
-void TextureAttribute::setFileFormatType(int32_t)
+void LightPointAnimationPaletteRecord::setAnimationType(AnimationType)
 {}
 
 //------------------------------------------------------------------------------
-void TextureAttribute::setInternalFormatType(//int32_t)
+void LightPointAnimationPaletteRecord::setFlags(int32_t)
 {}
 
 //------------------------------------------------------------------------------
-void TextureAttribute::setIsAlphaLoadedWithWhiteInColor(//int32_t)
+void LightPointAnimationPaletteRecord::setIndex(int32_t)
 {}
 
 //------------------------------------------------------------------------------
-void TextureAttribute::setKernelVersionNumber(//int32_t)
+void LightPointAnimationPaletteRecord::setMorseCodeString(std::string)
 {}
 
 //------------------------------------------------------------------------------
-void TextureAttribute::setMagnificationFilterType(int32_t)
+void LightPointAnimationPaletteRecord::setMorseCodeTiming(MorseCodeTiming)
 {}
 
 //------------------------------------------------------------------------------
-void TextureAttribute::setMinificationFilterType(int32_t)
+void LightPointAnimationPaletteRecord::setName(std::string)
 {}
 
 //------------------------------------------------------------------------------
-void TextureAttribute::setRealWorldSizeX(double)
+void LightPointAnimationPaletteRecord::setNumberOfFlashingSequences(int32_t)
 {}
 
 //------------------------------------------------------------------------------
-void TextureAttribute::setRealWorldSizeY(double)
+void LightPointAnimationPaletteRecord::setRotationAxisX(float)
 {}
 
 //------------------------------------------------------------------------------
-void TextureAttribute::setSizeInTexelsX(int32_t)
+void LightPointAnimationPaletteRecord::setRotationAxisY(float)
 {}
 
 //------------------------------------------------------------------------------
-void TextureAttribute::setSizeInTexelsY(int32_t)
+void LightPointAnimationPaletteRecord::setRotationAxisZ(float)
 {}
 
 //------------------------------------------------------------------------------
-void TextureAttribute::setWrapMethodU(int32_t)
+void LightPointAnimationPaletteRecord::setWordRate(int32_t)
 {}
 
 //------------------------------------------------------------------------------
-void TextureAttribute::setWrapMethodUV(int32_t)
-{}
-
-//------------------------------------------------------------------------------
-void TextureAttribute::setWrapMethodV(int32_t)
-{}
-
-//------------------------------------------------------------------------------
-void TextureAttribute::setXComponentOfUpVector(//int32_t)
-{}
-
-//------------------------------------------------------------------------------
-void TextureAttribute::setXPivotPointForRotatingTextures(//int32_t)
-{}
-
-//------------------------------------------------------------------------------
-void TextureAttribute::setYComponentOfUpVector(//int32_t)
-{}
-
-//------------------------------------------------------------------------------
-void TextureAttribute::setYPivotPointForRotatingTextures(//int32_t)
-{}
-
-//------------------------------------------------------------------------------
-void TextureAttribute::seteserved(//int32_t)
-{}
-
-//------------------------------------------------------------------------------
-void TextureAttribute::seteserved(//int32_t)
+void LightPointAnimationPaletteRecord::setharacterRate(int32_t)
 {}
 
 

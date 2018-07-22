@@ -423,6 +423,9 @@ void OpenFlightReader::parseRawRecord(uint16_t iOpCode, ifstream& iRawRecord)
         case ocLevelOfDetail: parsePrimaryRecord<LevelOfDetailRecord>(iRawRecord); break;
         case ocTranslate: parseAncillaryRecord<TranslateRecord>(iRawRecord); break;
         case ocLightSourcePalette: parseAncillaryRecord<LightSourcePaletteRecord>(iRawRecord); break;
+        case ocLightPointAppearancePalette: parseAncillaryRecord<LightPointAppearancePaletteRecord>(iRawRecord); break;
+        case ocLightPointAnimationPalette: parseAncillaryRecord<LightPointAnimationPaletteRecord>(iRawRecord); break;
+        case ocIndexedLightPoint: parsePrimaryRecord<IndexedLightPointRecord>(iRawRecord); break;
         case ocIndexedString: parseAncillaryRecord<IndexedStringRecord>(iRawRecord); break;
     default: parseUnsupportedRecord(iRawRecord); break;
     }   
