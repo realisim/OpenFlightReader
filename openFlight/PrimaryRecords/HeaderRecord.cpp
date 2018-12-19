@@ -2,6 +2,8 @@
 
 #include "HeaderRecord.h"
 #include "AncillaryRecords/CommentRecord.h"
+#include "AncillaryRecords/LightPointAnimationPaletteRecord.h"
+#include "AncillaryRecords/LightPointAppearancePaletteRecord.h"
 #include "AncillaryRecords/PaletteRecords.h"
 #include "AncillaryRecords/TexturePaletteRecord.h"
 #include <fstream>
@@ -189,9 +191,12 @@ double HeaderRecord::getLambertLowerLatitude() const
 LightPointAnimationPaletteRecord* HeaderRecord::getLightPointAnimationPalette(int iIndex) const
 {
     LightPointAnimationPaletteRecord *r = nullptr;
-    if (iIndex >= 0 && iIndex < (int)mLightPointAnimationPalettes.size())
+    for (size_t i = 0; i < (int)mLightPointAnimationPalettes.size() && r == nullptr; ++i)
     {
-        r = mLightPointAnimationPalettes[iIndex];
+        if(iIndex == mLightPointAnimationPalettes[i]->getIndex())
+        {
+            r = mLightPointAnimationPalettes[i];
+        };
     }
     return r;
 }
@@ -200,9 +205,12 @@ LightPointAnimationPaletteRecord* HeaderRecord::getLightPointAnimationPalette(in
 LightPointAppearancePaletteRecord* HeaderRecord::getLightPointAppearancePalette(int iIndex) const
 {
     LightPointAppearancePaletteRecord *r = nullptr;
-    if (iIndex >= 0 && iIndex < (int)mLightPointAppearancePalettes.size())
+    for (size_t i = 0; i < (int)mLightPointAppearancePalettes.size() && r == nullptr; ++i)
     {
-        r = mLightPointAppearancePalettes[iIndex];
+        if(iIndex == mLightPointAppearancePalettes[i]->getIndex())
+        {
+            r = mLightPointAppearancePalettes[i];
+        };
     }
     return r;
 }
