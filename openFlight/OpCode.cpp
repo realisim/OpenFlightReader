@@ -332,25 +332,25 @@ bool OpCodeUtils::isPrimaryRecord(opCode iOpcode)
         case ocClipRegion :
         case ocExtension :
         case ocLightSource :
-        case ocReserved103 :
-        case ocReserved104 :
-        case ocReserved110 :
+        //case ocReserved103 :
+        //case ocReserved104 :
+        //case ocReserved110 :
         case ocLightPoint :
         case ocContinuouslyAdaptiveTerrain :
         case ocCatData :
-        case ocReserved117 :
-        case ocReserved118 :
-        case ocReserved120 :
-        case ocReserved121 :
-        case ocReserved124 :
-        case ocReserved125 :
+        //case ocReserved117 :
+        //case ocReserved118 :
+        //case ocReserved120 :
+        //case ocReserved121 :
+        //case ocReserved124 :
+        //case ocReserved125 :
         case ocCurve :
         case ocRoadConstruction :
         case ocIndexedLightPoint :
         case ocLightPointSystem :
-        case ocReserved134 :
-        case ocReserved144 :
-        case ocReserved146 :
+        //case ocReserved134 :
+        //case ocReserved144 :
+        //case ocReserved146 :
             r = true;
             break;
         default: r = false; break;

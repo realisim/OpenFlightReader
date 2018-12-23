@@ -30,7 +30,7 @@ bool UnsupportedRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
     Record::parseRecord(iRawRecord, iVersion);
     
     bool ok = true;
-    mAsciiId = "Missing";
+    mAsciiId = "Unsupported";
     mOriginalOpCode = mOpCode;
     mOpCode = ocUnsupported;
     return ok;
