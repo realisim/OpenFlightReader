@@ -17,6 +17,8 @@ namespace OpenFlight
         ColorPaletteRecord& operator=(const ColorPaletteRecord&) = delete;
         virtual ~ColorPaletteRecord() {}
 
+        Color4ub getColor(int iIndex) const;
+
     protected:
         virtual bool parseRecord(std::ifstream& iRawRecord, int iVersion) override;
 

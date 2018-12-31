@@ -117,6 +117,12 @@ string HeaderRecord::getAsciiId() const
 { return mAsciiId;}
 
 //------------------------------------------------------------------------------
+ColorPaletteRecord* HeaderRecord::getColorPalette()
+{
+    return mpColorPalette;
+}
+
+//------------------------------------------------------------------------------
 CommentRecord* HeaderRecord::getCommentRecord(int iIndex) const
 {
     CommentRecord *r = nullptr;

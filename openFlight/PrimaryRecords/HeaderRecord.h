@@ -47,6 +47,7 @@ namespace OpenFlight
         MaterialPaletteRecord* findMaterialPaletteByMaterialIndex(int iIndex);
         TexturePaletteRecord* findTexturePaletteByTexturePatternIndex(int iIndex);
         std::string getAsciiId() const;
+        ColorPaletteRecord* getColorPalette();
         CommentRecord* getCommentRecord(int) const;
         std::string getDateAntTimeOfLastRevision() const;
         databaseOrigin getDatabaseOrigin() const;

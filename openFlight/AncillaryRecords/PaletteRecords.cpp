@@ -51,6 +51,22 @@ bool ColorPaletteRecord::parseRecord(std::ifstream& iRawRecord, int iVersion)
 }
 
 //-------------------------------------------------------------------------
+// returns the Color4ub at index iIndex. This index is the index stored in the
+// other records. It appears the index must be divided by 128 to give the
+// proper index into the stored color vector...
+//
+Color4ub ColorPaletteRecord::getColor(int iIndex) const
+{
+    Color4ub r;
+    const int paletteIndex = iIndex / 128;
+    if (paletteIndex >= 0 && paletteIndex < kNumberOfColorEntries)
+    {
+        r = mColors[paletteIndex];
+    }
+    return r;
+}
+
+//-------------------------------------------------------------------------
 //--- LightSourcePaletteRecord
 //-------------------------------------------------------------------------
 LightSourcePaletteRecord::LightSourcePaletteRecord(PrimaryRecord* ipParent) :
@@ -239,7 +255,7 @@ bool VertexPaletteRecord::addVertexRawRecord(std::ifstream& iRawRecord)
         ok &= readUint16(iRawRecord, v.mFlags);
         ok &= readVector3d(iRawRecord, v.mCoordinate);
         
-        int32_t dummyInt32;
+        uint32_t dummyUint32;
         switch (oc)
         {
             case ocVertexWithColor:
@@ -267,9 +283,9 @@ bool VertexPaletteRecord::addVertexRawRecord(std::ifstream& iRawRecord)
         if( !v.hasFlag(Vertex::fNoColor) )
         {
             //packed color is in a,b,g,r and we want r,g,b,a
-            ok &= readInt32(iRawRecord, dummyInt32);
-            swapBytes4((void*) &dummyInt32);
-            v.mPackedColor = Color4ub(dummyInt32);
+            ok &= readUint32(iRawRecord, dummyUint32);
+            swapBytes4((void*) &dummyUint32);
+            v.mPackedColor = Color4ub(dummyUint32);
             ok &= readUint32(iRawRecord, v.mColorIndex);
         }
         
