@@ -59,7 +59,9 @@ double ObjectRecord::getTransparency() const
 //------------------------------------------------------------------------------
 bool ObjectRecord::hasFlag(ObjectRecord::flag iFlag) const
 {
-    return false;
+    // masked bits starts on the left.... so 31 - iLayerIndex
+    //
+    return mFlags & iFlag;
 }
 
 //------------------------------------------------------------------------------

@@ -28,10 +28,10 @@ LightPointAppearancePaletteRecord::LightPointAppearancePaletteRecord(PrimaryReco
 //    mFogScalar(0),
 //    mFogIntensity(0),
 //    mSizeDifferenceThreshold(0),
-    mDirectionality(dOmnidirectional)
-//    mHorizontalLobeAngle(0),
-//    mVerticalLobeAngle(0),
-//    mLobeRollAngle(0),
+    mDirectionality(dOmnidirectional),
+    mHorizontalLobeAngle(0),
+    mVerticalLobeAngle(0),
+    mLobeRollAngle(0)
 //    mDirectionalFalloffExponent(0),
 //    mDirectionalAmbientIntensity(0),
 //    mSignificance(0)
@@ -70,12 +70,24 @@ uint16_t LightPointAppearancePaletteRecord::getFeatureId() const
 { return mFeatureId; }
 
 //------------------------------------------------------------------------------
+float LightPointAppearancePaletteRecord::getHorizontalLobeAngle() const
+{
+    return mHorizontalLobeAngle;
+}
+
+//------------------------------------------------------------------------------
 int32_t LightPointAppearancePaletteRecord::getIndex() const
 { return mIndex; }
 
 //------------------------------------------------------------------------------
 float LightPointAppearancePaletteRecord::getIntensity() const
 { return mIntensity; }
+
+//------------------------------------------------------------------------------
+float LightPointAppearancePaletteRecord::getLobeRollAngle() const
+{
+    return mLobeRollAngle;
+}
 
 //------------------------------------------------------------------------------
 float LightPointAppearancePaletteRecord::getMaxPixelSize() const
@@ -125,6 +137,16 @@ bool LightPointAppearancePaletteRecord::parseRecord(std::ifstream& iRawRecord, i
     int32_t t;
     ok &= readInt32(iRawRecord, t);
     mDirectionality = (Directionality)t;
+
+    ok &= readFloat32(iRawRecord, mHorizontalLobeAngle);
+    ok &= readFloat32(iRawRecord, mVerticalLobeAngle);
+    ok &= readFloat32(iRawRecord, mLobeRollAngle);
     
     return ok;
+}
+
+//------------------------------------------------------------------------------
+float LightPointAppearancePaletteRecord::getVerticalLobeAngle() const
+{
+    return mVerticalLobeAngle;
 }

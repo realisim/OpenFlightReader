@@ -43,10 +43,10 @@ namespace OpenFlight
         //float getFogIntensity() const;
         //int32_t getFogPunchMode() const;
         //float getFogScalar() const;
-        //float getHorizontalLobeAngle() const;
+        float getHorizontalLobeAngle() const;
         int32_t getIndex() const;
         float getIntensity() const;
-        //float getLobeRollAngle() const;
+        float getLobeRollAngle() const;
         //float getLodRangeRation() const;
         //float getLodScale() const;
         float getMaxPixelSize() const;
@@ -60,7 +60,7 @@ namespace OpenFlight
         //float getTransparentFalloffClamp() const;
         //float getTransparentFalloffExponent() const;
         //float getTransparentFalloffScalar() const;
-        //float getVerticalLobeAngle() const;
+        float getVerticalLobeAngle() const;
         //float getVisibilityRange() const;
 
 
@@ -130,9 +130,9 @@ namespace OpenFlight
 //        float mFogIntensity;
 //        float mSizeDifferenceThreshold;
         Directionality mDirectionality;
-//        float mHorizontalLobeAngle;
-//        float mVerticalLobeAngle;
-//        float mLobeRollAngle;
+        float mHorizontalLobeAngle;
+        float mVerticalLobeAngle;
+        float mLobeRollAngle;
 //        float mDirectionalFalloffExponent;
 //        float mDirectionalAmbientIntensity;
 //        float mSignificance;
