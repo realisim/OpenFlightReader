@@ -102,21 +102,19 @@ namespace OpenFlight
     //      3 = Packed color
     //      4-15 = Spare
     //
-    //      By left to right, they mean leat significant to most significant
-    //      Since openflight format is Big endian
-    //      (This sould be validated and corrected if innacurate)
+    //      By left to right, it appears they mean most significant to least significant
     //
     struct Vertex
     {
         Vertex() : mColorNameIndex(0), mFlags(0), mCoordinate(), mNormal(),
-        mTextureCoordinate(), mPackedColor(), mColorIndex(0) {}
+            mTextureCoordinate(), mPackedColor(), mColorIndex(0) {}
         ~Vertex() {}
-        
-        enum flag{ fStartHardEdge = 1 << 0, fNormalFrozen = 1 << 1,
-            fNoColor = 1 << 2, fPackedColor = 1 << 3};
-        
+
+        enum flag{ fStartHardEdge = 1 << (15-0), fNormalFrozen = 1 << (15-1),
+            fNoColor = 1 << (15-2), fPackedColor = 1 << (15-3)};
+
         bool hasFlag(flag iFlag) const;
-        
+
         uint16_t mColorNameIndex;
         uint16_t mFlags;
         Vector3d mCoordinate;
