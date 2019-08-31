@@ -56,6 +56,9 @@ namespace
 //-----------------------------------------------------------------------------
 OpenFlightReader::OpenFlightReader() :
 mErrors(),
+mProgressData(),
+mpProgressFunction(nullptr),
+mpProgressUserData(nullptr),
 mpRootNode(nullptr),
 mReadState(),
 mReadStateStack()
@@ -164,7 +167,25 @@ bool OpenFlightReader::hasWarnings() const
 //-----------------------------------------------------------------------------
 HeaderRecord* OpenFlightReader::open(const std::string& iFileNamePath)
 {
+    // prepare
+    // here we open all files to count the number of record will
+    // need to be parsed.
+    //
+    mProgressData = ProgressData();
+    mProgressData.mActivity = ProgressData::aPreparing;
     open(iFileNamePath, false);
+    
+    // delete the dummy structure we've just create
+    // and read the real thing!
+    //
+    delete mpRootNode;
+
+    // now really open the thing...
+    mProgressData.mActivity = ProgressData::aParsing;
+    open(iFileNamePath, false);
+
+    mProgressData.mActivity = ProgressData::aDone;
+    updateProgress();
     return mpRootNode;
 }
 
@@ -180,11 +201,7 @@ void OpenFlightReader::open(const std::string& iFileNamePath,
 //
 //De plus pour comparer les filenamePath, il faudra un methode pour transformer
 //un path en path canonique. (genre QFileInfo);
-    
-    if(getOptions().mShowCurrentFilenamePathBeingParsed)
-    {
-        printf("OpenFlightReader::open %s\n", iFileNamePath.c_str());
-    }
+    mProgressData.mCurrentFileBeingProcessed = iFileNamePath;
     
     // When it is not an external reference, we clear
     // all leftover from a previous open call.
@@ -212,7 +229,10 @@ void OpenFlightReader::open(const std::string& iFileNamePath,
     if (!ifs.fail())
     {
         while (ifs.good() && !ifs.eof() && !hasErrors())
-        { readRecord(ifs); }
+        { 
+            readRecord(ifs);
+            updateProgress();
+        }
     }
     else
     {
@@ -529,7 +549,23 @@ void OpenFlightReader::readRecord(ifstream& iFileStream)
                 cout << oss.str();
             }
 
-            parseRawRecord( opCode, iFileStream );
+            if(mProgressData.mActivity == ProgressData::aPreparing)
+            {
+                mProgressData.mTotalNumberOfRecordToParse++;
+                
+                // parse only header and ext ref record, 
+                // so we dig into the hierarchy to count all required records.
+                //
+                if( opCode == ocHeader ||
+                    opCode == ocExternalReference)
+                { parseRawRecord( opCode, iFileStream ); }
+            }
+            else
+            {
+                parseRawRecord( opCode, iFileStream );
+
+                mProgressData.mNumberOfRecordParsed++;
+            }
             
             // make sure we go to next record, even if the current record parsing
             // broked the fstream.
@@ -603,13 +639,46 @@ void OpenFlightReader::setOptions(Options iO)
 { mOptions = iO; }
 
 //-----------------------------------------------------------------------------
+void OpenFlightReader::setProgressCallback(ProgressFunction iPf, void *ipUserData)
+{
+    mpProgressFunction = iPf;
+    mpProgressUserData = ipUserData;
+}
+
+//-----------------------------------------------------------------------------
+void OpenFlightReader::updateProgress()
+{
+    if (mpProgressFunction)
+    {
+        bool callUpdate = true;
+
+        switch (mProgressData.mActivity)
+        {
+            case ProgressData::aPreparing: 
+                callUpdate = mProgressData.mTotalNumberOfRecordToParse % 1000 == 0;
+                break;
+
+            case ProgressData::aParsing: 
+                callUpdate = mProgressData.mNumberOfRecordParsed % 1000 == 0;
+                break;
+
+            default: break;
+        }
+
+        if (callUpdate)
+        {
+            (*mpProgressFunction)(mProgressData, mpProgressUserData);
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
 //--- OpenFlightReader::Options
 //-----------------------------------------------------------------------------
 OpenFlightReader::OpenFlightReader::Options::Options() :
 mDebugEnabled(false),
 mExternalReferenceLoadingEnabled(true),
-mVertexDataSkipped(false),
-mShowCurrentFilenamePathBeingParsed(true)
+mVertexDataSkipped(false)
 {}
 
 

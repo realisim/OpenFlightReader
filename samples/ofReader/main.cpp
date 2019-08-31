@@ -244,9 +244,24 @@ Options parseArgs(int argc, char** argv)
     return opt;
 }
 
+bool progressUpdate(const OpenFlight::ProgressData &iData, void *ipUserData)
+{
+    cout << "read file " << iData.mCurrentFileBeingProcessed <<
+        " (" << iData.mNumberOfRecordParsed << " / " <<
+        iData.mTotalNumberOfRecordToParse << " )\r";
+
+    if (iData.mActivity == OpenFlight::ProgressData::aDone)
+    {
+        cout << "\n";
+    }
+
+    return true;
+}
+
 int main(int argc, char** argv)
 {
     OpenFlight::OpenFlightReader ofr;
+    ofr.setProgressCallback(&progressUpdate, nullptr);
 
     Options opt = parseArgs(argc, argv);
     
