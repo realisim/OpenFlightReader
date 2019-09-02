@@ -97,6 +97,8 @@ void OpenFlightReader::clear()
 {
     mErrors = string();
     mWarnings.clear();
+
+    mProgressData = ProgressData();
     
     mpRootNode = nullptr;
     mReadState = ReadState();
@@ -165,13 +167,19 @@ bool OpenFlightReader::hasWarnings() const
 { return !mWarnings.empty(); }
 
 //-----------------------------------------------------------------------------
+// This fonction will return the root node (always a HeaderRecord) of the flt
+// structure defined in file iFileNamePath.
+//
+// The function can return a nullptr if no flt is found or if cancellation
+// is requested.
+//
 HeaderRecord* OpenFlightReader::open(const std::string& iFileNamePath)
 {
+    clear();
     // prepare
     // here we open all files to count the number of record will
     // need to be parsed.
     //
-    mProgressData = ProgressData();
     mProgressData.mActivity = ProgressData::aPreparing;
     open(iFileNamePath, false);
     
@@ -186,6 +194,13 @@ HeaderRecord* OpenFlightReader::open(const std::string& iFileNamePath)
 
     mProgressData.mActivity = ProgressData::aDone;
     updateProgress();
+
+    // if cancellation was requested, delete everything
+    //
+    if (mProgressData.mRequestForCancellation)
+    {
+        clear();
+    }
     return mpRootNode;
 }
 
@@ -202,17 +217,6 @@ void OpenFlightReader::open(const std::string& iFileNamePath,
 //De plus pour comparer les filenamePath, il faudra un methode pour transformer
 //un path en path canonique. (genre QFileInfo);
     mProgressData.mCurrentFileBeingProcessed = iFileNamePath;
-    
-    // When it is not an external reference, we clear
-    // all leftover from a previous open call.
-    //
-    // In the case of an external reference, we want to maintain
-    // the internal state since the external reference will be
-    // added to the current tree.
-    if(!iIsExternalReference)
-    {
-        clear();
-    }
 
     // first lets separate the filename from the path.
     // hum... we could keep only mFilenamePath and call
@@ -228,7 +232,10 @@ void OpenFlightReader::open(const std::string& iFileNamePath,
 
     if (!ifs.fail())
     {
-        while (ifs.good() && !ifs.eof() && !hasErrors())
+        while (ifs.good() && 
+               !ifs.eof() &&
+               !hasErrors() &&
+               !mProgressData.mRequestForCancellation)
         { 
             readRecord(ifs);
             updateProgress();
@@ -667,7 +674,9 @@ void OpenFlightReader::updateProgress()
 
         if (callUpdate)
         {
-            (*mpProgressFunction)(mProgressData, mpProgressUserData);
+            // set the request cancellation in function of the return value
+            //
+            mProgressData.mRequestForCancellation = !(*mpProgressFunction)(mProgressData, mpProgressUserData);
         }
     }
 }

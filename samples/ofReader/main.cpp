@@ -278,7 +278,7 @@ int main(int argc, char** argv)
             if(ofr.hasWarnings())
             { cout << "Warnings: " << ofr.getAndClearLastWarnings() << endl; }
             
-            if( opt.mExportToDot )
+            if( pRoot && opt.mExportToDot )
             {
                 cout << OpenFlight::toDotFormat( pRoot, opt.mDotInclusions );
             }
@@ -286,7 +286,8 @@ int main(int argc, char** argv)
         else
         { cout << "Errors while reading flt file: " << opt.mFilenamePath << "\n" <<  ofr.getAndClearLastErrors(); }
         
-        delete pRoot;
+        if(pRoot)
+            delete pRoot;
     }
     else
     {
