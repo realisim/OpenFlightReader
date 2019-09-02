@@ -15,6 +15,41 @@ namespace OpenFlight
 {
     class Document;
 
+    // This class holds the data associated with the progression when
+    // openning an flt file.
+    // 
+    //
+    struct ProgressData
+    {
+        enum Activity{aUndefined = 0, aPreparing, aParsing, aDone};
+
+        ProgressData() : mActivity(aUndefined),
+            mTotalNumberOfRecordToParse(0),
+            mNumberOfRecordParsed(0),
+            mCurrentFileBeingProcessed(),
+            mRequestForCancellation(false) {};
+
+        Activity mActivity;
+        uint32_t mTotalNumberOfRecordToParse;
+        uint32_t mNumberOfRecordParsed;
+        std::string mCurrentFileBeingProcessed;
+        bool mRequestForCancellation;
+    };
+
+    // This function pointer is meant to be use with OpenflightReader::setProgressCallback()
+    // The callback will be called once every x node parsed.
+    //
+    // A user data, pUserData, can be defined by the caller's code and will be available
+    // in the callee's code when the callback is invoked.
+    //
+    // The userData will never be accessed no modified by openFlightReader.
+    //
+    // May be called from any thread. Return false to cancel, it will set
+    // ProgressData::mRequestForCancellation to true and will cancel current loading as
+    // quick as possible.;
+    //
+    typedef bool (*ProgressFunction)(const ProgressData &iData, void *pUserData);
+
     /**/
     class OFR_API OpenFlightReader
     {
@@ -30,7 +65,6 @@ namespace OpenFlight
             bool mDebugEnabled;
             bool mExternalReferenceLoadingEnabled;
             bool mVertexDataSkipped;
-            bool mShowCurrentFilenamePathBeingParsed;
         };
         
         std::string getAndClearLastErrors() const;
@@ -43,6 +77,7 @@ namespace OpenFlight
         bool hasWarnings() const;
         HeaderRecord* open(const std::string& iFileNamePath); //Should return a clas Document.
         void setOptions(Options);
+        void setProgressCallback(ProgressFunction iPf, void *ipUserData);
 
     protected:
         // The ReadState holds information relative to the current
@@ -97,10 +132,17 @@ namespace OpenFlight
         void setCurrentHeaderNode(HeaderRecord*);
         void setCurrentPrimaryNode(PrimaryRecord*);
         void setLastPrimaryNodeAdded(PrimaryRecord*);
+        void updateProgress();
 
         mutable std::string mErrors;
         mutable std::set<std::string> mWarnings;
         Options mOptions;
+        
+        // progress related
+        //
+        ProgressData mProgressData;
+        ProgressFunction mpProgressFunction;
+        void *mpProgressUserData;
 
         HeaderRecord* mpRootNode; //not owned, will be pass to caller of open()
         ReadState mReadState;
