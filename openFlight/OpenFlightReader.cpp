@@ -155,6 +155,12 @@ string OpenFlightReader::getFilenamePath() const
 { return mReadState.mFilenamePath; }
 
 //-----------------------------------------------------------------------------
+uint32_t OpenFlightReader::getNumberOfRecordParsed() const
+{
+    return mProgressData.mNumberOfRecordParsed;
+}
+
+//-----------------------------------------------------------------------------
 const OpenFlightReader::Options& OpenFlightReader::getOptions() const
 { return mOptions; }
 
@@ -183,10 +189,12 @@ HeaderRecord* OpenFlightReader::open(const std::string& iFileNamePath)
     mProgressData.mActivity = ProgressData::aPreparing;
     open(iFileNamePath, false);
     
-    // delete the dummy structure we've just create
-    // and read the real thing!
+    // now that we gathered all preparation data, lets
+    // clear, but save the current progress data first
     //
-    delete mpRootNode;
+    ProgressData temp = mProgressData;
+    clear();
+    mProgressData = temp;
 
     // now really open the thing...
     mProgressData.mActivity = ProgressData::aParsing;
