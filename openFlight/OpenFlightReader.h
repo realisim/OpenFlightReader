@@ -72,6 +72,7 @@ namespace OpenFlight
         std::string getFilePath() const;
         std::string getFilename() const;
         std::string getFilenamePath() const;
+        uint32_t getNumberOfRecordParsed() const;
         const Options& getOptions() const;
         bool hasErrors() const;
         bool hasWarnings() const;
