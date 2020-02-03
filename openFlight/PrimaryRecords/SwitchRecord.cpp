@@ -86,6 +86,8 @@ vector<int> SwitchRecord::getSelectedChildFromMask(int iMaskIndex) const
 //------------------------------------------------------------------------------
 void SwitchRecord::handleAddedAncillaryRecord(AncillaryRecord* ipA)
 {
+    PrimaryRecord::handleAddedAncillaryRecord(ipA);
+
     switch (ipA->getOpCode())
     {
         case ocIndexedString:

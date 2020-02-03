@@ -45,6 +45,8 @@ UvListRecord* VertexListRecord::getUvListRecord()
 //------------------------------------------------------------------------------
 void VertexListRecord::handleAddedAncillaryRecord(AncillaryRecord* ipAncillary)
 {
+    PrimaryRecord::handleAddedAncillaryRecord(ipAncillary);
+
     switch (ipAncillary->getOpCode())
     {
     case ocUvList: mpUvListRecord = (UvListRecord*)ipAncillary; break;    

@@ -166,6 +166,8 @@ double FaceRecord::getTransparency() const
 // Explain...
 void FaceRecord::handleAddedAncillaryRecord(AncillaryRecord* ipAncillary)
 {
+    PrimaryRecord::handleAddedAncillaryRecord(ipAncillary);
+
     switch (ipAncillary->getOpCode())
     {
     case ocMultitexture: mpMultiTextureRecord = (MultiTextureRecord*)ipAncillary; break;    
