@@ -10,6 +10,7 @@
 #include "AncillaryRecords/TexturePaletteRecord.h"
 #include "AncillaryRecords/TranslateRecord.h"
 #include "AncillaryRecords/UvListRecord.h"
+#include "PrimaryRecords/DegreeOfFreedomRecord.h"
 #include "PrimaryRecords/ExternalReferenceRecord.h"
 #include "PrimaryRecords/FaceRecord.h"
 #include "PrimaryRecords/GroupRecord.h"

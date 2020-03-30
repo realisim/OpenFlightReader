@@ -14,6 +14,7 @@ namespace OpenFlight
     //
     bool readChar(std::istream& iStream, int iNumberOfCharToRead, std::string& oV);
     bool readBytes(std::istream& iStream, int iNumberOfCharToRead, std::string& oV);
+    bool readDOFParameter(std::istream& iss, DOFParameter& oV);
     bool readDouble(std::istream& iStream, double& oV);
     bool readColor3f(std::istream& iss, Color3f& oC);
     bool readColor4f(std::istream& iss, Color4f& oC);

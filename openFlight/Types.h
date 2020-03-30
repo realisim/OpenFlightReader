@@ -85,6 +85,16 @@ namespace OpenFlight
         double mY;
         double mZ;
     };
+
+    struct DOFParameter
+    {
+        DOFParameter() : mMinimum(0.0), mMaximum(0.0), mValue(0.0), mIncrement(0.0) {}
+        ~DOFParameter() {}
+        double mMinimum;
+        double mMaximum;
+        double mValue;
+        double mIncrement;
+    };
     
     //------------------------------------------------------------------------------
     // maps the data for records:
