@@ -215,6 +215,16 @@ namespace OpenFlight
         ok &= readDouble(iss, oV.mZ);
         return ok;
     }
+
+    bool readDOFParameter(std::istream& iss, DOFParameter& oV)
+    {
+        bool ok = true;
+        ok &= readDouble(iss, oV.mMinimum);
+        ok &= readDouble(iss, oV.mMaximum);
+        ok &= readDouble(iss, oV.mValue);
+        ok &= readDouble(iss, oV.mIncrement);
+        return ok;
+    }
     
     //-------------------------------------------------------------------------
     bool readVector3f(istream& iss, Vector3f& oV)
